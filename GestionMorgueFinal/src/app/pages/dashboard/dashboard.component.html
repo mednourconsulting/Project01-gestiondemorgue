@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="container">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+          <ngx-sexe-deces></ngx-sexe-deces>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <ngx-nature-deces></ngx-nature-deces>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <ngx-selon-cause></ngx-selon-cause>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <nb-card align="center">
+      <nb-card-header>
+        La liste des décédés
+      </nb-card-header>
+      <nb-card-body>
+        <ng2-smart-table
+          [settings]="settings"
+          [source]="source">
+        </ng2-smart-table>
+      </nb-card-body>
+
+    </nb-card>
+  </div>
+</div>
+
+
+
+
+
+<!--<div class="row">
+<div class="col-md-8">
+<nb-card align="center">
+
+  <nb-card-header>
+             La liste des décédés
+            </nb-card-header>
+            <nb-card-body>
+              <ng2-smart-table
+                [settings]="settings"
+                [source]="source">
+              </ng2-smart-table>
+            </nb-card-body>
+
+</nb-card>
+</div>
+<div class="col-md-4">
+  <nb-card align="center">
+          <nb-card-header>
+           Les statistiques selon la nature du décès
+          </nb-card-header>
+          <nb-card-body>
+            <ngx-naturechart></ngx-naturechart>
+          </nb-card-body>
+        </nb-card>
+</div>
+</div>-->
+<!--<div class="row">-->
+<!--  <div class="col-lg-4">-->
+<!--    <nb-card  size="medium" align="center">-->
+<!--      <nb-card-header>-->
+<!--        Les statistiques selon le décès des enfants (1jour et 30jours)-->
+<!--      </nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-enchatschart></ngx-enchatschart>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-4">-->
+<!--    <nb-card  size="medium" align="center">-->
+<!--      <nb-card-header>-->
+<!--        Les statistiques selon la nature du décès-->
+<!--      </nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-naturechart></ngx-naturechart>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-4">-->
+<!--    <nb-card  size="medium" align="center">-->
+<!--      <nb-card-header>Les statistiques selon le sexe-->
+<!--      </nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-sexechart></ngx-sexechart>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--  <div class="col-lg-4">-->
+<!--    <nb-card  size="medium" align="center">-->
+<!--      <nb-card-header>-->
+<!--        Les statistiques selon les régions-->
+<!--      </nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-regionchart></ngx-regionchart>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-4">-->
+<!--    <nb-card  size="medium" align="center">-->
+<!--      <nb-card-header>Les statistiques selon les décès des nouveaux-nés</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-mycharts></ngx-mycharts>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-4">-->
+<!--    <nb-card  size="medium" align="center">-->
+<!--      <nb-card-header>-->
+<!--        Les statistiques  selon la cause de décès-->
+<!--      </nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-causechart></ngx-causechart>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+
+<!--</div>-->

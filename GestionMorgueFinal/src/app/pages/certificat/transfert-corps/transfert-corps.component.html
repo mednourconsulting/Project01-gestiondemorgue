@@ -1,0 +1,146 @@
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-12">Ajout d'une certificat de transfert du corps</div>
+      </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Médecin</label>
+          <nb-select [(ngModel)]="MedcinID"  class="type-select " nbSelect fullWidth
+                     placeholder="Médecin" status="danger">
+            <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.id}}:{{t.nom}} {{t.prenom}}</nb-option>
+          </nb-select>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">décédé</label>
+          <nb-select  [(ngModel)]="defauntID" class="type-select "  nbSelect fullWidth
+                      placeholder="Nom" status="danger">
+            <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Date de déclaration</label>
+          <input [(ngModel)]="trnsfrCorps.declaration" class="form-control" type="Date" nbInput fullWidth
+                 id="dateDec" placeholder="Date de déclaration" status="danger">
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Déclarant</label>
+          <input [(ngModel)]="trnsfrCorps.declarant" class="form-control" type="string" nbInput fullWidth
+                 id="declarant" placeholder="Déclarant" status="danger">
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">CIN du déclarant</label>
+          <input [(ngModel)]="trnsfrCorps.cin" class="form-control" type="string" nbInput fullWidth
+                 id="CINdec" placeholder="CIN du déclarant" status="danger">
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">N° téléphone </label>
+          <input [(ngModel)]="trnsfrCorps.tel" class="form-control" type="string" nbInput fullWidth
+                 id="tel" placeholder="Tel.." status="danger">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Le corps sera transporté en cercueil </label>
+          <nb-select  [(ngModel)]="trnsfrCorps.cercueilType" class="type-select "  nbSelect fullWidth
+                      placeholder="type" status="danger">
+            <nb-option *ngFor="let t of cercueil" [value]="t" >{{ t }}</nb-option>
+          </nb-select>
+      </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Destination du corps</label>
+          <nb-select  [(ngModel)]="trnsfrCorps.destination" class="type-select "  nbSelect fullWidth
+                      placeholder="Destination du corps" status="danger">
+            <nb-option *ngFor="let t of destinationCorps" [value]="t" >{{ t }}</nb-option>
+          </nb-select>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Fourgon mortuaire Mle </label>
+          <input [(ngModel)]="trnsfrCorps.mortuaire" class="form-control" type="string" nbInput fullWidth
+                 id="fourgon" placeholder="Fourgon mortuaire Mle" status="danger">
+
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">La société ou l'administration chargée de l'inhumation ou du transfert</label>
+          <input [(ngModel)]="trnsfrCorps.inhumationSociete" class="form-control" type="string" nbInput fullWidth
+                 id="txt" placeholder="La société ou l'administration" status="danger">
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div class="form-group">
+          <label  class="label">Remarques </label>
+          <textarea [(ngModel)]="trnsfrCorps.remarque" class="form-control" type="string"  fullWidth
+                 id="Remarque" placeholder="Remarques..." status="danger">
+          </textarea>
+
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Register</button>
+      <button class="btn btn-secondary mr-1" (click)="generatePdf('francais')" type="submit" nbButton  status="danger" outline> Certificat du transfert</button>
+      <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton  status="danger" outline> رخصة الدفن  </button>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-12">
+        Liste des certificats de transfert des corps
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (editConfirm)="onEditConfirm($event)"
+      (custom)="onCustomConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+
+
+

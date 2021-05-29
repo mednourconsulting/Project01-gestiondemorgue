@@ -1,0 +1,75 @@
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-12">Ajouter un Aperçu du corps</div></div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label  class="label">Décédé</label>
+          <nb-select  [(ngModel)]="defauntID" class="type-select "  nbSelect fullWidth
+                      placeholder="Num regestre" status="danger">
+            <nb-option *ngFor="let t of NomDeced" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
+          </nb-select>
+      </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label  class="label">Centre médico-légal</label>
+          <input [(ngModel)]="ApercuCorps.centerMedicoLegal" class="form-control" type="string" nbInput fullWidth
+                 id="centre" placeholder="Centre médico-légal" status="danger">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label  class="label">Médcin/ Assistant de santé</label>
+          <nb-select [(ngModel)]="MedecinID"  class="type-select " nbSelect fullWidth
+                     placeholder="Medecin/ Assistant de santé" status="danger">
+            <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.nom}} {{t.prenom}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label  class="label">Date de déclaration</label>
+          <input [(ngModel)]="ApercuCorps.dateDeclaration" class="form-control" type="Date" nbInput fullWidth
+                 id="dateDec" placeholder="Déclarant" status="danger">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Enregistrer</button>
+      <button  class="btn btn-secondary mr-1" (click)="generatePdf('francais')" type="submit" nbButton  status="danger" outline>Certificat</button>
+      <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton  status="danger" outline>شهادة</button>
+    </div>
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-6">
+       Liste des aperçu de corps
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (editConfirm)="onEditConfirm($event)"
+      (custom)="onCustomConfirm($event)">
+    </ng2-smart-table>
+
+  </nb-card-body>
+</nb-card>

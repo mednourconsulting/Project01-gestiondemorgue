@@ -1,0 +1,67 @@
+
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-12"> Certificat Enterrement</div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label  class="label">Défunt</label>
+          <nb-select  [(ngModel)]="Enterrement.defunt" class="type-select "  nbSelect fullWidth
+                      placeholder="Num regestre" status="danger">
+            <nb-option *ngFor="let t of NomDecede" [value]="t.nom + ' ' + t.prenom" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label  class="label">Ville</label>
+          <input [(ngModel)]="Enterrement.ville" class="form-control" type="string" nbInput fullWidth
+                 id="centre" placeholder="Ville" status="danger">
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label  class="label">Date declaration</label>
+          <input [(ngModel)]="Enterrement.declaration" class="form-control" type="Date" nbInput fullWidth
+                 id="dateDec" placeholder="Declarant" status="danger">
+
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Register</button>
+      <button class="btn btn-secondary" (click)="generatePdf('open')" type="submit" nbButton  status="danger" outline>Certificat</button>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-6">
+        Certificat Enterrement
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (editConfirm)="onEditConfirm($event)"
+      (custom)="onCustomConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+
+
+

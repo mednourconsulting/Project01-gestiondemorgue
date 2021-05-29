@@ -1,0 +1,25 @@
+nb-card-header {
+  color: white;
+  font-size: large;
+  font-family: 'Courier New', Monospace;
+  background-color: #b94a48;
+}
+:host ::ng-deep ng2-st-tbody-edit-delete { display: inline-block !important; width: 25%; height: 0 !important; margin-top: 0% }
+:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom { margin-top: 0%; display: inline-block; width: 25%; text-align: center; font-size: 0em; }
+:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover { color: #5DCFE3; }
+
+:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-file-pdf:before {
+  color: #b94a48;
+  font-size: 20px;
+}
+:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-trash:before {
+  color: #ff003b;
+  font-size: 20px;
+}
+:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-edit:before {
+  color: #21335a;
+  font-size: 20px;
+}
+:host ::ng-deep ng2-smart-table .ng2-smart-actions a.ng2-smart-action:not(:last-child) {
+ // border-right: none;
+}

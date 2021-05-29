@@ -1,0 +1,472 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<nb-card>
+    <nb-card-header class="hostt">
+        <div class="row">
+            <div class="col-sm-6">Ajouter Les Informations D'un Décédé</div>
+        </div>
+    </nb-card-header>
+    <nb-card-body class="host">
+
+        <nb-tabset>
+            <nb-tab tabTitle="les informations sur un décédé">
+                <nb-card>
+                    <nb-card-body>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Nom décédé</label>
+                                    <input [(ngModel)]="decede.nom" class="form-control" type="string" nbInput fullWidth id="Nom" placeholder="Nom décédé">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Prénom décédé</label>
+                                    <input [(ngModel)]="decede.prenom" class="form-control" type="string" nbInput fullWidth id="prénom" placeholder="Prénom décédé">
+
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Sexe</label>
+                                    <nb-select [(ngModel)]="decede.sexe" class="type-select " nbSelect fullWidth placeholder="Sexe">
+                                        <nb-option *ngFor="let t of sexe" [value]="t">{{t}}</nb-option>
+                                    </nb-select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Date décès</label>
+                                    <input [(ngModel)]="decede.dateDeces" class="form-control" type="Date" nbInput fullWidth id="dateD" placeholder="Date décès">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Date de naissance</label>
+                                    <input [(ngModel)]="decede.dateNaissance" class="form-control" type="Date" nbInput fullWidth id="DateNai" placeholder="Date de naissance">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <nb-checkbox id="defaultCheck" [(ngModel)]="decede.mortNe"> S'agit-il d'un mort né</nb-checkbox>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="this.decede.sexe==='Femme' &&(this.getAgeParAnnee(this.decede.dateNaissance, this.decede.dateDeces) < 54) &&(this.getAgeParAnnee(this.decede.dateNaissance, this.decede.dateDeces) > 12);then contenu"></div>
+                            <ng-template #contenu>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="label">Le décès est-il survenu pendant une grosesse ou moins d'un an après sa terminaison ?</label>
+                                        <nb-select [(ngModel)]="decede.decesGrossesse" class="type-select " nbSelect fullWidth>
+                                            <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                        </nb-select>
+
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="decede.decesGrossesse==='Oui';then conten"></div>
+                            <ng-template #conten>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="label">le décès de la femme est-il survenu</label>
+                                            <nb-select [(ngModel)]="decede.decesFemme" class="type-select " nbSelect fullWidth>
+                                                <nb-option *ngFor="let t of decesFemmeList" [value]="t">{{t}}</nb-option>
+                                            </nb-select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="label">La grossesse a-t-elle contribué au decès ?</label>
+                                            <nb-select [(ngModel)]="decede.contribueGros" class="type-select " nbSelect fullWidth>
+                                                <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                            </nb-select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div *ngIf="this.decede.mortNe===true ||(this.getAgeParJour(this.decede.dateNaissance, this.decede.dateDeces)<7);then res"></div>
+                                <ng-template #res>
+                                    <div class="row">
+
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Grossesse multiple</label>
+                                                <nb-select [(ngModel)]="decede.grossesseMultiple" class="type-select " nbSelect fullWidth placeholder="Grossesse multiple">
+                                                    <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                                </nb-select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Age de la mère</label>
+                                                <input [(ngModel)]="decede.ageMere" class="form-control" type="string" nbInput fullWidth id="ageMere" placeholder="Age du mère">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Poids à la naissance</label>
+                                                <input [(ngModel)]="decede.poidsNaissance" class="form-control" type="string" nbInput fullWidth id="poids" placeholder="Poids en grammes">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="label">Age gestationnel</label>
+                                                <input [(ngModel)]="decede.ageGestationnel" class="form-control" type="string" nbInput fullWidth id="ageGestationnel" placeholder="Age du mère">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="label">Maladie ou affection maternelle ayant affecté le foetus ou le nouveau-né</label>
+                                                <input [(ngModel)]="decede.maladie" class="form-control" type="string" nbInput fullWidth id="maladie" placeholder="....">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Lieu de naissance</label>
+                                    <input [(ngModel)]="decede.lieuNaiss" class="form-control" type="string" nbInput fullWidth id="LieuNai" placeholder="Lieu de naissance">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Nationalité</label>
+                                    <input [(ngModel)]="decede.nationalite" class="form-control" type="string" nbInput fullWidth id="nationalite" placeholder="Nationalité">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">CIN</label>
+                                    <input [(ngModel)]="decede.cin" class="form-control" type="string" nbInput fullWidth id="cin" placeholder="CIN">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Adresse</label>
+                                    <input [(ngModel)]="decede.adresse" class="form-control" type="string" nbInput fullWidth id="adresse" placeholder="Adresse">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Etat Matrimonial</label>
+                                    <nb-select [(ngModel)]="decede.etat" class="type-select " nbSelect fullWidth placeholder="Etat Matrimonial">
+                                        <nb-option *ngFor="let t of etat" [value]="t"> {{t}}</nb-option>
+                                    </nb-select>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Fille ou fils de : </label>
+                                    <input [(ngModel)]="decede.fils" class="form-control" type="string" nbInput fullWidth id="fils" placeholder="Fille ou fils de ">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Heure de décès</label>
+                                    <input [(ngModel)]="decede.heure" class="form-control" type="string" nbInput fullWidth id="heure" placeholder="Heure de décès">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Lieu Décès</label>
+                                    <nb-select [(ngModel)]="decede.lieuxDeces" class="type-select " nbSelect fullWidth placeholder="lieu Deces">
+                                        <nb-option *ngFor="let t of LieuD" [value]="t">{{ t}}</nb-option>
+                                    </nb-select>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Préfecture /Province</label>
+                                    <nb-select [(ngModel)]="decede.provinceD" class="type-select " nbSelect fullWidth placeholder="Préfecture /Province">
+                                        <nb-option *ngFor="let t of province" [value]="t"> {{t}}</nb-option>
+                                    </nb-select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Préfecture d'arrondissements</label>
+                                    <input [(ngModel)]="decede.prefectureD" class="form-control" type="string" nbInput fullWidth id="prefect" placeholder="Préfecture d'arrondissement">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Commune /Arrondissements</label>
+                                    <input [(ngModel)]="decede.communeD" class="form-control" type="string" nbInput fullWidth id="communeD" placeholder="Commune /Arrondissements">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Nature de la mort</label>
+                                    <nb-select [(ngModel)]="decede.natureMort" class="type-select " nbSelect fullWidth placeholder="nature de la mort">
+                                        <nb-option *ngFor="let t of NatureMort" [value]="t">{{t}}</nb-option>
+                                    </nb-select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="this.decede.natureMort === 'Mort naturelle'then res11 else res2"></div>
+                            <ng-template #res11>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">Cause de mort</label>
+                                        <nb-select [(ngModel)]="decede.causeMort" class="type-select " nbSelect fullWidth placeholder="Cause de mort">
+                                            <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
+                                        </nb-select>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template #res2>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label"> Cause initiale </label>
+                                        <nb-select [(ngModel)]="decede.causeInitial" class="type-select " nbSelect fullWidth placeholder="Cause initiale">
+                                            <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
+                                        </nb-select>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">Cause immédiate</label>
+                                        <nb-select [(ngModel)]="decede.causeImmdiate" class="type-select " nbSelect fullWidth placeholder="Cause immédiate">
+                                            <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
+                                        </nb-select>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label"> Profession </label>
+                                    <input [(ngModel)]="decede.profession" class="form-control" type="string" nbInput fullWidth id="profession" placeholder="Profession">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div *ngIf="(this.decede.causeMort === 'accident')
+            ||(this.decede.causeMort === 'traumatisme') || (this.decede.causeMort === 'homicide') || (this.decede.causeMort === 'suicide')
+          || (this.decede.causeMort === 'brûlure') || (this.decede.causeMort === 'noyade') || (this.decede.causeMort === 'intoxication');then resultt">
+                                </div>
+                                <ng-template #resultt>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Date de survenue</label>
+                                                <input [(ngModel)]="decede.dateServ" class="form-control" type="Date" nbInput fullWidth id="DateServ" placeholder="Date de survenue">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Lieu de survenue</label>
+                                                <nb-select [(ngModel)]="decede.LieuServ" class="type-select " nbSelect fullWidth placeholder="Lieu de servenue">
+                                                    <nb-option *ngFor="let t of lieuList" [value]="t">{{t}}</nb-option>
+                                                </nb-select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Circonstances de servenue</label>
+                                                <input [(ngModel)]="decede.circonServ" class="form-control" type="string" nbInput fullWidth id="circonstances" placeholder="Circonstances de servenue">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <nb-checkbox id="defaultCheck1" [(ngModel)]="decede.obstacle">Obstacle medicolégal</nb-checkbox>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Autopsie</label>
+                                    <nb-select [(ngModel)]="decede.autopsie" class="type-select " nbSelect fullWidth placeholder="Autopsie">
+                                        <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                    </nb-select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="label">Une operation a-t-elle été effectuées lors des 4 dernières semaines ?</label>
+                                    <nb-select [(ngModel)]="decede.operation" class="type-select " nbSelect fullWidth placeholder="Operation">
+                                        <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                    </nb-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div *ngIf="this.decede.autopsie==='Oui';then resultauto"></div>
+                                <ng-template #resultauto>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">les résultats ont-ils été utilisés dans certification</label>
+                                                <nb-select [(ngModel)]="decede.resultatsAutopsie" class="type-select " nbSelect fullWidth placeholder="les resultats ...">
+                                                    <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                                </nb-select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div *ngIf="this.decede.operation==='Oui';then resOp"></div>
+                                <ng-template #resOp>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">La date d'operation</label>
+                                                <input [(ngModel)]="decede.dateOperation" class="form-control" type="Date" nbInput fullWidth id="dateOp" placeholder="La date d'operation">
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Motif d'operation</label>
+                                                <input [(ngModel)]="decede.motifOperation" class="form-control" type="string" nbInput fullWidth id="motif" placeholder="motif d'operation">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+
+            </nb-tab>
+            <nb-tab tabTitle="معلومات عن المتوفى">
+                <nb-card>
+                    <nb-card-body>
+                        <nb-card-body>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">الإسم العائلي</label>
+                                        <input [(ngModel)]="decede.nomAR" class="form-control" type="string" nbInput fullWidth id="NomAR" placeholder="الإسم العائلي">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">الإسم الشخصي</label>
+                                        <input [(ngModel)]="decede.prenomAR" class="form-control" type="string" nbInput fullWidth id="prénomAR" placeholder="لإسم الشخصي">
+
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">الجنسية</label>
+                                        <input [(ngModel)]="decede.nationaliteAR" class="form-control" type="string" nbInput fullWidth id="nationaliteAR" placeholder="الجنسية">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">مكان الوفاة</label>
+                                        <input [(ngModel)]="decede.lieuDecesAR" class="form-control" type="string" nbInput fullWidth id="LieuDecesAr" placeholder="مكان الوفاة">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label">العنوان</label>
+                                        <input [(ngModel)]="decede.adresseAR" class="form-control" type="string" nbInput fullWidth id="adresseAR" placeholder="العنوان">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="label"> إبن أو بنت</label>
+                                        <input [(ngModel)]="decede.filsAR" class="form-control" type="string" nbInput fullWidth id="FilsAR" placeholder="إبن أو بنت">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card-body>
+                </nb-card>
+
+
+
+
+            </nb-tab>
+        </nb-tabset>
+        <div class="text-center">
+            <button *ngIf="isAdmin" class="btn mr-1 " (click)="save()" type="submit" nbButton status="info">Register</button>
+            <!--<button class="btn btn-secondary mr-1" (click)="generatePdf('open')" type="submit" nbButton  status="info" outline>Certificat</button>-->
+        </div>
+    </nb-card-body>
+</nb-card>
+
+<nb-card>
+    <nb-card-header>
+        <div class="row">
+            <div class="col-sm-6">
+                Gestion des décédés
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+
+        <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
