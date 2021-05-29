@@ -469,8 +469,26 @@ export class ApercuDuCorpComponent implements OnInit {
       case 'pdfArabe':
         this.pdff(event.data);
         console.log(event.data);
-        this.toastService.showToast('primary', 'Pdf telechargé', 'Le CERTIFICAT APERCU DU CORPS est ouvert dans un nouvel onglet');
+        this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
+          ' CERTIFICAT \'معاينة الجثة\' va bientôt être téléchargé');
         break;
       case 'delete':
         if (this.isAdmin) {
-          if 
+          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
+            this.service.delete(event.data.id).subscribe(data => {
+              this.source = this.source.filter(item => item.id !== data.id);
+            });
+            this.toastService.toastOfDelete('success');
+          }
+        } else {
+        //  window.alert('Vous n\'avez pas des droits de suppression');
+          this.toastService.toastOfDelete('warning');
+
+        }
+        break;
+    }
+  }
+}
+
+
+

@@ -808,4 +808,18 @@ export class DecedesComponent implements OnInit {
         if (this.isAdmin) {
           if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
             // event.confirm.resolve(event.data);
-            thi
+            this.service.delete(event.data.id).subscribe(data => {
+            });
+            this.toastService.toastOfDelete('success');
+
+          }
+        } else {
+        //  window.alert('Vous n\'avez pas des droits de suppression');
+          this.toastService.toastOfDelete('warning');
+
+        }
+        this.init();
+        break;
+    }
+  }
+}
