@@ -6,6 +6,7 @@ import {CauseService} from '../../../@core/backend/common/services/Cause.service
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -109,8 +110,11 @@ export class ConstationComponent implements OnInit {
     },
   };
   source: Array<Decedes>;
-  constructor(private service: DecedesService, private userservice: UsersService, private serviceCause: CauseService,
-              private datePipe: DatePipe) {
+  constructor(private service: DecedesService,
+              private userservice: UsersService,
+              private serviceCause: CauseService,
+              private datePipe: DatePipe,
+              private toastService: ToastrService) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+0530');
     this.service.getAll().subscribe(data => {
       this.source = data;
@@ -267,8 +271,10 @@ export class ConstationComponent implements OnInit {
         if (this.isAdmin) {
           const documentDefinition = this.getDocumentDefinition(event.data);
           pdfMake.createPdf(documentDefinition).open();
+          this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT CONSTATATION DE DECES est ouvert dans un nouvel onglet');
+
         } else {
-          window.alert('');
+          this.toastService.showToast('warning', 'Alert', 'Vous ne disposez pas des droits de consultation du certificat !!');
         }
         break;
     }

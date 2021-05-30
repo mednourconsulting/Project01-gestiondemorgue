@@ -14,6 +14,7 @@ import {DatePipe, formatDate} from '@angular/common';
 import jsPDF from 'jspdf';
 import {base64Str} from '../base64';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -128,8 +129,12 @@ export class TransfertCorpsComponent implements OnInit {
   today = new Date();
   jstoday = '';
 
-  constructor(private service: CertificatTransfertCorpsService, private serviceM: MedecinsService,
-              private userservice: UsersService, private serviceDecede: DecedesService, private datePipe: DatePipe) {
+  constructor(private service: CertificatTransfertCorpsService,
+              private serviceM: MedecinsService,
+              private userservice: UsersService,
+              private serviceDecede: DecedesService,
+              private datePipe: DatePipe,
+              private toastService: ToastrService) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+1');
     this.serviceDecede.getAll().subscribe(dataa => {
       dataa.forEach(obj => {
@@ -207,6 +212,8 @@ export class TransfertCorpsComponent implements OnInit {
         setTimeout(() => {
           const documentDefinition = this.getDocumentDefinition();
           pdfMake.createPdf(documentDefinition).open();
+          this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT DE TRANSFERT DU CORPS est ouvert dans un nouvel onglet');
+
         }, 500);
         break;
       case 'arabe':
@@ -600,7 +607,6 @@ export class TransfertCorpsComponent implements OnInit {
   }
 
   pdfArabe(list) {
-    console.log('list', list)
     const doc = new jsPDF({
       compress: false,
       orientation: 'p',
@@ -640,9 +646,12 @@ export class TransfertCorpsComponent implements OnInit {
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
         pdfMake.createPdf(documentDefinition).open();
+        this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT TRANSFERT DE CORPS est ouvert dans un nouvel onglet');
         break;
       case 'pdfArabe':
         this.pdfArabe(event.data);
+        this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
+          ' CERTIFICAT \'رخصة الدفن\' va bientôt être téléchargé');
         break;
       case 'delete':
         if (this.isAdmin) {
@@ -650,9 +659,12 @@ export class TransfertCorpsComponent implements OnInit {
             this.service.delete(event.data.id).subscribe(data => {
               this.source = this.source.filter(item => item.id !== data.id);
             });
+            this.toastService.toastOfDelete('success');
+
           }
         } else {
-          window.alert('Vous n\'avez pas des droits de suppression');
+          // window.alert('Vous n\'avez pas des droits de suppression');
+          this.toastService.toastOfDelete('warning');
         }
         break;
     }

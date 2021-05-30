@@ -43,16 +43,17 @@ import {ChartModule} from 'angular2-chartjs';
         IconsModule,
         ChartModule,
     ],
-  exports: [
-    EnchatschartComponent,
-    NaturechartComponent,
-    MychartsComponent,
-    RegionchartComponent,
-    CausechartComponent,
-    SexechartComponent,
-    SexeDecesComponent,
-    SelonCauseComponent,
-    NatureDecesComponent,
-  ],
+    exports: [
+        EnchatschartComponent,
+        NaturechartComponent,
+        MychartsComponent,
+        RegionchartComponent,
+        CausechartComponent,
+        SexechartComponent,
+        SexeDecesComponent,
+        SelonCauseComponent,
+        NatureDecesComponent,
+        DecesEnfantsComponent,
+    ],
 })
 export class StatistiquesModule { }

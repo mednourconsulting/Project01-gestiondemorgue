@@ -3,7 +3,7 @@
 <nb-card>
   <nb-card-header>
     <div class="row">
-      <div class="col-sm-12"> Certificat Enterrement</div>
+      <div class="col-sm-12">Ajout d'une certificat d'enterrement</div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -36,9 +36,11 @@
         </div>
       </div>
     </div>
-    <div class="text-center">
+    <div class="float-right">
       <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Register</button>
+      <!--
       <button class="btn btn-secondary" (click)="generatePdf('open')" type="submit" nbButton  status="danger" outline>Certificat</button>
+      -->
     </div>
   </nb-card-body>
 </nb-card>
@@ -46,9 +48,7 @@
 <nb-card>
   <nb-card-header>
     <div class="row">
-      <div class="col-sm-6">
-        Certificat Enterrement
-      </div>
+      <div class="col-sm-6">Liste des certificats d'enterrement </div>
     </div>
   </nb-card-header>
   <nb-card-body>
