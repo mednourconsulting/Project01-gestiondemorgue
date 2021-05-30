@@ -14,8 +14,8 @@ import { takeWhile } from 'rxjs/operators';
   styleUrls: ['./auth.component.scss'],
   template: `
     <nb-layout style="background-color: #206ea1">
-        <nb-layout-column style="background-color: #206ea1">
-        </nb-layout-column>
+      <nb-layout-column style="background-color: #206ea1">
+      </nb-layout-column>
       <nb-layout-column style="background-color: #206ea1">
         <nb-card>
           <nb-card-header>
@@ -32,8 +32,8 @@ import { takeWhile } from 'rxjs/operators';
           </nb-card-body>
         </nb-card>
       </nb-layout-column>
-        <nb-layout-column style="background-color: #206ea1">
-        </nb-layout-column>
+      <nb-layout-column style="background-color: #206ea1">
+      </nb-layout-column>
     </nb-layout>
   `,
 })

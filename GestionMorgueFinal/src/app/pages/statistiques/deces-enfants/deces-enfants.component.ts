@@ -10,23 +10,17 @@ import {DecedesService} from '../../../@core/backend/common/services/Decedes.ser
   providers: [DecedesService],
 })
 export class DecesEnfantsComponent implements OnInit {
-  List = [];
-  list = [];
-  h: number;
-  f: number;
-  i: number;
-  annee: string;
-  public currentDate = (new Date).getFullYear().toString();
-  constructor(private theme: NbThemeService, private serviceDecede: DecedesService) {
-  }
+  public List = [];
+  public list = [];
+  public h: number;
+  public f: number;
+  public i: number;
+  public annee: string;
   public chartType: string = 'pie';
-
   public chartDatasets: Array<any> = [
     { data: [0, 0, 0], label: 'My First dataset' },
   ];
-
   public chartLabels: Array<any> = ['Garçon', 'Fille', 'Indéterminé'];
-
   public chartColors: Array<any> = [
     {
       backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'],
@@ -34,10 +28,15 @@ export class DecesEnfantsComponent implements OnInit {
       borderWidth: 2,
     },
   ];
-
   public chartOptions: any = {
     responsive: true,
   };
+  public currentDate = (new Date).getFullYear().toString();
+
+
+  constructor(private theme: NbThemeService, private serviceDecede: DecedesService) {
+  }
+
 
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
@@ -50,6 +49,7 @@ export class DecesEnfantsComponent implements OnInit {
 
   get(annee: string) {
     this.h = this.f = this.i = 0;
+    this.currentDate = annee;
     this.list.forEach(obj => {
       if (obj.dateDeces.toString().includes(annee)) {
       const  age = this.getAgeParJour(obj.dateNaissance, obj.dateDeces);
@@ -63,10 +63,12 @@ export class DecesEnfantsComponent implements OnInit {
           if (obj.sexe === 'Indéterminé') {
             this.i = this.i + 1;
           }
-          this.chartDatasets = [this.f, this.h, this.i];
+
         }
+
       }
     });
+    this.chartDatasets = [this.f, this.h, this.i];
   }
 
   ngOnInit(): void {

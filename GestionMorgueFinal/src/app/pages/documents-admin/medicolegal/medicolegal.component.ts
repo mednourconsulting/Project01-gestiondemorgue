@@ -12,7 +12,7 @@ import jsPDF from 'jspdf';
 import { base64Str } from '../../certificat/base64.js';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {Router} from "@angular/router";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -103,10 +103,10 @@ export class MedicolegalComponent implements OnInit {
 
   constructor(private service: CertificatMedicoLegalService,
               private userservice: UsersService,
+              private router: Router,
               private serviceDecede: DecedesService,
               private serviceMeddcin: MedecinsService,
-              private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private datePipe: DatePipe) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-Us', '+1');
     this.serviceDecede.getAll().subscribe( dataa => {
       dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id}); });
@@ -132,7 +132,18 @@ export class MedicolegalComponent implements OnInit {
     this.Medicolegal = new CertificatMedicoLegal();
   }
   defunt: number;
-
+  save() {
+    this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
+      this.Medicolegal.medecin = obj;
+      this.serviceDecede.getById(this.defunt).subscribe(objj => {
+        this.Medicolegal.defunt = objj;
+        this.service.create(this.Medicolegal).subscribe(data => {
+          this.init();
+        }); }); });
+    this.init();
+    window.alert('Les données ont été ajoutées avec succès à la base de données');
+    this.init();
+  }
   isAdmin: boolean;
   createConfirm(event) {
     if (this.isAdmin) {
@@ -165,18 +176,14 @@ export class MedicolegalComponent implements OnInit {
         setTimeout(() => {
           const documentDefinition = this.getDocumentDefinition();
           pdfMake.createPdf(documentDefinition).open();
-          this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT' +
-            ' MEDICAL est ouvert dans un nouvel onglet');
         }, 500);
         break;
       case 'arabe':
         setTimeout(() => { this.pdf(); }, 500);
-        this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
-          ' CERTIFICAT \'شهادة طبية\' va bientôt être téléchargé');
         break;
     }
   }
-  private getDocumentDefinition1(list) {
+  getDocumentDefinition1(list) {
     return {
       content: [
         {
@@ -280,8 +287,7 @@ export class MedicolegalComponent implements OnInit {
     };
   }
 
-  private getDocumentDefinition() {
-
+  getDocumentDefinition() {
     // sessionStorage.setItem('resume', JSON.stringify());
     return {
       content: [
@@ -498,32 +504,17 @@ export class MedicolegalComponent implements OnInit {
     doc.text('إمضاء ', 100, 420);
     doc.save('شهادة طبية' + '.pdf');
   }
-
-  save() {
-    if (this.isAdmin) {
-
-      this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
-        this.Medicolegal.medecin = obj;
-        this.serviceDecede.getById(this.defunt).subscribe(objj => {
-          this.Medicolegal.defunt = objj;
-          this.service.create(this.Medicolegal).subscribe(data => {
-            this.source.push(data);
-            this.source = this.source.map(e => e);
-            this.toastService.toastOfSave('success');
-          }); }); });
-    } else this.toastService.toastOfSave('warning');
-  }
   onEditConfirm(event) {
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
-        this.toastService.toastOfEdit('success');
-        this.source.map(e => e);
+        this.init();
+        window.alert('Les données ont été modifiées avec succès ');
       });
     } else {
-      this.toastService.toastOfEdit('warning');
+      window.alert('vous n\'avez pas des droits de modification');
     }
   }
 
@@ -531,26 +522,30 @@ export class MedicolegalComponent implements OnInit {
     switch ( event.action) {
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
-        this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT MEDICAL est ouvert dans un nouvel onglet');
         pdfMake.createPdf(documentDefinition).open();
         break;
       case 'pdfArabe':
-        this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
-          ' CERTIFICAT \'شهادة طبية\' va bientôt être téléchargé');
         this.pdff(event.data);
         break;
       case 'delete':
         if (this.isAdmin) {
-          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
+          if (window.confirm('Etes-vous sûr de vouloir supprimer?')) {
+          // event.confirm.resolve(event.data);
             this.service.delete(event.data.id).subscribe(data => {
-              this.source = this.source.filter(item => item.id !== data.id);
             });
-            this.toastService.toastOfDelete('success');
           }
         } else {
-          this.toastService.toastOfDelete('warning');
+          window.alert('vous n\'avez pas des droits de suppression');
         }
+        this.init();
         break;
     }
+  }
+
+  passToMedecin() {
+    this.router.navigateByUrl('/pages/bulletins-dm/medcins');
+  }
+  passToDecede() {
+    this.router.navigateByUrl('/pages/bulletins-dm/decedes');
   }
 }

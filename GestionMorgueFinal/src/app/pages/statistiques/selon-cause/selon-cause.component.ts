@@ -1,111 +1,112 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {NbThemeService} from '@nebular/theme';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
-import {CauseService} from '../../../@core/backend/common/services/Cause.service';
-import {Cause} from '../../../@core/backend/common/model/Cause';
-
+import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
 
 @Component({
   selector: 'ngx-selon-cause',
   templateUrl: './selon-cause.component.html',
   styleUrls: ['./selon-cause.component.scss'],
-  providers: [DecedesService , CauseService ],
+  providers: [DecedesService],
 })
-export class SelonCauseComponent implements OnInit {
-  public causes: Array<Cause>;
-  public decedesList = [];
-  public chartLabels = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  annee: string;
-  List = [];
-  public currentDate = (new Date).getFullYear().toString();
-
-  A: number = 0;
+export class SelonCauseComponent {
+  public TA: number; A: number; M: number; T: number; F: number; L: number; C: number; O: number; ML: number;
   public chartType: string = 'bar';
+  public chartDatasets: Array<any> = [ { data: [0, 0, 0, 0, 0, 0, 0, 0, 0], label: '' }];
+  public annee: number;
+  currentDate = (new Date).getFullYear().toString();
+  public chartLabels: Array<any> =
+    ['Accident', 'Homicide', 'Suicide', 'Noyade',
+      'Brûlure', 'Intoxication', 'Traumatisme', 'Inconnu', 'Maladie' , 'Autres'];
+  private List: any [] = [];
+  private others: any;
+  private ListCurrentDate: any[] = [];
 
-
-  private descriptionList = [];
-
-  constructor(private theme: NbThemeService, private serviceD: DecedesService, private causeService: CauseService) {
-  }
-  ngOnInit() {
-    this.causeService.getAll().subscribe(data => {
-      this.causes = data.map(e => e);
-     // this.chartLabels = this.causes.map(e => e.description);
-    });
-    this.serviceD.getAll().subscribe(data => {
-      data.forEach(e => {
-        this.decedesList.push([e.dateDeces , e.causeMort]);
+  constructor(private theme: NbThemeService, private serviceD: DecedesService) {
+    this.serviceD.getAll().subscribe(data1 => {
+      data1.forEach(obj => {
+        if (obj.dateDeces.toString().includes(this.currentDate)) {
+          this.ListCurrentDate.push({dt: obj.dateDeces, cause: obj.causeMort});
+        }
       });
-      this.get(this.currentDate);
-      console.log('list decedes from on init', this.decedesList);
+      this.condestions (this.ListCurrentDate);
+      this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O, this.ML , this.others];
     });
   }
-  public chartColors: Array<any> = [
-    {
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(173, 79, 9, 0.6)',
-        'rgba(75, 192, 192, 0.6)',
-        'rgba(153, 102, 255, 0.6)',
-        'rgba(255, 159, 64, 0.6)',
-        'rgba(223, 109, 20, 0.6)',
-        'rgba(16, 52, 166, 0.6)',
-        'rgba(193, 191, 177, 0.6)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(173, 79, 9, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(223, 109, 20, 0.2)',
-        'rgba(16, 52, 166, 0.2)',
-        'rgba(193, 191, 177, 0.2)',
-      ],
-      borderWidth: 2,
-    },
-  ];
 
-  public chartOptions: any = {
-    responsive: true,
-  };
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
-  get(annee: string) {
-    this.decedesList.forEach(obj => {
-     console.log(obj);
-     if (obj[0].includes(annee)) {
-       this.descriptionList.push(obj[1]);
-     }
-  });
-  /*  const counts = {};
-    this.descriptionList.forEach(function(x) { counts[x] = (counts[x] || 0) + 1;  console.log('count', x); });*/
-    console.log(this.descriptionList);
-    console.log(this.descriptionList.length);
-   // console.log('the count' + counts);
-    /*this.descriptionList.forEach(e => {
-      console.log(e);
-    });*/
- /* let s = 0;
-    for (let i = 0; i < this.descriptionList.length; i++) {
-      for (let j = 1; j < this.descriptionList.length; j++) {
-        if (this.descriptionList[i] === this.descriptionList[j] ) {
-          s++;
-          console.log('yes' + i + j);
+
+  get(annee: any) {
+    this.ListCurrentDate = [];
+    this.currentDate = annee;
+    this.serviceD.getAll().subscribe(data1 => {
+      data1.forEach(obj => {
+        if (obj.dateDeces.toString().includes(annee)) {
+          this.ListCurrentDate.push({dt: obj.dateDeces, cause: obj.causeMort});
+        }
+      });
+      console.log(this.ListCurrentDate);
+    this.condestions (this.ListCurrentDate);
+      this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O, this.ML , this.others];
+    });
+    }
+
+
+  // we separate the cause nature and cause non natural list is a list of json with two atrubite date and cause
+  chartColors: any;
+  chartOptions: any;
+  condestions (list: any[]) {
+    console.log(list);
+    this.TA = 0;
+    this.A = 0;
+    this.M = 0;
+    this.T = 0;
+    this.F = 0;
+    this.L = 0;
+    this.C = 0;
+    this.ML = 0;
+    this.ML = 0;
+    this.O = 0;
+    this.others = 0;
+    list.forEach( data => {
+      if ( data.cause === 'accident') {
+        this.TA = this.TA + 1;
+      } else {
+        if ( data.cause === 'homicide') {
+          this.M = this.M + 1;
+        } else {
+          if ( data.cause === 'suicide') {
+            this.T = this.T + 1;
+          } else {
+            if ( data.cause === 'noyade') {
+              this.F = this.F + 1;
+            } else {
+              if ( data.cause === 'brûlure') {
+                this.L = this.L + 1;
+              } else {
+                if ( data.cause === 'intoxication') {
+                  this.A = this.A + 1;
+                } else {
+                  if ( data.cause === 'traumatisme') {
+                    this.C = this.C + 1;
+                  } else {
+                    if ( data.cause === 'Inconnu') {
+                      this.O = this.O + 1;
+                    } else {
+                      if (data.cause === 'Maladie') {
+                        this.ML = this.ML + 1;
+                      } else {
+                        this.others = this.others + 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
-
-    }*/
-    const uniqueCount = ['a', 'b', 'c', 'd', 'd', 'e', 'a', 'b', 'c', 'f', 'g', 'h', 'h', 'h', 'e', 'a'];
-    const count = [];
-    uniqueCount.forEach(function(i) { count[i] = (count[i] || 0) + 1; });
-    this.chartDatasets[0]  = count;
-    console.log('dataSets', this.chartDatasets[0] );
-    console.log('count', count);
-  }
-  public chartDatasets: Array<any> = [
-    { data: [], label: 'Nombre de cas par cause'},
-  ];
+    });
+    }
 }

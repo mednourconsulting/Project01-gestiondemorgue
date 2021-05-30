@@ -84,6 +84,7 @@ export class NatureDecesComponent implements OnInit {
 
     get(annee: string) {
     this.initialData();
+    this.currentDate = annee;
     this.list.forEach (  obj => {
         if (obj.natureMort === 'Mort naturelle') {
         if (obj.dateDeces.toString().includes(annee + '-01')) {

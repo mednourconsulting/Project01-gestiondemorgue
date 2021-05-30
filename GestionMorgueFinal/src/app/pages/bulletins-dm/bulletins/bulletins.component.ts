@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Bulletins} from '../../../@core/backend/common/model/Bulletins';
 import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
+import {LocalDataSource} from 'ng2-smart-table';
+import {DecedesComponent} from '../decedes/decedes.component';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {SmartTableData} from '../../../@core/interfaces/common/smart-table';
@@ -12,8 +14,10 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {formatDate} from '@angular/common';
 import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { Base64 } from 'js-base64';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-bulletins',
@@ -143,9 +147,14 @@ export class BulletinsComponent implements OnInit {
   NomDecede = [];
   NomDMedcin = [];
 
-  constructor(private service: BulletinsService, private serviceD: DecedesService, private serviceM: MedecinsService,
-              private serviceS: SmartTableData, private userservice: UsersService,
-              private serviceC: CauseService, private datePipe: DatePipe,
+  constructor(private service: BulletinsService,
+              private serviceD: DecedesService,
+              private serviceM: MedecinsService,
+              private serviceS: SmartTableData,
+              private userservice: UsersService,
+              private serviceC: CauseService,
+              private datePipe: DatePipe,
+              private router: Router,
               private toastService: ToastrService) {
     this.serviceD.getAll().subscribe( data => {
       data.forEach (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
@@ -744,7 +753,7 @@ export class BulletinsComponent implements OnInit {
                 },
                 {
                   border: [false, false, true, false],
-                  text:this.checkIfNullOrUndefind(obj.typeBulletin) ,
+                  text: this.checkIfNullOrUndefind(obj.typeBulletin) ,
                 },
               ],
               [
@@ -885,6 +894,10 @@ export class BulletinsComponent implements OnInit {
     };
   }
 
+  jstoday = '';
+  MedecinHumain: Medecins;
+  c: string;
+  i = 0;
   add() {
       this.serviceD.getById(this.numRgtr).subscribe(obj => {
         this.DecedeHumain = obj;
@@ -914,6 +927,13 @@ export class BulletinsComponent implements OnInit {
         break;
     }
   } */
+  passToMedecin() {
+    this.router.navigateByUrl('/pages/bulletins-dm/medcins');
+  }
+
+  passToDecede() {
+    this.router.navigateByUrl('/pages/bulletins-dm/decedes');
+  }
 
   onCustomConfirm(event) {
     switch ( event.action) {
