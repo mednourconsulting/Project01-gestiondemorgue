@@ -36,7 +36,11 @@ public class BulletinsController {
     }
 
     @PutMapping({"/update"})
-    public ResponseEntity<Bulletins> update(@RequestBody Bulletins bulletins) {
+    public ResponseEntity<Bulletins> update(@RequestBody Bulletins bulletinsId) {
+        Bulletins bulletins = bulletinsId;
+
+        bulletins.setMedecin(bulletinsId.getMedecin());
+        bulletins.setDecede(bulletinsId.getDecede());
         return ResponseEntity.ok(this.bulletinsRepository.save(bulletins));
     }
 

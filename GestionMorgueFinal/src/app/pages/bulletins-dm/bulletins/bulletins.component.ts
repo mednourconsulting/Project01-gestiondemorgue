@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Bulletins} from '../../../@core/backend/common/model/Bulletins';
 import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
 import {LocalDataSource} from 'ng2-smart-table';
@@ -26,7 +26,7 @@ import {Router} from "@angular/router";
   providers: [ BulletinsService, DecedesService, MedecinsService, UsersService, CauseService],
 })
 
-export class BulletinsComponent implements OnInit {
+export class BulletinsComponent implements OnInit, OnChanges {
   compostage: string;
   medcinid: number;
   constation: string;
@@ -63,16 +63,21 @@ export class BulletinsComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
+      position: 'left',
       custom: [
         {
           name: 'bulletin',
           title: '<i class="fas fa-file-pdf"></i>',
         },
         {
+          name: 'edit',
+          title: '<i class="nb-edit"></i>',
+        },
+        {
           name: 'delete',
-          title: '<i class="fa fa-trash"></i>',
+          title: '<i class="nb-trash"></i>',
         },
       ],
     },
@@ -143,7 +148,7 @@ export class BulletinsComponent implements OnInit {
   source: Array<Bulletins>;
   numRgtr: number;
   isAdmin: boolean;
-  DecedeHumain: Decedes;
+  DecedeHumain: Decedes = new Decedes();
   NomDecede = [];
   NomDMedcin = [];
 
@@ -183,31 +188,55 @@ export class BulletinsComponent implements OnInit {
   save() {
     if ( this.isAdmin) {
       if (this.Bulletins !== null) {
-      this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-        this.Bulletins.medecin = obj1;
-        this.serviceD.getById(this.numRgtr).subscribe(objj => {
-          this.Bulletins.decede = objj;
-          this.service.create(this.Bulletins).subscribe(obj => {
-            this.source.push(obj);
-            this.source = this.source.map(e => e);
+        if (this.Bulletins.id === null) {
+          this.serviceM.getById(this.medcinid).subscribe(obj1 => {
+            this.Bulletins.medecin = obj1;
+            this.serviceD.getById(this.numRgtr).subscribe(objj => {
+              this.Bulletins.decede = objj;
+              this.service.create(this.Bulletins).subscribe(obj => {
+                this.source.push(obj);
+                this.source = this.source.map(e => e);
+              });
+            });
           });
-        });
-      });
-      this.toastService.toastOfSave('success');
-      } else this.toastService.showToast('danger', 'Erreur !!', 'Remplir tous les champs');
+          this.toastService.toastOfSave('success');
+        } else {
+          console.log(this.medcinid);
+          console.log(this.numRgtr);
+          this.serviceM.getById(this.medcinid).subscribe(obj1 => {
+            this.Bulletins.medecin = obj1;
+            this.serviceD.getById(this.numRgtr).subscribe(objj => {
+              this.Bulletins.decede = objj;
+              this.service.update(this.Bulletins).subscribe(obj => {
+                console.log(this.Bulletins);
+                // this.source.push(obj);
+                this.reset();
+                this.source = this.source.map(e => e);
+              });
+            });
+          });
+          this.toastService.toastOfSave('success');
+      } } else this.toastService.showToast('danger', 'Erreur !!', 'Remplir tous les champs');
     } else this.toastService.toastOfSave('warning');
 
   }
 
   private reset() {
     this.Bulletins = new Bulletins();
+    this.DecedeHumain = null;
+    this.MedecinHumain = null;
+    this.numRgtr = null;
+    this.medcinid = null;
   }
   onEditConfirm(event) {
+    console.log(event.data);
+    this.settings.columns.medecin = event.data.medecin;
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
+       // window.alert('Les données ont été modifiées avec succès');
         this.toastService.toastOfEdit('success');
 
       });
@@ -891,6 +920,7 @@ export class BulletinsComponent implements OnInit {
   c: string;
   i = 0;
   add() {
+
       this.serviceD.getById(this.numRgtr).subscribe(obj => {
         this.DecedeHumain = obj;
         this.jstoday = formatDate(this.DecedeHumain.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530');
@@ -929,6 +959,16 @@ export class BulletinsComponent implements OnInit {
 
   onCustomConfirm(event) {
     switch ( event.action) {
+      case 'edit':
+        console.log(this.DecedeHumain)
+        console.log(event.data)
+        this.Bulletins = event.data;
+        this.DecedeHumain = event.data.decede;
+        this.MedecinHumain = event.data.medecin;
+        this.numRgtr = event.data.decede.id;
+        this.medcinid = event.data.medecin.id;
+        this.Bulletins.typeBulletin = event.data.typeBulletin;
+        break;
       case 'bulletin':
 
         const documentDefinition = this.genererBulletin(event.data);
@@ -952,4 +992,12 @@ export class BulletinsComponent implements OnInit {
     }
   }
 
+
+  onChange(medcinid: number) {
+    console.log('medcinid' + medcinid);
+    this.serviceM.getById(this.medcinid).subscribe(obj1 => {
+      this.Bulletins.medecin = obj1;
+      this.MedecinHumain = obj1;
+    });
+  }
 }

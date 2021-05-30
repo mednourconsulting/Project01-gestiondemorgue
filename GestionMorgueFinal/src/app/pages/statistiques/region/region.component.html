@@ -26,7 +26,7 @@
       <div class="col-2">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1" (click)="get(annee)">
+            <span class="input-group-text" id="basic-addon1" *ngIf="name.valid"  (click)="get(annee)">
               <i class="fa fa-chart-bar" ></i></span>
             <input type="text"
                    id="name" name="name" class="form-control"

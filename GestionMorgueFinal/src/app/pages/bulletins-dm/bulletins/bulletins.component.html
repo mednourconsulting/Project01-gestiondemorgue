@@ -29,8 +29,16 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
-          <input  [(ngModel)]="Bulletins.declaration" class="form-control"  type="Date"  fullWidth
-                  placeholder="Date de déclaration" status="info">
+          <input
+          type="date"
+          status="info"
+          fullWidth
+          class="form-control"
+          placeholder="Date de déclaration"
+          required="true"
+          [ngModel] ="Bulletins.declaration| date:'yyyy-MM-dd'"
+          (ngModelChange)="Bulletins.declaration = $event"
+          [ngModelOptions]="{standalone: true}"/>
         </div>
       </div>
 
@@ -122,6 +130,8 @@
           <label  class="label">Décédé</label><br>
           <nb-select  [(ngModel)]="numRgtr" class="type-select "  nbSelect fullWidth
                       placeholder="registration number" status="info">
+            <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
+
             <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
         </div>
@@ -132,9 +142,9 @@
         <div class="form-group">
           <label  class="label">Médecin</label><br>
           <nb-select  [(ngModel)]="medcinid" class="type-select "  nbSelect fullWidth
-                      placeholder="registration number" status="info">
-            <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
-          </nb-select>
+                      placeholder="registration number" status="info" (change)="onChange($event.target.value)">
+            <nb-option class="url" *ngIf="NomDMedcin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
+            <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
         </div>
       </div>
       </div>
@@ -283,7 +293,7 @@
               <div class="row">
 
                 <div class="col-sm-6">
-                  <label  class="label">S'agit-il d'un mort né</label>>
+                  <label  class="label">S'agit-il d'un mort né ?</label>
                   <output status="info"[value]="this.DecedeHumain.mortNe" class="form-control" type="text" fullWid >
                   </output>
                 </div>
@@ -480,13 +490,19 @@
   </nb-card-header>
   <nb-card-body>
 
-    <ng2-smart-table
+    <!--ng2-smart-table
       [settings]="settings"
       [source]="source"
       (deleteConfirm)="onDeleteConfirm($event)"
-      (editConfirm)="onEditConfirm($event)"
-      (custom)="onCustomConfirm($event)">
-    </ng2-smart-table>
+      (edit)="onEditConfirm($event)">
+    </ng2-smart-table-->
+
+    <ng2-smart-table
+  [settings]="settings"
+  [source]="source"
+  (custom)="onCustomConfirm($event)"
+  >
+  </ng2-smart-table>
   </nb-card-body>
 </nb-card>
 
