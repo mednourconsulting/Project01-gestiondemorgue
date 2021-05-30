@@ -114,10 +114,12 @@
         </div>
       </div>
     </div>
-    <div class="text-center">
-      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Register</button>
+    <div class="float-right">
+      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Enregistrer</button>
+      <!--
       <button class="btn btn-secondary mr-1" (click)="generatePdf('francais')" type="submit" nbButton  status="danger" outline> Certificat du transfert</button>
       <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton  status="danger" outline> رخصة الدفن  </button>
+      -->
     </div>
   </nb-card-body>
 </nb-card>

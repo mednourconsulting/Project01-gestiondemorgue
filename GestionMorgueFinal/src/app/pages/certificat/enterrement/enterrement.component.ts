@@ -8,6 +8,7 @@ import {MedecinsService} from '../../../@core/backend/common/services/Medecins.s
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -75,8 +76,12 @@ export class EnterrementComponent implements OnInit {
   source: Array<CertificatEnterrement>;
   NomDecede = [];
   DefuntId: number;
-  constructor(private service: CertificatEnterrementService, private userservice: UsersService,
-              private serviceDecede: DecedesService, private serviceM: MedecinsService, private datePipe: DatePipe) {
+  constructor(private service: CertificatEnterrementService,
+              private userservice: UsersService,
+              private serviceDecede: DecedesService,
+              private serviceM: MedecinsService,
+              private datePipe: DatePipe,
+              private toastService: ToastrService) {
     this.serviceDecede.getAll().subscribe( dataa => {
       dataa.forEach  (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
     });
@@ -102,7 +107,7 @@ export class EnterrementComponent implements OnInit {
       this.source.push(data);
       this.source = this.source.map(item => item);
     });
-  //  window.alert('Les données ont été ajoutées avec succès à la base de données');
+    this.toastService.toastOfSave('success');
   }
 
   private reset() {
@@ -115,10 +120,12 @@ export class EnterrementComponent implements OnInit {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData);
-        window.alert('Les données ont été modifiées avec succès');
+        this.toastService.toastOfEdit('success');
+
       });
     } else {
-      window.alert('vous n\'avez pas des droits de modification');
+      this.toastService.toastOfEdit('warning');
+
     }
   }
   generatePdf(action = 'open') {
@@ -281,6 +288,8 @@ export class EnterrementComponent implements OnInit {
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
         pdfMake.createPdf(documentDefinition).open();
+        this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT D\'ENTEREMMENT est ouvert dans un nouvel onglet');
+
         break;
       case 'delete':
         if (this.isAdmin) {
@@ -288,9 +297,11 @@ export class EnterrementComponent implements OnInit {
             this.service.delete(event.data.id).subscribe(data => {
               this.source = this.source.filter(e => e.id !== data.id);
             });
+            this.toastService.toastOfDelete('success');
           }
         } else {
-          window.alert('Vous n\'avez pas des droits de suppression');
+          this.toastService.toastOfDelete('warning');
+
         }
         break;
     }

@@ -1,7 +1,7 @@
 <nb-card>
     <nb-card-header>
         <div class="row">
-            <div class="col-sm-6">Ajouter un certificat médico_Légal</div>
+            <div class="col-sm-6">Ajouter un certificat médico-légal</div>
         </div>
     </nb-card-header>
     <nb-card-body>
@@ -59,10 +59,11 @@
             </div>
 
         </div>
-        <div class="text-center">
+        <div class="float-right">
             <button *ngIf="isAdmin" class="btn mr-1 " (click)="save()" type="submit" nbButton status="success">Enregistrer</button>
-            <button class="btn btn-secondary mr-1" (click)="generatePdf('Francais')" type="submit" nbButton status="success" outline>Certificat</button>
-            <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton status="success" outline>شهادة</button>
+          <!--   <button class="btn btn-secondary mr-1" (click)="generatePdf('Francais')" type="submit" nbButton status="success" outline>Certificat</button>
+             <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton status="success" outline>شهادة</button>
+           -->
         </div>
     </nb-card-body>
 
@@ -72,7 +73,7 @@
     <nb-card-header>
         <div class="row">
             <div class="col-sm-6">
-                Certificat médico_Légal
+                Liste des certificats médico-légal
             </div>
         </div>
     </nb-card-header>

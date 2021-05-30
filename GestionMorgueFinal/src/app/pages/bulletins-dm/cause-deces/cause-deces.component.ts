@@ -78,28 +78,21 @@ export class CauseDecesComponent implements OnInit {
     this.Cause = new Cause();
   }
   save() {
-    this.service.getAll().subscribe(data => {
         this.service.create(this.Cause).subscribe(obj => {
-          this.init();
+          this.source.push(obj);
+          this.source = this.source.map(item => item);
         });
-        this.reset();
-        this.init();
-       // window.alert('Les données ont été ajoutées avec succès à la base de données');
         this.toastService.toastOfSave('success');
-    });
+      this.reset();
   }
   onEditConfirm(event) {
     if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
-        this.init();
-       // window.alert('Les données ont été modifiées avec succès');
         this.toastService.toastOfEdit('success');
-      });
-    } else {
-      // window.alert('vous n\'avez pas des droits de modification');
+        this.source.map(e => e);
+      } else {
       this.toastService.toastOfEdit('warning');
     }
   }
@@ -109,13 +102,12 @@ export class CauseDecesComponent implements OnInit {
         event.confirm.resolve(event.data);
         this.toastService.toastOfDelete('success');
         this.service.delete(event.data.id).subscribe(data => {
-          this.init();
+          this.source = this.source.filter(item => item.id !== data.id);
         });
       } else {
         event.confirm.reject(event.data);
       }
     } else {
-    //  window.alert('Vous n\'avez pas des droits de suppression');
       this.toastService.toastOfDelete('warning');
 
     }

@@ -141,7 +141,6 @@ export class ApercuDuCorpComponent implements OnInit {
         });
       });
     });
-   // window.alert('Les données ont été ajoutées avec succès à la base de données');
     this.toastService.toastOfSave('success');
   } else  this.toastService.toastOfSave('warning');
 
@@ -156,11 +155,9 @@ export class ApercuDuCorpComponent implements OnInit {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
-     //   window.alert('Les données ont été modifiées avec succès');
         this.toastService.toastOfEdit('success');
       });
     } else {
-     // window.alert('Vous n\'avez pas des droits de modification');
       this.toastService.toastOfEdit('warning');
 
     }

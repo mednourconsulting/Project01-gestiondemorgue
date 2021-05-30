@@ -12,6 +12,7 @@ import jsPDF from 'jspdf';
 import { base64Str } from '../../certificat/base64.js';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -104,7 +105,8 @@ export class MedicolegalComponent implements OnInit {
               private userservice: UsersService,
               private serviceDecede: DecedesService,
               private serviceMeddcin: MedecinsService,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private toastService: ToastrService) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-Us', '+1');
     this.serviceDecede.getAll().subscribe( dataa => {
       dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id}); });
@@ -130,18 +132,7 @@ export class MedicolegalComponent implements OnInit {
     this.Medicolegal = new CertificatMedicoLegal();
   }
   defunt: number;
-  save() {
-    this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
-      this.Medicolegal.medecin = obj;
-      this.serviceDecede.getById(this.defunt).subscribe(objj => {
-        this.Medicolegal.defunt = objj;
-        this.service.create(this.Medicolegal).subscribe(data => {
-          this.init();
-        }); }); });
-    this.init();
-    window.alert('Les données ont été ajoutées avec succès à la base de données');
-    this.init();
-  }
+
   isAdmin: boolean;
   createConfirm(event) {
     if (this.isAdmin) {
@@ -174,10 +165,14 @@ export class MedicolegalComponent implements OnInit {
         setTimeout(() => {
           const documentDefinition = this.getDocumentDefinition();
           pdfMake.createPdf(documentDefinition).open();
+          this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT' +
+            ' MEDICAL est ouvert dans un nouvel onglet');
         }, 500);
         break;
       case 'arabe':
         setTimeout(() => { this.pdf(); }, 500);
+        this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
+          ' CERTIFICAT \'شهادة طبية\' va bientôt être téléchargé');
         break;
     }
   }
@@ -503,17 +498,32 @@ export class MedicolegalComponent implements OnInit {
     doc.text('إمضاء ', 100, 420);
     doc.save('شهادة طبية' + '.pdf');
   }
+
+  save() {
+    if (this.isAdmin) {
+
+      this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
+        this.Medicolegal.medecin = obj;
+        this.serviceDecede.getById(this.defunt).subscribe(objj => {
+          this.Medicolegal.defunt = objj;
+          this.service.create(this.Medicolegal).subscribe(data => {
+            this.source.push(data);
+            this.source = this.source.map(e => e);
+            this.toastService.toastOfSave('success');
+          }); }); });
+    } else this.toastService.toastOfSave('warning');
+  }
   onEditConfirm(event) {
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
-        this.init();
-        window.alert('Les données ont été modifiées avec succès ');
+        this.toastService.toastOfEdit('success');
+        this.source.map(e => e);
       });
     } else {
-      window.alert('vous n\'avez pas des droits de modification');
+      this.toastService.toastOfEdit('warning');
     }
   }
 
@@ -521,22 +531,25 @@ export class MedicolegalComponent implements OnInit {
     switch ( event.action) {
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
+        this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT MEDICAL est ouvert dans un nouvel onglet');
         pdfMake.createPdf(documentDefinition).open();
         break;
       case 'pdfArabe':
+        this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
+          ' CERTIFICAT \'شهادة طبية\' va bientôt être téléchargé');
         this.pdff(event.data);
         break;
       case 'delete':
         if (this.isAdmin) {
-          if (window.confirm('Etes-vous sûr de vouloir supprimer?')) {
-          // event.confirm.resolve(event.data);
+          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
             this.service.delete(event.data.id).subscribe(data => {
+              this.source = this.source.filter(item => item.id !== data.id);
             });
+            this.toastService.toastOfDelete('success');
           }
         } else {
-          window.alert('vous n\'avez pas des droits de suppression');
+          this.toastService.toastOfDelete('warning');
         }
-        this.init();
         break;
     }
   }

@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Bulletins} from '../../../@core/backend/common/model/Bulletins';
 import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
-import {LocalDataSource} from 'ng2-smart-table';
-import {DecedesComponent} from '../decedes/decedes.component';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {SmartTableData} from '../../../@core/interfaces/common/smart-table';
@@ -14,7 +12,6 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {formatDate} from '@angular/common';
 import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import { Base64 } from 'js-base64';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 
@@ -165,19 +162,22 @@ export class BulletinsComponent implements OnInit {
 
 
   save() {
-    this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-      this.Bulletins.medecin = obj1;
-      this.serviceD.getById(this.numRgtr).subscribe(objj => {
-        this.Bulletins.decede = objj;
-    this.service.create(this.Bulletins).subscribe(obj => {
-      this.init();
-    });
+    if ( this.isAdmin) {
+      if (this.Bulletins !== null) {
+      this.serviceM.getById(this.medcinid).subscribe(obj1 => {
+        this.Bulletins.medecin = obj1;
+        this.serviceD.getById(this.numRgtr).subscribe(objj => {
+          this.Bulletins.decede = objj;
+          this.service.create(this.Bulletins).subscribe(obj => {
+            this.source.push(obj);
+            this.source = this.source.map(e => e);
+          });
+        });
       });
-    });
-    // this.reset();
-    this.init();
-   // window.alert('Les données ont été ajoutées avec succès à la base de données');
-    this.toastService.toastOfSave('success');
+      this.toastService.toastOfSave('success');
+      } else this.toastService.showToast('danger', 'Erreur !!', 'Remplir tous les champs');
+    } else this.toastService.toastOfSave('warning');
+
   }
 
   private reset() {
@@ -189,7 +189,6 @@ export class BulletinsComponent implements OnInit {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
-       // window.alert('Les données ont été modifiées avec succès');
         this.toastService.toastOfEdit('success');
 
       });
