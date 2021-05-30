@@ -52,6 +52,7 @@ export class DecedesService {
       );
   }
   public getById(id: number): Observable<Decedes> {
+    console.log(id);
     return this.http.get(this.baseurl + '/getById/' + id, this.httpOptions )
       .pipe(
         retry(1),
