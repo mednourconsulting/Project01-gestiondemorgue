@@ -230,7 +230,6 @@ export class DecedesComponent implements OnInit {
     });
 
     this.init();
-  //  window.alert('Les données ont été ajoutées avec succès à la base de données');
     this.toastService.toastOfSave('success');
 
     this.init();
@@ -278,7 +277,7 @@ export class DecedesComponent implements OnInit {
       if (window.confirm('Are you sure you want to delete?')) {
         event.confirm.resolve(event.data);
         this.service.delete(event.data.id).subscribe(data => {
-          this.init();
+          this.source = this.source.filter(item => item.id !== data.id);
         });
         this.toastService.toastOfDelete('success');
 
@@ -801,7 +800,8 @@ export class DecedesComponent implements OnInit {
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition(event.data);
         pdfMake.createPdf(documentDefinition).open();
-        this.toastService.showToast('success', 'PDf ouvert', 'Le certificat de deces est ouvert dans un nouvel onglet ');
+        this.toastService.showToast('success', 'PDf ouvert',
+          'Le certificat de deces est ouvert dans un nouvel onglet ');
 
         break;
       case 'delete':
@@ -809,6 +809,7 @@ export class DecedesComponent implements OnInit {
           if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
             // event.confirm.resolve(event.data);
             this.service.delete(event.data.id).subscribe(data => {
+              this.source = this.source.filter(item => item.id !== data.id);
             });
             this.toastService.toastOfDelete('success');
 

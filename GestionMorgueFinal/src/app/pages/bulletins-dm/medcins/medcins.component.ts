@@ -4,7 +4,7 @@ import {LocalDataSource} from 'ng2-smart-table';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
-import {ToastrService} from "../../../@core/backend/common/services/toastr.service";
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 
 @Component({
   selector: 'ngx-medcins',
@@ -71,7 +71,8 @@ export class MedcinsComponent implements OnInit {
   // source: LocalDataSource = new LocalDataSource();
   medcin: Medecins = new Medecins();
   source: Array<Medecins>;
-
+  data: any;
+  isAdmin: boolean;
   constructor(private service: MedecinsService,
               private userservice: UsersService,
               private toastService: ToastrService) { }
@@ -81,7 +82,6 @@ export class MedcinsComponent implements OnInit {
       this.source = data;
     });
   }
-  isAdmin: boolean;
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
@@ -89,47 +89,29 @@ export class MedcinsComponent implements OnInit {
     this.init();
   }
 
-  data: any;
-  save() {
-    this.service.getAll().subscribe(data => {
-        this.service.create(this.medcin).subscribe(obj => {
-          this.init();
-        });
-        this.reset();
-        // window.alert('Les données ont été ajoutées avec succès à la base de données');
-        this.toastService.toastOfSave('success');
-        this.init();
-    });
-  }
-
   private reset() {
     this.medcin = new Medecins();
   }
-
-  createConfirm(event) {
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.create(event.newData).subscribe(obj => {
-        });
-        this.init();
+  save() {
+    this.service.getAll().subscribe(data => {
+      this.service.create(this.medcin).subscribe(obj => {
+        this.source.push(obj);
+        this.source = this.source.map(e => e);
       });
-      this.init();
-    }
+      this.reset();
+      this.toastService.toastOfSave('success');
+    });
   }
-
   onEditConfirm(event) {
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
+          this.source.map(e => e);
         });
-       // window.alert('Les données ont été modifiées avec succès');
-        this.init();
         this.toastService.toastOfEdit('success');
       });
     } else {
-      // window.alert('vous n\'avez pas des droits de modification');
       this.toastService.toastOfEdit('warning');
     }
   }
@@ -138,14 +120,13 @@ export class MedcinsComponent implements OnInit {
       if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
         event.confirm.resolve(event.data);
         this.service.delete(event.data.id).subscribe(data => {
-          this.init();
+          this.source = this.source.filter(item => item.id !== data.id);
         });
         this.toastService.toastOfDelete('success');
       } else {
         event.confirm.reject(event.data);
       }
     } else {
-     // window.alert('Vous n\'avez pas des droits de suppression');
       this.toastService.toastOfEdit('warning');
 
     }
