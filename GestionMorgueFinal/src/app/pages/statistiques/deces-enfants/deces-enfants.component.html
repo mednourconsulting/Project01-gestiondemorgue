@@ -7,16 +7,32 @@
         </nb-card-header>
         <nb-card-body>
           <div class="row">
-            <div class="col-md-9">
-              <div class="form-group">
-                <input [(ngModel)]="annee" class="form-control" ng-required="expression" type="text" nbInput fullWidth
-                       id="annee" placeholder="Choisir une année">
-              </div>
+            <div class="col-8">
             </div>
-            <div class="col-md-3">
-              <button style="margin-left: 0px; width: 70px;" (click)="get(annee)" class="btn btn-primary float-right">
-                <i class="fa fa-chart-bar"></i>
-              </button>
+            <div class="col-2">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1" (click)="get(annee)">
+              <i class="fa fa-chart-bar" ></i></span>
+                <input type="text"
+                       id="name" name="name" class="form-control"
+                       required minlength="4" appForbiddenName="bob"
+                       [(ngModel)]="annee" #name="ngModel">
+              </div>
+              <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                   class="alert">
+
+                <div *ngIf="name.errors?.required">
+                  année est nécessaire.
+                </div>
+                <div *ngIf="name.errors?.minlength">
+                  les années doivent comporter au moins 4 caractères         </div>
+              </div>
+
+
+            </div>
+          </div>
+            <div class="col-2">
             </div>
           </div>
           <div class="row">
@@ -40,6 +56,15 @@
             <div class="col-md-1">
             </div>
           </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="text-center text-info" >Les statistiques selon le deces des enfants (1j-30j) {{currentDate}}</div>
+
+            </div>
+          </div>
+          <hr>
+          <br>
+          <br>
         </nb-card-body>
       </nb-card>
 

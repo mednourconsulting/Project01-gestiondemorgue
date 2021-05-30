@@ -122,6 +122,8 @@
           <label  class="label">Décédé</label><br>
           <nb-select  [(ngModel)]="numRgtr" class="type-select "  nbSelect fullWidth
                       placeholder="registration number" status="info">
+            <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
+
             <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
         </div>
@@ -133,8 +135,8 @@
           <label  class="label">Médecin</label><br>
           <nb-select  [(ngModel)]="medcinid" class="type-select "  nbSelect fullWidth
                       placeholder="registration number" status="info">
-            <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
-          </nb-select>
+            <nb-option class="url" *ngIf="NomDMedcin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
+            <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
         </div>
       </div>
       </div>
@@ -480,12 +482,19 @@
   </nb-card-header>
   <nb-card-body>
 
-    <ng2-smart-table
+    <!--ng2-smart-table
       [settings]="settings"
       [source]="source"
       (deleteConfirm)="onDeleteConfirm($event)"
-      (editConfirm)="onEditConfirm($event)">
-    </ng2-smart-table>
+      (edit)="onEditConfirm($event)">
+    </ng2-smart-table-->
+
+    <ng2-smart-table
+  [settings]="settings"
+  [source]="source"
+
+  >
+  </ng2-smart-table>
   </nb-card-body>
 </nb-card>
 

@@ -10,12 +10,20 @@ import {DecedesService} from '../../../@core/backend/common/services/Decedes.ser
 ,
 })
 export class RegionComponent {
-  annee: any;
-  TA: number; A: number; M: number; T: number; F: number; L: number; C: number; O: number;
+  public annee: any;
+  public TA: number; A: number; M: number; T: number; F: number; L: number; C: number; O: number;
+  public currentDate = (new Date).getFullYear().toString();
+  private ListCurrentDate: any [] = [];
+
   constructor(private theme: NbThemeService, private serviceD: DecedesService) {
     this.serviceD.getAll().subscribe(data1 => {
       data1.forEach(obj => {
-        this.List.push(obj.provinceD);
+
+        if (obj.dateDeces.toString().indexOf(this.currentDate)) {
+          console.log(obj.dateDeces);
+          console.log(obj.provinceD);
+          this.List.push({ date : obj.dateDeces, province : obj.provinceD});
+        }
       });
       this.TA = 0;
       this.A = 0;
@@ -25,47 +33,15 @@ export class RegionComponent {
       this.L = 0;
       this.C = 0;
       this.O = 0;
-      for (let j = 0; j < this.List.length; j++) {
-        switch (this.List[j]) {
-          case 'Tanger-Assilah':
-            this.TA = this.TA + 1;
-            break;
-          case 'M\'diq-Fnideq':
-            this.M = this.M + 1;
-            break;
-          case 'Tétouan':
-            this.T = this.T + 1;
-            break;
-          case 'Fahs-Anjra':
-            this.F = this.F + 1;
-            break;
-          case 'Larache':
-            this.L = this.L + 1;
-            break;
-          case 'Al Hoceïma':
-            this.A = this.A + 1;
-            break;
-          case 'Chefchaouen':
-            this.C = this.C + 1;
-            break;
-          case 'Ouezzane':
-            this.O = this.O + 1;
-            break;
-          default:
-            break;
-        }
-      }
+      this.SelonRegion(this.List)
       this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O];
     });
   }
   public chartType: string = 'bar';
-
   public chartDatasets: Array<any> = [
     { data: [0, 0, 0, 0, 0, 0, 0, 0], label: 'Nombre de cas par région' },
   ];
-
   public chartLabels: Array<any> = ['Tanger-Assilah', 'M\'diq-Fnideq', 'Tétouan', 'Fahs-Anjra', 'Larache', 'Al Hoceïma', 'Chefchaouen', 'Ouezzane'];
-
   public chartColors: Array<any> = [
     {
       backgroundColor: [
@@ -91,17 +67,21 @@ export class RegionComponent {
       borderWidth: 2,
     },
   ];
-
   public chartOptions: any = {
     responsive: true,
   };
   List = [];
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
-  get() {
+
+  get(annee: any) {
+    this.List = [];
+    this.currentDate = annee;
     this.serviceD.getAll().subscribe(data1 => {
       data1.forEach(obj => {
-        this.List.push(obj.dateDeces, obj.provinceD);
+        if (obj.dateDeces.toString().indexOf(annee)) {
+          this.List.push({ date : obj.dateDeces, province : obj.provinceD});
+        }
       });
       this.TA = 0;
       this.A = 0;
@@ -111,40 +91,48 @@ export class RegionComponent {
       this.L = 0;
       this.C = 0;
       this.O = 0;
-      for (let j = 0; j < this.List.length; j = j + 1) {
-        if (this.List[j].includes(this.annee)) {
-          switch (this.List[j + 1]) {
-            case 'Tanger-Assilah':
-              this.TA = this.TA + 1;
-              break;
-            case 'M\'diq-Fnideq':
-              this.M = this.M + 1;
-              break;
-            case 'Tétouan':
-              this.T = this.T + 1;
-              break;
-            case 'Fahs-Anjra':
+      this.SelonRegion(this.List);
+
+    });
+    this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O];
+}
+
+  SelonRegion(List: any[]) {
+    this.List.forEach( obj => {
+      if (obj.province === 'Tanger-Assilah' ) {
+        this.TA = this.TA + 1;
+      } else {
+        if (obj.province === 'M\'diq-Fnideq') {
+          this.M = this.M + 1;
+        } else {
+          if (obj.province === 'Tétouan') {
+            this.T = this.T + 1;
+          } else {
+            if (obj.province === 'Fahs-Anjra') {
               this.F = this.F + 1;
-              break;
-            case 'Larache':
-              this.L = this.L + 1;
-              break;
-            case 'Al Hoceïma':
-              this.A = this.A + 1;
-              break;
-            case 'Chefchaouen':
-              this.C = this.C + 1;
-              break;
-            case 'Ouezzane':
-              this.O = this.O + 1;
-              break;
-            default:
-              break;
+            } else {
+              if (obj.province === 'Larache') {
+                this.L = this.L + 1;
+              } else {
+                 if (obj.province === 'Al Hoceïma') {
+                   this.A = this.A + 1;
+                 } else {
+                   if (obj.province === 'Chefchaouen') {
+                     this.C = this.C + 1;
+                   } else {
+                     if (obj.province === 'Ouezzane') {
+                       this.O = this.O + 1;
+                     } else {
+                     }
+                   }
+                 }
+              }
+            }
           }
         }
       }
-      this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O];
     });
-}
+      }
+
 }
 

@@ -10,8 +10,9 @@
                 <div class="form-group">
                     <label class="label">Médecin</label>
                     <nb-select [(ngModel)]="MedNom" class="type-select " nbSelect fullWidth placeholder="Médecin" status="success">
-                        <nb-option *ngFor="let t of NomMedecin " [value]="t.id">{{t.nom}} {{t.prenom}}</nb-option>
-                    </nb-select>
+                      <nb-option class="url" *ngIf="NomMedecin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
+                      <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
+
 
                 </div>
             </div>
@@ -19,7 +20,8 @@
                 <div class="form-group">
                     <label class="label">Défunt</label>
                     <nb-select [(ngModel)]="defunt" class="type-select " nbSelect fullWidth placeholder="Défunt" status="success">
-                        <nb-option *ngFor="let t of  NomDecede " [value]="t.id">{{t.id}}: {{t.nom}} {{t.prenom}}</nb-option>
+                      <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
+                      <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
                 </div>
             </div>

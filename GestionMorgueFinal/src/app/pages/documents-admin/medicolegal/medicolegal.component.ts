@@ -12,6 +12,7 @@ import jsPDF from 'jspdf';
 import { base64Str } from '../../certificat/base64.js';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
+import {Router} from "@angular/router";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -102,6 +103,7 @@ export class MedicolegalComponent implements OnInit {
 
   constructor(private service: CertificatMedicoLegalService,
               private userservice: UsersService,
+              private router: Router,
               private serviceDecede: DecedesService,
               private serviceMeddcin: MedecinsService,
               private datePipe: DatePipe) {
@@ -181,7 +183,7 @@ export class MedicolegalComponent implements OnInit {
         break;
     }
   }
-  private getDocumentDefinition1(list) {
+  getDocumentDefinition1(list) {
     return {
       content: [
         {
@@ -285,8 +287,7 @@ export class MedicolegalComponent implements OnInit {
     };
   }
 
-  private getDocumentDefinition() {
-
+  getDocumentDefinition() {
     // sessionStorage.setItem('resume', JSON.stringify());
     return {
       content: [
@@ -539,5 +540,12 @@ export class MedicolegalComponent implements OnInit {
         this.init();
         break;
     }
+  }
+
+  passToMedecin() {
+    this.router.navigateByUrl('/pages/bulletins-dm/medcins');
+  }
+  passToDecede() {
+    this.router.navigateByUrl('/pages/bulletins-dm/decedes');
   }
 }

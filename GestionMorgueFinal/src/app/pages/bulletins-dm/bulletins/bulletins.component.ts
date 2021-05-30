@@ -17,6 +17,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { Base64 } from 'js-base64';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ngx-bulletins',
@@ -136,9 +137,14 @@ export class BulletinsComponent implements OnInit {
   NomDecede = [];
   NomDMedcin = [];
 
-  constructor(private service: BulletinsService, private serviceD: DecedesService, private serviceM: MedecinsService,
-              private serviceS: SmartTableData, private userservice: UsersService,
-              private serviceC: CauseService, private datePipe: DatePipe,
+  constructor(private service: BulletinsService,
+              private serviceD: DecedesService,
+              private serviceM: MedecinsService,
+              private serviceS: SmartTableData,
+              private userservice: UsersService,
+              private serviceC: CauseService,
+              private datePipe: DatePipe,
+              private router: Router,
               private toastService: ToastrService) {
     this.serviceD.getAll().subscribe( data => {
       data.forEach (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
@@ -170,6 +176,7 @@ export class BulletinsComponent implements OnInit {
       this.serviceD.getById(this.numRgtr).subscribe(objj => {
         this.Bulletins.decede = objj;
     this.service.create(this.Bulletins).subscribe(obj => {
+      this.toastService.toastOfSave('success');
       this.init();
     });
       });
@@ -177,13 +184,15 @@ export class BulletinsComponent implements OnInit {
     // this.reset();
     this.init();
    // window.alert('Les données ont été ajoutées avec succès à la base de données');
-    this.toastService.toastOfSave('success');
+
   }
 
   private reset() {
     this.Bulletins = new Bulletins();
   }
   onEditConfirm(event) {
+    console.log(event.data);
+    this.settings.columns.medecin = event.data.medecin;
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
@@ -547,9 +556,7 @@ export class BulletinsComponent implements OnInit {
   jstoday = '';
   MedecinHumain: Medecins;
   c: string;
-  causeii: string;
   i = 0;
-  btnn: any;
   add() {
       this.serviceD.getById(this.numRgtr).subscribe(obj => {
         this.DecedeHumain = obj;
@@ -579,4 +586,11 @@ export class BulletinsComponent implements OnInit {
         break;
     }
   } */
+  passToMedecin() {
+    this.router.navigateByUrl('/pages/bulletins-dm/medcins');
+  }
+
+  passToDecede() {
+    this.router.navigateByUrl('/pages/bulletins-dm/decedes');
+  }
 }
