@@ -2,7 +2,7 @@
 <nb-card>
   <nb-card-header>
     <div class="row">
-      <div class="col-sm-6">Ajouter une cause de décès</div>
+      <div class="col-sm-12">Ajouter une cause de décès</div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -12,14 +12,14 @@
         <div class="form-group">
           <label  class="label">Code</label>
           <input [(ngModel)]="Cause.code" class="form-control" type="string" nbInput fullWidth
-                 id="remarque" placeholder="code">
+                 id="remarque" required="true" placeholder="code">
 
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Description</label>
-          <textarea  [(ngModel)]="Cause.description" class="form-control"  type="string"  fullWidth
+          <textarea  [(ngModel)]="Cause.description" required="true" class="form-control"  type="string"  fullWidth
                   placeholder="Description" >
           </textarea>
 
@@ -30,7 +30,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">الوصف</label>
-          <textarea  [(ngModel)]="Cause.descriptionAR" class="form-control"  type="string"  fullWidth
+          <textarea  [(ngModel)]="Cause.descriptionAR" required="true" class="form-control"  type="string"  fullWidth
                      placeholder="الوصف" >
           </textarea>
 
@@ -45,25 +45,21 @@
 </nb-card-body>
 </nb-card>
 </div>
-<nb-card>
-  <nb-card-header>
-    <div class="row">
-      <div class="col-sm-6">
-       Liste des causes de Décès
-      </div>
-    </div>
-  </nb-card-header>
-  <nb-card-body>
 
-  <ng2-smart-table
+
+<div class="card">
+  <div class="card-header">
+    Liste des Bulletins
+  </div>
+  <div class="table table-responsive">
+
+    <ng2-smart-table
       [settings]="settings"
       [source]="source"
       (deleteConfirm)="onDeleteConfirm($event)"
       (editConfirm)="onEditConfirm($event)">
     </ng2-smart-table>
-  </nb-card-body>
-</nb-card>
-
-
+  </div>
+</div>
 
 

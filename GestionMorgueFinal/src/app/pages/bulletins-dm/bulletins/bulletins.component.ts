@@ -28,7 +28,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
         throw new Error('Method not implemented.');
     }
   compostage: string;
-  medcinid: number;
+  medcinid: number = null;
   constation: string;
   Bulletins: Bulletins = new Bulletins();
   typeBulletin = ['Bulletin de décès', 'Bulletin de mortinatalité'];
@@ -73,11 +73,11 @@ export class BulletinsComponent implements OnInit, OnChanges {
         },
         {
           name: 'edit',
-          title: '<i class="nb-edit"></i>',
+          title: '<i class="fas fa-edit"></i>',
         },
         {
           name: 'delete',
-          title: '<i class="nb-trash"></i>',
+          title: '<i class="fa fa-trash"></i>',
         },
       ],
     },
@@ -146,7 +146,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
     },
   };
   source: Array<Bulletins>;
-  numRgtr: number;
+  numRgtr: number = null;
   isAdmin: boolean;
   DecedeHumain: Decedes = new Decedes();
   NomDecede = [];
@@ -179,6 +179,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
+      console.log(data);
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
@@ -633,7 +634,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
         {
           table: {
             widths: ['30%', '30%' , '40%'],
-            height: 'auto',
             body: [
               [
                 {
@@ -1033,8 +1033,20 @@ export class BulletinsComponent implements OnInit, OnChanges {
 
   onChange(medcinid: number) {
     this.serviceM.getById(this.medcinid).subscribe(obj1 => {
+      console.log(obj);
       this.Bulletins.medecin = obj1;
       this.MedecinHumain = obj1;
+    });
+  }
+  ActivateMedecin(medcinid: number) {
+    this.serviceM.getById(medcinid).subscribe(obj1 => {
+      this.MedecinHumain = obj1;
+    });
+  }
+
+  ActivateDecede(numRgtr: number) {
+    this.serviceD.getById(numRgtr).subscribe(obj1 => {
+      this.DecedeHumain = obj1;
     });
   }
 }

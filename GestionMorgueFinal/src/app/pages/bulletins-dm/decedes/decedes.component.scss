@@ -1,15 +1,14 @@
-nb-card-header {
-  color: white;
-  font-size: large;
-  font-family: 'Courier New', Monospace;
-  background-color: #2d8ac7;
-}
+
 :host ::ng-deep ng2-st-tbody-edit-delete { display: inline-block !important; width: 30%; height: 0 !important; margin-top: 0% }
 :host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom { margin-top: 0%; display: inline-block; width: 30%; text-align: center; font-size: 0em; }
 :host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover { color: #5DCFE3; }
 
 :host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-file-pdf:before {
   color: #b94a48;
+  font-size: 20px;
+}
+:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-edit:before {
+  color: #041151;
   font-size: 20px;
 }
 :host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-trash:before {
@@ -50,9 +49,7 @@ nb-card-header {
   text-decoration: underline #f56717;
   cursor: pointer;
 }
-.card-header {
-  background-color: #f5d596;
-}
+
 :host ::ng-deep table {
   width: 1200px !important;
   overflow-x: scroll;
@@ -67,11 +64,11 @@ nb-card-header {
 }
 
 
-.ng-valid[required], .ng-valid.required  {
+.ng-valid[required], .ng-valid.required {
   border-left: 5px solid #42A948; /* green */
 }
 
-.ng-invalid:not(form)  {
+.ng-invalid:not(form) {
   border-left: 5px solid #a94442; /* red */
 }
 
@@ -85,6 +82,35 @@ nb-card-header {
 .form-group {
   margin-bottom: 1rem;
 }
+//to change the table scrollbar
+/* width */
+:host ::ng-deep .table::-webkit-scrollbar {
+  height: 0.8em!important;
+}
+/* Handle on hover */
+:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
+  background: #7a3131;
+}
 
+/* Track */
+:host ::ng-deep .table::-webkit-scrollbar-track {
+  // background: #cacaca;
+}
+//---------------------------------------
+
+nb-card-header {
+  background-color: #f5d596;
+  font-size: 20px;
+  font-weight: bold;
+  color: #7a3131;
+
+}
+.card-header {
+  background-color: #f5d596;
+  font-size: 20px;
+  font-weight: bold;
+  color: #7a3131;
+
+}
 
 

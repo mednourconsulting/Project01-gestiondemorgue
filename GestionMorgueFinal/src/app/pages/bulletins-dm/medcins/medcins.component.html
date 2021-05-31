@@ -2,7 +2,7 @@
 <nb-card>
   <nb-card-header>
     <div class="row">
-      <div class="col-sm-6">Ajouter un Médecin</div>
+      <div class="col-sm-12">Ajouter un Médecin</div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -11,7 +11,7 @@
         <div class="form-group">
           <label  class="label">Nom Medecin</label>
           <input [(ngModel)]="medcin.nom" class="form-control" type="string" nbInput fullWidth
-                 id="nom" placeholder="Nom Medecin">
+                 id="nom" placeholder="Nom Medecin" required="true">
 
         </div>
       </div>
@@ -19,7 +19,7 @@
         <div class="form-group">
           <label  class="label">Prénom Medecin</label>
           <input [(ngModel)]="medcin.prenom" class="form-control" type="string" nbInput fullWidth
-                 id="prenom" placeholder="Nom Medecin">
+                 id="prenom" placeholder="Prenom Medecin" required="true">
 
         </div>
       </div>
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label  class="label">Adresse de Medecin</label>
           <input [(ngModel)]="medcin.adress" class="form-control" type="string" nbInput fullWidth
-                 id="adresse" placeholder="Adresse de Medecin">
+                 id="adresse" placeholder="Adresse de Medecin"required="true">
 
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="form-group">
           <label  class="label">الإسم العائلي</label>
           <input [(ngModel)]="medcin.nomAR" class="form-control" type="string" nbInput fullWidth
-                 id="nomAR" placeholder="الإسم العائلي">
+                 id="nomAR" placeholder="الإسم العائلي"required="true">
 
         </div>
       </div>
@@ -45,7 +45,7 @@
         <div class="form-group">
           <label  class="label">الإسم الشخصي</label>
           <input [(ngModel)]="medcin.prenomAR" class="form-control" type="string" nbInput fullWidth
-                 id="prenomAR" placeholder="الإسم الشخصي">
+                 id="prenomAR" placeholder="الإسم الشخصي"required="true">
 
         </div>
       </div>
@@ -53,7 +53,7 @@
         <div class="form-group">
           <label  class="label">العنوان</label>
           <input [(ngModel)]="medcin.adressAR" class="form-control" type="string" nbInput fullWidth
-                 id="AdresseAR" placeholder="العنوان">
+                 id="AdresseAR" placeholder="العنوان"required="true">
 
         </div>
       </div>
@@ -63,38 +63,34 @@
         <div class="form-group">
           <label  class="label">CIN d'encadrant</label>
           <input [(ngModel)]="medcin.cin" class="form-control" type="string" nbInput fullWidth
-                 id="cin" placeholder="CIN d'encadrant">
+                 id="cin" placeholder="CIN d'encadrant" required="true"required="true">
 
         </div>
       </div>
     </div>
-    <div class="text-center">
-      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Register</button>
+    <div class="float-right">
+      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Enregistrer</button>
       <button *ngIf="isAdmin" class="btn btn-secondary mr-1" (click)="reset()" type="submit" nbButton  status="info" outline>Cancel</button>
     </div>
 
   </nb-card-body>
 </nb-card>
 </div>
-<nb-card>
-  <nb-card-header>
-    <div class="row">
-      <div class="col-sm-6">
-        Liste des Médecins
-      </div>
-    </div>
-  </nb-card-header>
-  <nb-card-body>
 
-    <ng2-smart-table
-      [settings]="settings"
-      [source]="source"
-      (deleteConfirm)="onDeleteConfirm($event)"
-      (editConfirm)="onEditConfirm($event)"
-      >
+<div class="card">
+  <div class="card-header">
+    Liste des Médecins
+  </div>
+  <div class="table table-responsive">
+
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (deleteConfirm)="onDeleteConfirm($event)"
+                     (editConfirm)="onEditConfirm($event)"
+    >
     </ng2-smart-table>
-  </nb-card-body>
-</nb-card>
+  </div>
+</div>
 
 
 

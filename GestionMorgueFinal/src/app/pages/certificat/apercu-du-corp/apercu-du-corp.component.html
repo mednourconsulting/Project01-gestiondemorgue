@@ -10,7 +10,7 @@
         <div class="form-group">
           <label  class="label">Décédé</label>
           <nb-select  [(ngModel)]="defauntID" class="type-select "  nbSelect fullWidth
-                      placeholder="Num regestre" status="danger">
+                      placeholder="Numero de registre" required="true">
             <nb-option *ngFor="let t of NomDeced" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
       </div>
@@ -19,7 +19,7 @@
         <div class="form-group">
           <label  class="label">Centre médico-légal</label>
           <input [(ngModel)]="ApercuCorps.centerMedicoLegal" class="form-control" type="string" nbInput fullWidth
-                 id="centre" placeholder="Centre médico-légal" status="danger">
+                 id="centre" placeholder="Centre médico-légal" required="true">
 
         </div>
       </div>
@@ -30,7 +30,7 @@
         <div class="form-group">
           <label  class="label">Médcin/ Assistant de santé</label>
           <nb-select [(ngModel)]="MedecinID"  class="type-select " nbSelect fullWidth
-                     placeholder="Medecin/ Assistant de santé" status="danger">
+                     placeholder="Medecin/ Assistant de santé" required="true">
             <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.nom}} {{t.prenom}}</nb-option>
           </nb-select>
         </div>
@@ -39,7 +39,7 @@
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
           <input [(ngModel)]="ApercuCorps.dateDeclaration" class="form-control" type="Date" nbInput fullWidth
-                 id="dateDec" placeholder="Déclarant" status="danger">
+                 id="dateDec" placeholder="Déclarant" required="true">
 
         </div>
       </div>
@@ -56,22 +56,14 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card>
-  <nb-card-header>
-    <div class="row">
-      <div class="col-sm-6">
-       Liste des certificats d'aperçu de corps
-      </div>
-    </div>
-  </nb-card-header>
-  <nb-card-body>
+<div class="card">
+  <div class="card-header">
+    Liste des certificats d'aperçu de corps
+  </div>
+  <div class="table table-responsive">
 
-    <ng2-smart-table
-      [settings]="settings"
-      [source]="source"
-      (editConfirm)="onEditConfirm($event)"
-      (custom)="onCustomConfirm($event)">
+    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
+  </div>
+</div>
 
-  </nb-card-body>
-</nb-card>

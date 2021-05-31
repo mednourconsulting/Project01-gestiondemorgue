@@ -819,7 +819,6 @@ export class DecedesComponent implements OnInit {
           this.toastService.toastOfDelete('warning');
 
         }
-        this.init();
         break;
     }
   }

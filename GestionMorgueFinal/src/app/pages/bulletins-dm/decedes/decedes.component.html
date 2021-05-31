@@ -2,7 +2,7 @@
 <nb-card>
     <nb-card-header class="hostt">
         <div class="row">
-            <div class="col-sm-6">Ajouter Les Informations D'un Décédé</div>
+            <div class="col-sm-12">Ajouter Les Informations D'un Décédé</div>
         </div>
     </nb-card-header>
     <nb-card-body class="host">
@@ -596,17 +596,13 @@
     </nb-card-body>
 </nb-card>
 
-<nb-card>
-    <nb-card-header>
-        <div class="row">
-            <div class="col-sm-6">
-                Gestion des décédés
-            </div>
-        </div>
-    </nb-card-header>
-    <nb-card-body>
+<div class="card">
+  <div class="card-header">
+    Liste des décédés
+  </div>
+  <div class="table table-responsive">
 
-        <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
-        </ng2-smart-table>
-    </nb-card-body>
-</nb-card>
+    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
+    </ng2-smart-table>
+  </div>
+</div>

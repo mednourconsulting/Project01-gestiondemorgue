@@ -12,7 +12,7 @@
         <div class="form-group">
           <label  class="label">Défunt</label>
           <nb-select  [(ngModel)]="Enterrement.defunt" class="type-select "  nbSelect fullWidth
-                      placeholder="Num regestre" status="danger">
+                      placeholder="Num regestre" required="true">
             <nb-option *ngFor="let t of NomDecede" [value]="t.nom + ' ' + t.prenom" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
         </div>
@@ -21,7 +21,7 @@
         <div class="form-group">
           <label  class="label">Ville</label>
           <input [(ngModel)]="Enterrement.ville" class="form-control" type="string" nbInput fullWidth
-                 id="centre" placeholder="Ville" status="danger">
+                 id="centre" placeholder="Ville"required="true">
 
         </div>
       </div>
@@ -45,22 +45,18 @@
   </nb-card-body>
 </nb-card>
 
-<nb-card>
-  <nb-card-header>
-    <div class="row">
-      <div class="col-sm-6">Liste des certificats d'enterrement </div>
-    </div>
-  </nb-card-header>
-  <nb-card-body>
 
-    <ng2-smart-table
-      [settings]="settings"
-      [source]="source"
-      (editConfirm)="onEditConfirm($event)"
-      (custom)="onCustomConfirm($event)">
+
+<div class="card">
+  <div class="card-header">
+    Liste des certificats d'enterrement
+  </div>
+  <div class="table table-responsive">
+
+    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
-  </nb-card-body>
-</nb-card>
+  </div>
+</div>
 
 
 

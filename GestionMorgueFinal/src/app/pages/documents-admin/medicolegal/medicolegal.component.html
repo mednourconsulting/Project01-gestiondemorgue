@@ -1,7 +1,7 @@
 <nb-card>
     <nb-card-header>
         <div class="row">
-            <div class="col-sm-6">Ajouter un certificat médico-légal</div>
+            <div class="col-sm-12">Ajouter un certificat médico-légal</div>
         </div>
     </nb-card-header>
     <nb-card-body>
@@ -9,7 +9,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Médecin</label>
-                    <nb-select [(ngModel)]="MedNom" class="type-select " nbSelect fullWidth placeholder="Médecin" status="success">
+                    <nb-select [(ngModel)]="MedNom" class="type-select " nbSelect fullWidth placeholder="Médecin" required="true">
                       <nb-option class="url" *ngIf="NomMedecin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
                       <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
 
@@ -19,7 +19,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Défunt</label>
-                    <nb-select [(ngModel)]="defunt" class="type-select " nbSelect fullWidth placeholder="Défunt" status="success">
+                    <nb-select [(ngModel)]="defunt" class="type-select " nbSelect fullWidth placeholder="Défunt" required="true">
                       <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
                       <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
@@ -29,7 +29,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Déclarant</label><br>
-                    <input [(ngModel)]="Medicolegal.declarant" class="form-control" ng-required="expression" type="string" nbInput fullWidth id="dec" placeholder="Déclarant" status="success">
+                    <input [(ngModel)]="Medicolegal.declarant" class="form-control" ng-required="expression"
+                           type="string" nbInput fullWidth id="dec" placeholder="Déclarant"  required="true">
                 </div>
             </div>
 
@@ -39,7 +40,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">CIN Déclarant</label><br>
-                    <input [(ngModel)]="Medicolegal.cin" class="form-control" ng-required="expression" type="string" nbInput fullWidth id="cin" placeholder="CIN Déclarant" status="success">
+                    <input [(ngModel)]="Medicolegal.cin" class="form-control" ng-required="expression"
+                           type="string" nbInput fullWidth id="cin" placeholder="CIN Déclarant" status="success">
 
 
 
@@ -49,7 +51,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Adresse Déclarant</label><br>
-                    <input [(ngModel)]="Medicolegal.address" class="form-control" type="string" nbInput fullWidth id="adresse" placeholder="Adresse Déclarant" status="success">
+                    <input [(ngModel)]="Medicolegal.address" class="form-control" type="string" nbInput fullWidth
+                           id="adresse" placeholder="Adresse Déclarant"  required="true">
                 </div>
             </div>
             <div class="col-sm-4">
@@ -71,17 +74,14 @@
 
 </nb-card>
 
-<nb-card>
-    <nb-card-header>
-        <div class="row">
-            <div class="col-sm-6">
-                Liste des certificats médico-légal
-            </div>
-        </div>
-    </nb-card-header>
-    <nb-card-body>
 
-        <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
-        </ng2-smart-table>
-    </nb-card-body>
-</nb-card>
+<div class="card">
+  <div class="card-header">
+    Liste des certificats médico-légal
+  </div>
+  <div class="table table-responsive">
+
+    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
+    </ng2-smart-table>
+  </div>
+</div>

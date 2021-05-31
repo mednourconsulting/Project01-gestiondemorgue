@@ -1,8 +1,32 @@
+//to change the table scrollbar
+/* width */
+:host ::ng-deep .table::-webkit-scrollbar {
+  height: 0.8em!important;
+}
+/* Handle on hover */
+:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
+  background: #7a3131;
+}
+
+/* Track */
+:host ::ng-deep .table::-webkit-scrollbar-track {
+  // background: #cacaca;
+}
+//---------------------------------------
+
 nb-card-header {
-  color: white;
-  font-size: large;
-  font-family: 'Courier New', Monospace;
-  background-color: #b94a48;
+  background-color: #b84848;
+  font-size: 20px;
+  font-weight: bold;
+  color: #581514;
+
+}
+.card-header {
+  background-color: #b84848;
+  font-size: 20px;
+  font-weight: bold;
+  color: #581514;
+
 }
 ng2-smart-actions-title-add{
   background-color: #b94a48;
@@ -23,4 +47,12 @@ ng2-smart-actions-title-add{
 :host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-edit:before {
   color: #21335a;
   font-size: 20px;
+}
+
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
 }

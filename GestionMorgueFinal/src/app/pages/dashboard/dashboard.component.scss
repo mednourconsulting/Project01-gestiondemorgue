@@ -7,14 +7,36 @@
 
   nb-card-header {
     color: white;
-    font-size: large;
-    font-family: 'Courier New', Monospace;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #2d8ac7;
+  }
+.card-header {
+    color: white;
+  font-size: 20px;
+  font-weight: bold;
     background-color: #2d8ac7;
   }
   .flexbox {
-
+    display: -ms-flexbox;
+    display: flex;
   }
 
 
 
 
+//to change the table scrollbar
+/* width */
+:host ::ng-deep .table::-webkit-scrollbar {
+  height: 0.8em!important;
+}
+/* Handle on hover */
+:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
+  background: #0a5ab7;
+}
+
+/* Track */
+:host ::ng-deep .table::-webkit-scrollbar-track {
+  // background: #cacaca;
+}
+//---------------------------------------

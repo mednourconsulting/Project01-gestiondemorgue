@@ -2,7 +2,7 @@
 <nb-card>
   <nb-card-header>
     <div class="row">
-      <div class="col-sm-6">Ajouter Un bulletin</div>
+      <div class="col-sm-12">Ajouter un Bulletin</div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -41,7 +41,6 @@
           fullWidth
           name= "declaration"
           #declaration= "ngModel"
-          required="true"
           class="form-control"
           placeholder="Date de déclaration"
           required="true"
@@ -97,7 +96,7 @@
                       name= "diagnostique"
                       #diagnostique= "ngModel"
                       required="true"
-                      placeholder="Diagnostiue Attestation"
+                      placeholder="Diagnostique Attestation"
                       >
             <nb-option *ngFor="let t of diagnostique" [value]="t" >{{ t }}</nb-option>
           </nb-select>
@@ -189,7 +188,7 @@
         <div class="form-group">
           <label  class="label">Décédé</label><br>
           <nb-select  [(ngModel)]="numRgtr" class="type-select "  nbSelect fullWidth
-                      placeholder="registration number" status="info">
+                      placeholder="registration number"  required="true"  (ngModelChange)="ActivateDecede(numRgtr)">
             <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
 
             <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
@@ -202,7 +201,11 @@
         <div class="form-group">
           <label  class="label">Médecin</label><br>
           <nb-select  [(ngModel)]="medcinid" class="type-select "  nbSelect fullWidth
-                      placeholder="registration number" status="info" (change)="onChange($event.target.value)">
+                      placeholder="registration number" required="true"
+                      (change)="onChange($event.target.value)"
+                      (ngModelChange)="ActivateMedecin(medcinid)"
+          >
+
             <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
             <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
         </div>
@@ -216,8 +219,8 @@
                 class="btn btn-outline-primary fa-pull-right mr-1" >
           <span>Certificat</span></button>
         </div>
-       <button (click)="add()" name="btnn"  class="btn btn-outline-primary fa-pull-right mr-1" >
-          <span>Valider les informations</span></button>
+        <!--  <button (click)="add()" name="btnn"  class="btn btn-outline-primary fa-pull-right mr-1" >
+          <span>Valider les informations</span></button> -->
       </div>
     </div>
   </nb-card-body>
@@ -539,7 +542,7 @@
 
   </nb-card>
 </div>
-
+<!--
 <nb-card>
   <nb-card-header>
     <div class="row">
@@ -550,21 +553,37 @@
   </nb-card-header>
   <nb-card-body>
 
-    <!--ng2-smart-table
+    ng2-smart-table
       [settings]="settings"
       [source]="source"
       (deleteConfirm)="onDeleteConfirm($event)"
       (edit)="onEditConfirm($event)">
-    </ng2-smart-table-->
-
+    </ng2-smart-table
+<div class="table">
     <ng2-smart-table
   [settings]="settings"
   [source]="source"
   (custom)="onCustomConfirm($event)"
   >
   </ng2-smart-table>
+</div>
   </nb-card-body>
 </nb-card>
+-->
+<div class="card">
+  <div class="card-header">
+    Liste des Bulletins
+  </div>
+  <div class="table table-responsive">
+
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (custom)="onCustomConfirm($event)"
+                     >
+    </ng2-smart-table>
+  </div>
+</div>
+
 
 
 
