@@ -10,18 +10,24 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Type de bulletin</label>
-          <nb-select  [(ngModel)]="Bulletins.typeBulletin" class="type-select "  nbSelect fullWidth
-                      placeholder="Type de bulletin" status="info">
+          <nb-select  [(ngModel)]="Bulletins.typeBulletin"
+                      class="type-select "
+                      nbSelect fullWidth
+                      placeholder="Type de bulletin"
+                      required="true">
             <nb-option *ngFor="let t of typeBulletin" [value]="t" >{{ t }}</nb-option>
           </nb-select>
 
-        </div>
+      </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Province ou préfecture</label><br>
-          <nb-select  [(ngModel)]="Bulletins.province" class="type-select "  nbSelect fullWidth
-                      placeholder="Province ou préfecture"  status="info">
+          <nb-select  [(ngModel)]="Bulletins.province"
+                      class="type-select "
+                      nbSelect fullWidth
+                      placeholder="Province ou préfecture"
+                      required="true">
             <nb-option *ngFor="let t of province" [value]="t" >{{ t }}</nb-option>
           </nb-select>
         </div>
@@ -33,6 +39,9 @@
           type="date"
           status="info"
           fullWidth
+          name= "declaration"
+          #declaration= "ngModel"
+          required="true"
           class="form-control"
           placeholder="Date de déclaration"
           required="true"
@@ -48,26 +57,48 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Cercle</label><br>
-          <input [(ngModel)]="Bulletins.cercle" class="form-control" ng-required="expression" type="text" nbInput fullWidth
-                 id="cercle" placeholder="Cercle" status="info">
-
-
-
+          <input [(ngModel)]="Bulletins.cercle"
+                 class="form-control"
+                 ng-required="expression"
+                 type="text"
+                 nbInput
+                 fullWidth
+                 name= "cercle"
+                 #cercle= "ngModel"
+                 required="true"
+                 id="cercle"
+                 placeholder="Cercle">
 
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Municipalité/Centre/Commune</label><br>
-          <input [(ngModel)]="Bulletins.centre" class="form-control"  type="text" nbInput fullWidth
-                 id="municipalite" placeholder="Municipalité/Centre/Commune" status="info">
+          <input [(ngModel)]="Bulletins.centre"
+                 class="form-control"
+                 type="text"
+                 nbInput
+                 fullWidth
+                 name= "centre"
+                 #centre= "ngModel"
+                 required="true"
+                 id="municipalite"
+                 placeholder="Municipalité/Centre/Commune"
+                 >
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Diagnostique Attestation</label>
-          <nb-select  [(ngModel)]="Bulletins.diagnostique" class="type-select "  nbSelect fullWidth
-                      placeholder="Diagnostiue Attestation" status="info" >
+          <nb-select  [(ngModel)]="Bulletins.diagnostique"
+                      class="type-select "
+                      nbSelect
+                      fullWidth
+                      name= "diagnostique"
+                      #diagnostique= "ngModel"
+                      required="true"
+                      placeholder="Diagnostiue Attestation"
+                      >
             <nb-option *ngFor="let t of diagnostique" [value]="t" >{{ t }}</nb-option>
           </nb-select>
 
@@ -79,8 +110,14 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Milieu de résidence</label>
-          <nb-select  [(ngModel)]="Bulletins.residece" class="type-select"  nbSelect fullWidth
-                      placeholder="Milieu résidence" status="info">
+          <nb-select  [(ngModel)]="Bulletins.residece"
+                      class="type-select"
+                      nbSelect
+                      fullWidth
+                      name= "residece"
+                      #residece= "ngModel"
+                      required="true"
+                      >
             <nb-option *ngFor="let t of Milieu" [value]="t" >{{ t }}</nb-option>
           </nb-select>
 
@@ -89,8 +126,15 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Lieu Enterrement</label>
-          <nb-select  [(ngModel)]="Bulletins.lieuEntrement" class="type-select "  nbSelect fullWidth
-                      placeholder="Lieu Enterrement" status="info">
+          <nb-select  [(ngModel)]="Bulletins.lieuEntrement"
+                      class="type-select "
+                      nbSelect
+                      fullWidth
+                      name= "lieuEntrement"
+                      #lieuEntrement= "ngModel"
+                      required="true"
+                      placeholder="Lieu Enterrement"
+                      >
             <nb-option *ngFor="let t of Lieu" [value]="t" >{{ t }}</nb-option>
           </nb-select>
 
@@ -99,8 +143,15 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Cimetière</label>
-          <nb-select  [(ngModel)]="Bulletins.cimetiere" class="type-select "  nbSelect fullWidth
-                      placeholder="Cimetière" status="info">
+          <nb-select  [(ngModel)]="Bulletins.cimetiere"
+                      lass="type-select "
+                      nbSelect
+                      fullWidth
+                      name= "cimetiere"
+                      #cimetiere= "ngModel"
+                      required="true"
+                      placeholder="Cimetière"
+                      >
             <nb-option *ngFor="let t of cimetiere" [value]="t" >{{ t }}</nb-option>
           </nb-select>
 
@@ -112,8 +163,17 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Numéro de tombe</label>
-            <input [(ngModel)]="Bulletins.numTombe" class="form-control"  type="number" nbInput fullWidth
-                   id="numTombe" placeholder="Numéro de tombe" status="info">
+            <input [(ngModel)]="Bulletins.numTombe"
+                   class="form-control"
+                   type="number"
+                   nbInput
+                   name= "numTombe"
+                   #numTombe= "ngModel"
+                   required="true"
+                   fullWidth
+                   id="numTombe"
+                   placeholder="Numéro de tombe"
+                   >
 
         </div>
       </div>
@@ -130,7 +190,7 @@
           <label  class="label">Décédé</label><br>
           <nb-select  [(ngModel)]="numRgtr" class="type-select "  nbSelect fullWidth
                       placeholder="registration number" status="info">
-            <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
+            <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
 
             <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
@@ -143,7 +203,7 @@
           <label  class="label">Médecin</label><br>
           <nb-select  [(ngModel)]="medcinid" class="type-select "  nbSelect fullWidth
                       placeholder="registration number" status="info" (change)="onChange($event.target.value)">
-            <nb-option class="url" *ngIf="NomDMedcin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
+            <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
             <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
         </div>
       </div>

@@ -15,24 +15,58 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Nom décédé</label>
-                                    <input [(ngModel)]="decede.nom" class="form-control" type="string" nbInput fullWidth id="Nom" placeholder="Nom décédé">
+                                    <input [(ngModel)]="decede.nom"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           fullWidth
+                                           name="name"
+                                           #name='ngModel'
+                                           id="Nom"
+                                           required="true"
+                                           placeholder="Nom décédé">
+                                  <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                       class="alert">
+                                    <div *ngIf="name.errors?.required">
+                                      Le nom de décédé est nécessaire....
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Prénom décédé</label>
-                                    <input [(ngModel)]="decede.prenom" class="form-control" type="string" nbInput fullWidth id="prénom" placeholder="Prénom décédé">
-
-
+                                    <input [(ngModel)]="decede.prenom"
+                                           name= "prenom"
+                                           #prenom= "ngModel"
+                                           required="true"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           fullWidth
+                                           id="prénom"
+                                           placeholder="Prénom décédé"
+                                           >
+                                    <div *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)"
+                                       class="alert">
+                                    <div *ngIf="prenom.errors?.required">
+                                      Le prénom de décédé est nécessaire.....
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Sexe</label>
-                                    <nb-select [(ngModel)]="decede.sexe" class="type-select " nbSelect fullWidth placeholder="Sexe">
-                                        <nb-option *ngFor="let t of sexe" [value]="t">{{t}}</nb-option>
-                                    </nb-select>
+                                    <nb-select [(ngModel)]="decede.sexe"
+                                               class="type-select "
+                                               nbSelect
 
+                                               fullWidth
+                                               placeholder="Sexe"
+                                               required="true">
+                                        <nb-option *ngFor="let t of sexe"  [value]="t">{{t}}</nb-option>
+                                    </nb-select>
                                 </div>
                             </div>
                         </div>
@@ -40,14 +74,32 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Date décès</label>
-                                    <input [(ngModel)]="decede.dateDeces" class="form-control" type="Date" nbInput fullWidth id="dateD" placeholder="Date décès">
+                                    <input [(ngModel)]="decede.dateDeces"
+                                           class="form-control"
+                                           type="Date"
+                                           name= "dateDeces"
+                                           #dateDeces= "ngModel"
+                                           required="true"
+                                           nbInput
+                                           fullWidth
+                                           id="dateD"
+                                           placeholder="Date décès">
 
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Date de naissance</label>
-                                    <input [(ngModel)]="decede.dateNaissance" class="form-control" type="Date" nbInput fullWidth id="DateNai" placeholder="Date de naissance">
+                                    <input [(ngModel)]="decede.dateNaissance"
+                                           class="form-control"
+                                           type="Date"
+                                           nbInput
+                                           fullWidth
+                                           name= "dateNaissance"
+                                           #dateNaissance= "ngModel"
+                                           required="true"
+                                           id="DateNai"
+                                           placeholder="Date de naissance">
 
                                 </div>
                             </div>
@@ -151,21 +203,48 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Lieu de naissance</label>
-                                    <input [(ngModel)]="decede.lieuNaiss" class="form-control" type="string" nbInput fullWidth id="LieuNai" placeholder="Lieu de naissance">
+                                    <input [(ngModel)]="decede.lieuNaiss"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           fullWidth
+                                           name= "naissance"
+                                           #naissance= "ngModel"
+                                           required="true"
+                                           id="LieuNai"
+                                           placeholder="Lieu de naissance">
 
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Nationalité</label>
-                                    <input [(ngModel)]="decede.nationalite" class="form-control" type="string" nbInput fullWidth id="nationalite" placeholder="Nationalité">
+                                    <input [(ngModel)]="decede.nationalite"
+                                           class="form-control"
+                                           type="string"
+                                           name= "nationalite"
+                                           #nationalite= "ngModel"
+                                           required="true"
+                                           nbInput
+                                           fullWidth
+                                           id="nationalite"
+                                           placeholder="Nationalité">
 
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">CIN</label>
-                                    <input [(ngModel)]="decede.cin" class="form-control" type="string" nbInput fullWidth id="cin" placeholder="CIN">
+                                    <input [(ngModel)]="decede.cin"
+                                           class="form-control"
+                                           type="string"
+                                           name= "CIN"
+                                           #CIN= "ngModel"
+                                           required="true"
+                                           nbInput
+                                           fullWidth
+                                           id="cin"
+                                           placeholder="CIN">
                                 </div>
                             </div>
                         </div>
@@ -173,14 +252,28 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Adresse</label>
-                                    <input [(ngModel)]="decede.adresse" class="form-control" type="string" nbInput fullWidth id="adresse" placeholder="Adresse">
+                                    <input [(ngModel)]="decede.adresse"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           fullWidth
+                                           name= "adresse"
+                                           #adresse= "ngModel"
+                                           required="true"
+                                           id="adresse"
+                                           placeholder="Adresse">
 
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Etat Matrimonial</label>
-                                    <nb-select [(ngModel)]="decede.etat" class="type-select " nbSelect fullWidth placeholder="Etat Matrimonial">
+                                    <nb-select [(ngModel)]="decede.etat"
+                                               class="type-select "
+                                               nbSelect
+                                               required="true"
+                                               fullWidth
+                                               placeholder="Etat Matrimonial">
                                         <nb-option *ngFor="let t of etat" [value]="t"> {{t}}</nb-option>
                                     </nb-select>
 
@@ -189,7 +282,16 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Fille ou fils de : </label>
-                                    <input [(ngModel)]="decede.fils" class="form-control" type="string" nbInput fullWidth id="fils" placeholder="Fille ou fils de ">
+                                    <input [(ngModel)]="decede.fils"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           name= "fils"
+                                           #fils= "ngModel"
+                                           required="true"
+                                           fullWidth
+                                           id="fils"
+                                           placeholder="Fille ou fils de ">
 
                                 </div>
                             </div>
@@ -198,13 +300,29 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Heure de décès</label>
-                                    <input [(ngModel)]="decede.heure" class="form-control" type="string" nbInput fullWidth id="heure" placeholder="Heure de décès">
+                                    <input [(ngModel)]="decede.heure"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           fullWidth
+                                           name= "heure"
+                                           #heure= "ngModel"
+                                           required="true"
+                                           id="heure"
+                                           placeholder="Heure de décès">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Lieu Décès</label>
-                                    <nb-select [(ngModel)]="decede.lieuxDeces" class="type-select " nbSelect fullWidth placeholder="lieu Deces">
+                                    <nb-select [(ngModel)]="decede.lieuxDeces"
+                                               class="type-select "
+                                               nbSelect
+                                               name= "lieuxDeces"
+                                               #lieuxDeces= "ngModel"
+                                               required="true"
+                                               fullWidth
+                                               placeholder="lieu Deces">
                                         <nb-option *ngFor="let t of LieuD" [value]="t">{{ t}}</nb-option>
                                     </nb-select>
 
@@ -213,7 +331,8 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Préfecture /Province</label>
-                                    <nb-select [(ngModel)]="decede.provinceD" class="type-select " nbSelect fullWidth placeholder="Préfecture /Province">
+                                    <nb-select [(ngModel)]="decede.provinceD"
+                                               class="type-select " nbSelect fullWidth placeholder="Préfecture /Province">
                                         <nb-option *ngFor="let t of province" [value]="t"> {{t}}</nb-option>
                                     </nb-select>
 
@@ -238,7 +357,14 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label">Nature de la mort</label>
-                                    <nb-select [(ngModel)]="decede.natureMort" class="type-select " nbSelect fullWidth placeholder="nature de la mort">
+                                    <nb-select [(ngModel)]="decede.natureMort"
+                                               class="type-select "
+                                               nbSelect
+                                               name= "natureMort"
+                                               #natureMort= "ngModel"
+                                               required="true"
+                                               fullWidth
+                                               placeholder="nature de la mort">
                                         <nb-option *ngFor="let t of NatureMort" [value]="t">{{t}}</nb-option>
                                     </nb-select>
 
@@ -279,7 +405,16 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="label"> Profession </label>
-                                    <input [(ngModel)]="decede.profession" class="form-control" type="string" nbInput fullWidth id="profession" placeholder="Profession">
+                                    <input [(ngModel)]="decede.profession"
+                                           class="form-control"
+                                           type="string"
+                                           nbInput
+                                           name= "profession"
+                                           #profession= "ngModel"
+                                           required="true"
+                                           fullWidth
+                                           id="profession"
+                                           placeholder="Profession">
 
                                 </div>
                             </div>
@@ -303,7 +438,12 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label class="label">Lieu de survenue</label>
-                                                <nb-select [(ngModel)]="decede.lieuServ" class="type-select " nbSelect fullWidth placeholder="Lieu de servenue">
+                                                <nb-select [(ngModel)]="decede.lieuServ"
+                                                           class="type-select "
+
+                                                           nbSelect
+                                                           fullWidth
+                                                           placeholder="Lieu de servenue">
                                                     <nb-option *ngFor="let t of lieuList" [value]="t">{{t}}</nb-option>
                                                 </nb-select>
 
