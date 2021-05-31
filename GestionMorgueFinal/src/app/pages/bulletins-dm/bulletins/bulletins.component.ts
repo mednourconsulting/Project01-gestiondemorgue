@@ -1,8 +1,6 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Bulletins} from '../../../@core/backend/common/model/Bulletins';
 import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
-import {LocalDataSource} from 'ng2-smart-table';
-import {DecedesComponent} from '../decedes/decedes.component';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {SmartTableData} from '../../../@core/interfaces/common/smart-table';
@@ -14,10 +12,9 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {formatDate} from '@angular/common';
 import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import { Base64 } from 'js-base64';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-bulletins',
@@ -27,6 +24,9 @@ import {Router} from "@angular/router";
 })
 
 export class BulletinsComponent implements OnInit, OnChanges {
+    ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+        throw new Error('Method not implemented.');
+    }
   compostage: string;
   medcinid: number;
   constation: string;
@@ -201,14 +201,11 @@ export class BulletinsComponent implements OnInit, OnChanges {
           });
           this.toastService.toastOfSave('success');
         } else {
-          console.log(this.medcinid);
-          console.log(this.numRgtr);
           this.serviceM.getById(this.medcinid).subscribe(obj1 => {
             this.Bulletins.medecin = obj1;
             this.serviceD.getById(this.numRgtr).subscribe(objj => {
               this.Bulletins.decede = objj;
               this.service.update(this.Bulletins).subscribe(obj => {
-                console.log(this.Bulletins);
                 // this.source.push(obj);
                 this.reset();
                 this.source = this.source.map(e => e);
@@ -229,7 +226,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
     this.medcinid = null;
   }
   onEditConfirm(event) {
-    console.log(event.data);
     this.settings.columns.medecin = event.data.medecin;
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
@@ -270,6 +266,23 @@ export class BulletinsComponent implements OnInit, OnChanges {
     DateNaiss = new Date(DateNaiss);
     DateDeces = new Date(DateDeces);
     return ((DateDeces.getTime() - DateNaiss.getTime()) / 31536000000).toFixed(0);
+  }
+
+  calculateAge(dateNaiss , dateDeces ) {
+    const second = 1;
+    const minute = 60 * second;
+    const hour = 60 * minute;
+    const day = 60 * hour;
+    const year = 365 * day;
+    dateNaiss = new Date(dateNaiss).getTime();
+    dateDeces = new Date(dateDeces).getTime();
+    const counter = ( dateDeces - dateNaiss ) / 1000;
+    const years = Math.floor(counter / year);
+    const restOfYears = counter % year;
+    const days = Math.floor(restOfYears / day);
+    const restOfDays = restOfYears % day;
+    const hours = Math.floor(restOfDays / hour);
+    return (years + ' ans ' + days + ' jours ' + hours + ' heurs ' );
   }
 
   private getDocumentDefinition() {
@@ -324,10 +337,10 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   fontSize: 12,
                   text: 'Décès survenu le:  ' +
                     formatDate(this.DecedeHumain.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530') +
-                    ' à l\'heure  '  + this.DecedeHumain.heure + ' à  ' + this.DecedeHumain.lieuxDeces + '  \n' + 'Nom et prénom de décédé:  ' + this.DecedeHumain.nom + ' ' + this.DecedeHumain.prenom +
+                    '\t à l\'heure  '  + this.DecedeHumain.heure + '\t à  ' + this.DecedeHumain.lieuxDeces + '  \n' + 'Nom et prénom de décédé:  ' + this.DecedeHumain.nom + ' ' + this.DecedeHumain.prenom +
                     '\n' + 'Sexe:   ' + this.DecedeHumain.sexe + '  Nationalite: ' + this.DecedeHumain.nationalite
                     + '\n Domicile  ' + this.DecedeHumain.adresse + '\n age:  ' +
-                    this.getAgeParAnnee(this.DecedeHumain.dateNaissance, this.DecedeHumain.dateDeces) + '  \n ',
+                    this.calculateAge(this.DecedeHumain.dateNaissance, this.DecedeHumain.dateDeces) + '  \n ',
                 },
               ],
               [
@@ -343,7 +356,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 {
                   text: 'N° de l\'acte au registre des décès ' + this.numRgtr +
                     '\n de l\'hopital/ DMH/Commune ',
-                  colSpan: 2,
+                  colSpan: 3,
                   fontSize: 12,
                   border: [true, false, true, true],
                 },
@@ -487,7 +500,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.getAgeParAnnee(this.DecedeHumain.dateNaissance, this.DecedeHumain.dateDeces),
+                  text: this.calculateAge(this.DecedeHumain.dateNaissance, this.DecedeHumain.dateDeces),
                 },
               ],
               [
@@ -647,13 +660,13 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   fontSize: 12,
                   text: 'Décès survenu le:  ' +
                     this.checkIfNullOrUndefind(formatDate( obj.decede.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530'))  +
-                    ' à l\'heure  '  + this.checkIfNullOrUndefind(obj.decede.heure) + ' à  ' +
+                    '\t à l\'heure  '  + this.checkIfNullOrUndefind(obj.decede.heure) + '\t à  ' +
                     this.checkIfNullOrUndefind(obj.decede.lieuxDeces) + '  \n' + 'Nom et prénom de décédé:  ' +
                     this.checkIfNullOrUndefind(obj.decede.nom) + ' ' + this.checkIfNullOrUndefind(obj.decede.prenom) +
                     '\t\t Sexe:   ' + this.checkIfNullOrUndefind(obj.decede.sexe) +
-                    '  Nationalite: ' + this.checkIfNullOrUndefind(obj.decede.nationalite)
-                    + '\t \t Domicile  ' + this.checkIfNullOrUndefind(obj.decede.adress) + '\n age:  ' +
-                    this.checkIfNullOrUndefind(this.getAgeParAnnee(obj.decede.dateNaissance, obj.decede.dateDeces))  + '  \n ',
+                    ' \n Nationalite : ' + this.checkIfNullOrUndefind(obj.decede.nationalite)
+                    + '\t\t Domicile : ' + this.checkIfNullOrUndefind(obj.decede.adress) + '\n age:  ' +
+                    this.checkIfNullOrUndefind(this.calculateAge(obj.decede.dateNaissance, obj.decede.dateDeces)),
                 },
               ],
               [
@@ -680,7 +693,10 @@ export class BulletinsComponent implements OnInit, OnChanges {
           },
         },
         {
-          text: '-----------------------------------------------------------------------------------',
+          text: 'Partie à détacher et destinée à l\'etat civil où le deces ou la mortinatalité est survenue \n -----------------------------------------------------------------------------------' +
+            '----------------------------------------------------------------------------------------',
+          alignment: 'center',
+          fontSize: 10,
         },
         {
           table: {
@@ -689,10 +705,22 @@ export class BulletinsComponent implements OnInit, OnChanges {
               [
                 {
                   colSpan: 2,
-                  text: 'PARTIE ANONYME \n' +
-                    'DESTINEE AU MINISTERE DE LA SANTE PUBLIQUE? SERVICE DES ETUDES \n ET DE L\'INFORMATION SANTAIRE',
+                  text: 'PARTIE ANONYME \n',
+                  alignment: 'center',
+                  fontSize: 14,
+                  border: [true, true , true , false],
+                },
+                '',
+              ],
+              [
+                {
+                  colSpan: 2,
+                  text: 'DESTINEE AU MINISTERE DE LA SANTE PUBLIQUE SERVICE DES ETUDES \n ' +
+                    'ET DE L\'INFORMATION SANTAIRE',
                   alignment: 'center',
                   fontSize: 10,
+                  bold: true,
+                  border: [true, false , true , true],
                 },
                 '',
               ],
@@ -784,7 +812,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(obj.decede.dateDeces) ,
+                  text: this.checkIfNullOrUndefind(formatDate( obj.decede.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530')) ,
                 },
               ],
               [
@@ -814,7 +842,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(this.getAgeParAnnee(obj.decede.dateNaissance, obj.decede.dateDeces)),
+                  text: this.checkIfNullOrUndefind(this.calculateAge(obj.decede.dateNaissance, obj.decede.dateDeces)),
                 },
               ],
               [
@@ -848,10 +876,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
               ],
             ],
           },
-        },
-        {
-          text: '\n',
-          margin: [0, 300, 0, 300],
         },
         {
           table: {
@@ -960,8 +984,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
-        console.log(this.DecedeHumain)
-        console.log(event.data)
         this.Bulletins = event.data;
         this.DecedeHumain = event.data.decede;
         this.MedecinHumain = event.data.medecin;
@@ -994,7 +1016,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
 
 
   onChange(medcinid: number) {
-    console.log('medcinid' + medcinid);
     this.serviceM.getById(this.medcinid).subscribe(obj1 => {
       this.Bulletins.medecin = obj1;
       this.MedecinHumain = obj1;
