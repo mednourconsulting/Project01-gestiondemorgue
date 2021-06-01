@@ -1,546 +1,543 @@
-
-<nb-card>
-  <nb-card-header>
-    <div class="row">
-      <div class="col-sm-12">Ajouter un Bulletin</div>
-    </div>
-  </nb-card-header>
-  <nb-card-body>
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Type de bulletin</label>
-          <nb-select  [(ngModel)]="Bulletins.typeBulletin"
-                      class="type-select "
-                      nbSelect fullWidth
-                      placeholder="Type de bulletin"
-                      required="true">
-            <nb-option *ngFor="let t of typeBulletin" [value]="t" >{{ t }}</nb-option>
-          </nb-select>
-
-      </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Province ou préfecture</label><br>
-          <nb-select  [(ngModel)]="Bulletins.province"
-                      class="type-select "
-                      nbSelect fullWidth
-                      placeholder="Province ou préfecture"
-                      required="true">
-            <nb-option *ngFor="let t of province" [value]="t" >{{ t }}</nb-option>
-          </nb-select>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Date de déclaration</label>
-          <input
-          type="date"
-          status="info"
-          fullWidth
-          name= "declaration"
-          #declaration= "ngModel"
-          class="form-control"
-          placeholder="Date de déclaration"
-          required="true"
-          [ngModel] ="Bulletins.declaration| date:'yyyy-MM-dd'"
-          (ngModelChange)="Bulletins.declaration = $event"
-          [ngModelOptions]="{standalone: true}"/>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Cercle</label><br>
-          <input [(ngModel)]="Bulletins.cercle"
-                 class="form-control"
-                 ng-required="expression"
-                 type="text"
-                 nbInput
-                 fullWidth
-                 name= "cercle"
-                 #cercle= "ngModel"
-                 required="true"
-                 id="cercle"
-                 placeholder="Cercle">
-
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Municipalité/Centre/Commune</label><br>
-          <input [(ngModel)]="Bulletins.centre"
-                 class="form-control"
-                 type="text"
-                 nbInput
-                 fullWidth
-                 name= "centre"
-                 #centre= "ngModel"
-                 required="true"
-                 id="municipalite"
-                 placeholder="Municipalité/Centre/Commune"
-                 >
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Diagnostique Attestation</label>
-          <nb-select  [(ngModel)]="Bulletins.diagnostique"
-                      class="type-select "
-                      nbSelect
-                      fullWidth
-                      name= "diagnostique"
-                      #diagnostique= "ngModel"
-                      required="true"
-                      placeholder="Diagnostique Attestation"
-                      >
-            <nb-option *ngFor="let t of diagnostique" [value]="t" >{{ t }}</nb-option>
-          </nb-select>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Milieu de résidence</label>
-          <nb-select  [(ngModel)]="Bulletins.residece"
-                      class="type-select"
-                      nbSelect
-                      fullWidth
-                      name= "residece"
-                      #residece= "ngModel"
-                      required="true"
-                      >
-            <nb-option *ngFor="let t of Milieu" [value]="t" >{{ t }}</nb-option>
-          </nb-select>
-
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Lieu Enterrement</label>
-          <nb-select  [(ngModel)]="Bulletins.lieuEntrement"
-                      class="type-select "
-                      nbSelect
-                      fullWidth
-                      name= "lieuEntrement"
-                      #lieuEntrement= "ngModel"
-                      required="true"
-                      placeholder="Lieu Enterrement"
-                      >
-            <nb-option *ngFor="let t of Lieu" [value]="t" >{{ t }}</nb-option>
-          </nb-select>
-
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Cimetière</label>
-          <nb-select  [(ngModel)]="Bulletins.cimetiere"
-                      lass="type-select "
-                      nbSelect
-                      fullWidth
-                      name= "cimetiere"
-                      #cimetiere= "ngModel"
-                      required="true"
-                      placeholder="Cimetière"
-                      >
-            <nb-option *ngFor="let t of cimetiere" [value]="t" >{{ t }}</nb-option>
-          </nb-select>
-
-        </div>
-      </div>
-    </div>
-    <div class="row">
-
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Numéro de tombe</label>
-            <input [(ngModel)]="Bulletins.numTombe"
-                   class="form-control"
-                   type="number"
-                   nbInput
-                   name= "numTombe"
-                   #numTombe= "ngModel"
-                   required="true"
-                   fullWidth
-                   id="numTombe"
-                   placeholder="Numéro de tombe"
-                   >
-
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Compostage</label>
-          <input [(ngModel)]="Bulletins.compostage" class="form-control"  type="text" nbInput fullWidth
-                 id="Compostage" placeholder="Compostage" status="info">
-
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Décédé</label><br>
-          <nb-select  [(ngModel)]="numRgtr" class="type-select "  nbSelect fullWidth
-                      placeholder="registration number"  required="true"  (ngModelChange)="ActivateDecede(numRgtr)">
-            <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
-
-            <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
-          </nb-select>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">Médecin</label><br>
-          <nb-select  [(ngModel)]="medcinid" class="type-select "  nbSelect fullWidth
-                      placeholder="registration number" required="true"
-                      (change)="onChange($event.target.value)"
-                      (ngModelChange)="ActivateMedecin(medcinid)"
-          >
-
-            <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
-            <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
-        </div>
-      </div>
-      </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div *ngIf="isAdmin">
-          <button *ngIf="isAdmin" class="fa-pull-right btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Register</button>
-        <button (click)="generatePdf('open')"
-                class="btn btn-outline-primary fa-pull-right mr-1" >
-          <span>Certificat</span></button>
-        </div>
-        <!--  <button (click)="add()" name="btnn"  class="btn btn-outline-primary fa-pull-right mr-1" >
-          <span>Valider les informations</span></button> -->
-      </div>
-    </div>
-  </nb-card-body>
-</nb-card>
-<div *ngIf="(numRgtr && medcinid)">
+<div  *ngIf="isAdmin">
   <nb-card>
+    <nb-card-header>
+      <div class="row">
+        <div class="col-sm-12">Ajouter un Bulletin</div>
+      </div>
+    </nb-card-header>
     <nb-card-body>
-      <nb-tabset>
-        <nb-tab tabTitle="Informations de Médecin">
-          <nb-card>
-            <nb-card-header>
-              <div class="row">
-                <div class="col-sm-6">
-                  Les informations du médecin
-                </div>
-              </div>
-            </nb-card-header>
-            <nb-card-body>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Nom Medecin</label>
-                    <output status="info"[value]="this.MedecinHumain.nom" class="form-control" type="text" fullWid status="info">
-                    </output>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">الإسم العائلي</label>
-                    <output status="info"[value]="this.MedecinHumain.nomAR" class="form-control" type="text" fullWidth status="info" >
-                    </output>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Prénom Medecin</label>
-                    <output status="info"[value]="this.MedecinHumain.prenom" class="form-control" type="text" fullWid status="info" >
-                    </output>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Type de bulletin</label>
+            <nb-select  [(ngModel)]="Bulletins.typeBulletin"
+                        class="type-select "
+                        nbSelect fullWidth
+                        placeholder="Type de bulletin"
+                        required="true">
+              <nb-option *ngFor="let t of typeBulletin" [value]="t" >{{ t }}</nb-option>
+            </nb-select>
 
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">الإسم الشخصي</label>
-                    <output status="info"[value]="this.MedecinHumain.prenomAR" class="form-control" type="text" fullWid >
-                    </output>
+        </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Province ou préfecture</label><br>
+            <nb-select  [(ngModel)]="Bulletins.province"
+                        class="type-select "
+                        nbSelect fullWidth
+                        placeholder="Province ou préfecture"
+                        required="true">
+              <nb-option *ngFor="let t of province" [value]="t" >{{ t }}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Date de déclaration</label>
+            <input
+            type="date"
+            status="info"
+            fullWidth
+            name= "declaration"
+            #declaration= "ngModel"
+            class="form-control"
+            placeholder="Date de déclaration"
+            required="true"
+            [ngModel] ="Bulletins.declaration| date:'yyyy-MM-dd'"
+            (ngModelChange)="Bulletins.declaration = $event"
+            [ngModelOptions]="{standalone: true}"/>
+          </div>
+        </div>
 
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Adresse de Medecin</label>
-                    <output status="info"[value]="this.MedecinHumain.adress" class="form-control" type="text" fullWid >
-                    </output>
+      </div>
 
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">العنوان</label>
-                    <output status="info"[value]="this.MedecinHumain.adressAR" class="form-control" type="text" fullWid >
-                    </output>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Cercle</label><br>
+            <input [(ngModel)]="Bulletins.cercle"
+                   class="form-control"
+                   ng-required="expression"
+                   type="text"
+                   nbInput
+                   fullWidth
+                   name= "cercle"
+                   #cercle= "ngModel"
+                   required="true"
+                   id="cercle"
+                   placeholder="Cercle">
 
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">CIN d'encadrant</label>
-                    <output status="info"[value]="this.MedecinHumain.cin" class="form-control" type="text" fullWid >
-                    </output>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Municipalité/Centre/Commune</label><br>
+            <input [(ngModel)]="Bulletins.centre"
+                   class="form-control"
+                   type="text"
+                   nbInput
+                   fullWidth
+                   name= "centre"
+                   #centre= "ngModel"
+                   required="true"
+                   id="municipalite"
+                   placeholder="Municipalité/Centre/Commune"
+                   >
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Diagnostique Attestation</label>
+            <nb-select  [(ngModel)]="Bulletins.diagnostique"
+                        class="type-select "
+                        nbSelect
+                        fullWidth
+                        required="true"
+                        placeholder="Diagnostique Attestation"
+                        >
+              <nb-option *ngFor="let t of diagnostique" [value]="t" >{{ t }}</nb-option>
+            </nb-select>
 
-                  </div>
-                </div>
-              </div>
-            </nb-card-body>
-          </nb-card>
-        </nb-tab>
-        <nb-tab tabTitle="Informations de décéde">
-          <nb-card>
-            <nb-card-header>
-              <div class="row">
-                <div class="col-sm-6">
-                  Les informations du décédé
-                </div>
-              </div>
-            </nb-card-header>
-            <nb-card-body>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label ">Nom décédé</label>
-                    <output status="info"[value]="this.DecedeHumain.nom" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Prénom décédé</label>
-                    <output status="info"[value]="this.DecedeHumain.prenom" class="form-control" type="text" fullWid >
-                    </output>
+          </div>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Milieu de résidence</label>
+            <nb-select  [(ngModel)]="Bulletins.residece"
+                        class="type-select"
+                        nbSelect
+                        fullWidth
+                        name= "residece"
+                        #residece= "ngModel"
+                        required="true"
+                        >
+              <nb-option *ngFor="let t of Milieu" [value]="t" >{{ t }}</nb-option>
+            </nb-select>
 
-                  </div>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Lieu Enterrement</label>
+            <nb-select  [(ngModel)]="Bulletins.lieuEntrement"
+                        class="type-select "
+                        nbSelect
+                        fullWidth
+                        name= "lieuEntrement"
+                        #lieuEntrement= "ngModel"
+                        required="true"
+                        placeholder="Lieu Enterrement"
+                        >
+              <nb-option *ngFor="let t of Lieu" [value]="t" >{{ t }}</nb-option>
+            </nb-select>
 
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Sexe</label>
-                    <output status="info"[value]="this.DecedeHumain.sexe" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Cimetière</label>
+            <nb-select  [(ngModel)]="Bulletins.cimetiere"
+                        lass="type-select "
+                        nbSelect
+                        fullWidth
+                        required="true"
+                        placeholder="Cimetière"
+                        >
+              <nb-option *ngFor="let t of cimetiere" [value]="t" >{{ t }}</nb-option>
+            </nb-select>
 
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Date décès</label>
-                    <output status="info"[value]="this.DecedeHumain.dateDeces" class="form-control" type="text" fullWid >
-                    </output>
+          </div>
+        </div>
+      </div>
+      <div class="row">
 
-                  </div>
-                </div>
-              </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Numéro de tombe</label>
+              <input [(ngModel)]="Bulletins.numTombe"
+                     class="form-control"
+                     type="number"
+                     nbInput
+                     name= "numTombe"
+                     #numTombe= "ngModel"
+                     required="true"
+                     fullWidth
+                     id="numTombe"
+                     placeholder="Numéro de tombe"
+                     >
 
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Compostage</label>
+            <input [(ngModel)]="Bulletins.compostage" class="form-control"  type="text" nbInput fullWidth
+                   id="Compostage" placeholder="Compostage" status="info">
 
-              <div class="row">
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Décédé</label><br>
+            <nb-select  [(ngModel)]="numRgtr" class="type-select "  nbSelect fullWidth
+                        placeholder="registration number"  required="true"  (ngModelChange)="ActivateDecede(numRgtr)">
+              <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
 
-                <div class="col-sm-6">
-                  <label  class="label">S'agit-il d'un mort né ?</label>
-                  <output status="info"[value]="this.DecedeHumain.mortNe" class="form-control" type="text" fullWid >
-                  </output>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Date de naissance</label>
-                    <output status="info"[value]="this.DecedeHumain.dateNaissance" class="form-control" type="text" fullWid >
-                    </output>
+              <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label  class="label">Médecin</label><br>
+            <nb-select  [(ngModel)]="medcinid" class="type-select "  nbSelect fullWidth
+                        placeholder="registration number" required="true"
+                        (change)="onChange($event.target.value)"
+                        (ngModelChange)="ActivateMedecin(medcinid)"
+            >
 
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Lieu de naissance</label>
-                    <output status="info"[value]="this.DecedeHumain.lieuNaiss" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Nationalité</label>
-                    <output status="info"[value]="this.DecedeHumain.nationalite" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="row">
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">CIN</label>
-                    <output status="info"[value]="this.DecedeHumain.CIN" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Adresse</label>
-                    <output status="info"[value]="this.DecedeHumain.adresse" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Etat Matrimonial</label>
-                    <output status="info"[value]="this.DecedeHumain.etat" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Fille ou fils de : </label>
-                    <output status="info"[value]="this.DecedeHumain.fils" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="row">
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Heure de décès</label>
-                    <output status="info"[value]="this.DecedeHumain.heure" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Lieu de décès</label>
-                    <output status="info"[value]="this.DecedeHumain.lieuxDeces" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Préfecture /Province</label>
-                    <output status="info"[value]="this.DecedeHumain.provinceD" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Préfecture d'arrondissements</label>
-                    <output status="info"[value]="this.DecedeHumain.prefectureD" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Commune /Arrondissements</label>
-                    <output status="info"[value]="this.DecedeHumain.communeD" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label"> Nature du mort </label>
-                    <output status="info"[value]="this.DecedeHumain.natureMort" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Num de registre : </label>
-                    <output status="info"[value]="this.DecedeHumain.id" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label"> Profession </label>
-                    <output status="info"[value]="this.DecedeHumain.profession" class="form-control" type="text" fullWid >
-                    </output>
-
-                  </div>
-                </div>
-
-
-              </div>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <label  class="label">Obstacle medicolégal</label>
-                  <output status="info"[value]="this.DecedeHumain.obstacle" class="form-control" type="text" fullWid >
-                  </output>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Autopsie</label>
-                    <output status="info"[value]="this.DecedeHumain.obstacle" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label  class="label">Une operation a-t-elle été effectuée lors des 4 dernières semaines ?</label>
-                    <output status="info"[value]="this.DecedeHumain.obstacle" class="form-control" type="text" fullWid >
-                    </output>
-                  </div>
-                </div>
-              </div>
-            </nb-card-body>
-          </nb-card>
-        </nb-tab>
-
-      </nb-tabset>
-
-
+              <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
+              <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
+          </div>
+        </div>
+        </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div *ngIf="isAdmin">
+            <button *ngIf="isAdmin" class="fa-pull-right btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Register</button>
+          <button (click)="generatePdf('open')"
+                  class="btn btn-outline-primary fa-pull-right mr-1" >
+            <span>Certificat</span></button>
+          </div>
+          <!--  <button (click)="add()" name="btnn"  class="btn btn-outline-primary fa-pull-right mr-1" >
+            <span>Valider les informations</span></button> -->
+        </div>
+      </div>
     </nb-card-body>
-
   </nb-card>
+  <div *ngIf="(numRgtr && medcinid)">
+    <nb-card>
+      <nb-card-body>
+        <nb-tabset>
+          <nb-tab tabTitle="Informations de Médecin">
+            <nb-card>
+              <nb-card-header>
+                <div class="row">
+                  <div class="col-sm-6">
+                    Les informations du médecin
+                  </div>
+                </div>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Nom Medecin</label>
+                      <output status="info"[value]="this.MedecinHumain.nom" class="form-control" type="text" fullWid status="info">
+                      </output>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">الإسم العائلي</label>
+                      <output status="info"[value]="this.MedecinHumain.nomAR" class="form-control" type="text" fullWidth status="info" >
+                      </output>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Prénom Medecin</label>
+                      <output status="info"[value]="this.MedecinHumain.prenom" class="form-control" type="text" fullWid status="info" >
+                      </output>
+
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">الإسم الشخصي</label>
+                      <output status="info"[value]="this.MedecinHumain.prenomAR" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Adresse de Medecin</label>
+                      <output status="info"[value]="this.MedecinHumain.adress" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">العنوان</label>
+                      <output status="info"[value]="this.MedecinHumain.adressAR" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">CIN d'encadrant</label>
+                      <output status="info"[value]="this.MedecinHumain.cin" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </nb-tab>
+          <nb-tab tabTitle="Informations de décéde">
+            <nb-card>
+              <nb-card-header>
+                <div class="row">
+                  <div class="col-sm-6">
+                    Les informations du décédé
+                  </div>
+                </div>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label ">Nom décédé</label>
+                      <output status="info"[value]="this.DecedeHumain.nom" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Prénom décédé</label>
+                      <output status="info"[value]="this.DecedeHumain.prenom" class="form-control" type="text" fullWid >
+                      </output>
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Sexe</label>
+                      <output status="info"[value]="this.DecedeHumain.sexe" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Date décès</label>
+                      <output status="info"[value]="this.DecedeHumain.dateDeces" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <label  class="label">S'agit-il d'un mort né ?</label>
+                    <output status="info"[value]="this.DecedeHumain.mortNe" class="form-control" type="text" fullWid >
+                    </output>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Date de naissance</label>
+                      <output status="info"[value]="this.DecedeHumain.dateNaissance" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Lieu de naissance</label>
+                      <output status="info"[value]="this.DecedeHumain.lieuNaiss" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Nationalité</label>
+                      <output status="info"[value]="this.DecedeHumain.nationalite" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">CIN</label>
+                      <output status="info"[value]="this.DecedeHumain.CIN" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Adresse</label>
+                      <output status="info"[value]="this.DecedeHumain.adresse" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Etat Matrimonial</label>
+                      <output status="info"[value]="this.DecedeHumain.etat" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Fille ou fils de : </label>
+                      <output status="info"[value]="this.DecedeHumain.fils" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Heure de décès</label>
+                      <output status="info"[value]="this.DecedeHumain.heure" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Lieu de décès</label>
+                      <output status="info"[value]="this.DecedeHumain.lieuxDeces" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Préfecture /Province</label>
+                      <output status="info"[value]="this.DecedeHumain.provinceD" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Préfecture d'arrondissements</label>
+                      <output status="info"[value]="this.DecedeHumain.prefectureD" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Commune /Arrondissements</label>
+                      <output status="info"[value]="this.DecedeHumain.communeD" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label"> Nature du mort </label>
+                      <output status="info"[value]="this.DecedeHumain.natureMort" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Num de registre : </label>
+                      <output status="info"[value]="this.DecedeHumain.id" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label"> Profession </label>
+                      <output status="info"[value]="this.DecedeHumain.profession" class="form-control" type="text" fullWid >
+                      </output>
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label  class="label">Obstacle medicolégal</label>
+                    <output status="info"[value]="this.DecedeHumain.obstacle" class="form-control" type="text" fullWid >
+                    </output>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Autopsie</label>
+                      <output status="info"[value]="this.DecedeHumain.obstacle" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label  class="label">Une operation a-t-elle été effectuée lors des 4 dernières semaines ?</label>
+                      <output status="info"[value]="this.DecedeHumain.obstacle" class="form-control" type="text" fullWid >
+                      </output>
+                    </div>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </nb-tab>
+
+        </nb-tabset>
+
+
+      </nb-card-body>
+
+    </nb-card>
+  </div>
 </div>
 <!--
 <nb-card>
