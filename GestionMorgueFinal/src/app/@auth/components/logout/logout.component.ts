@@ -30,11 +30,11 @@ export class NgxLogoutComponent implements OnInit {
     localStorage.clear();
     this.service.logout(strategy).subscribe((result: NbAuthResult) => {
 
-      const redirect = result.getRedirect();
+      const redirect = '/auth/login';
       if (redirect) {
         setTimeout(() => {
           return this.router.navigateByUrl(redirect);
-        }, this.redirectDelay);
+        }, 1500);
       }
     });
   }
