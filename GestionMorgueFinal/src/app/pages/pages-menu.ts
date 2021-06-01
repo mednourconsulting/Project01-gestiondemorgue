@@ -91,12 +91,12 @@ export class PagesMenu {
       },
       {
         title: 'Statistiques',
-         icon: 'pie-chart-outline',
+        icon: 'pie-chart-outline',
         children: [
-        /* {
-            title: 'Décès des nouveaux nés',
-            link: '/pages/statistiques/NouveauxNes',
-          },*/
+          /* {
+              title: 'Décès des nouveaux nés',
+              link: '/pages/statistiques/NouveauxNes',
+            },*/
           {
             title: 'Décès des enfants (1j à 30j)',
             link: '/pages/statistiques/DecesEnfants',
@@ -119,22 +119,18 @@ export class PagesMenu {
           },
         ],
       },
-     // {
-     //   title: 'Rapport',
-     //   icon: '',
-     // },
+      // {
+      //   title: 'Rapport',
+      //   icon: '',
+      // },
     ];
     const Parameters = [
       {
         title: 'Paramètres',
         icon: 'settings-outline',
-       /* title: 'Authentification',
-        icon: 'lock-outline',*/
+        /* title: 'Authentification',
+         icon: 'lock-outline',*/
         children: [
-          {
-            title: 'Connection',
-            link: '/auth/login',
-          },
           {
             title: 'S\'inscrire',
             link: '/auth/register',
@@ -153,6 +149,7 @@ export class PagesMenu {
 
     return of([...dashboardMenu, ...menu, ...Parameters]);
   }
+
   getMenuUser(): Observable<NbMenuItem[]> {
     const dashboardMenu = [
       {
@@ -176,7 +173,7 @@ export class PagesMenu {
       {
         title: 'Bulletins',
         /*de décès et de mortinalité*/
-         icon: 'layout-outline',
+        icon: 'layout-outline',
         children: [
           {
             title: 'Bulletins',
@@ -234,12 +231,12 @@ export class PagesMenu {
       },
       {
         title: 'Statistiques',
-         icon: 'pie-chart-outline',
+        icon: 'pie-chart-outline',
         children: [
-        /* {
-            title: 'Décès des nouveaux nés',
-            link: '/pages/statistiques/NouveauxNes',
-          },*/
+          /* {
+              title: 'Décès des nouveaux nés',
+              link: '/pages/statistiques/NouveauxNes',
+            },*/
           {
             title: 'Décès des enfants (1j à 30j)',
             link: '/pages/statistiques/DecesEnfants',
@@ -262,17 +259,17 @@ export class PagesMenu {
           },
         ],
       },
-     // {
-     //   title: 'Rapport',
-     //   icon: '',
-     // },
+      // {
+      //   title: 'Rapport',
+      //   icon: '',
+      // },
     ];
     const Parameters = [
       {
         title: 'Paramètres',
         icon: 'settings-outline',
-       /* title: 'Authentification',
-        icon: 'lock-outline',*/
+        /* title: 'Authentification',
+         icon: 'lock-outline',*/
         children: [
           {
             title: 'réinitialiser le mot de passe',

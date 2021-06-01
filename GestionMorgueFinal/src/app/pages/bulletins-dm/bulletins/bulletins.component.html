@@ -1,5 +1,5 @@
-<div  *ngIf="isAdmin">
-  <nb-card>
+<div *ngIf="isAdmin == true" >
+  <nb-card >
     <nb-card-header>
       <div class="row">
         <div class="col-sm-12">Ajouter un Bulletin</div>
@@ -18,7 +18,7 @@
               <nb-option *ngFor="let t of typeBulletin" [value]="t" >{{ t }}</nb-option>
             </nb-select>
 
-        </div>
+          </div>
         </div>
         <div class="col-sm-4">
           <div class="form-group">
@@ -36,17 +36,17 @@
           <div class="form-group">
             <label  class="label">Date de déclaration</label>
             <input
-            type="date"
-            status="info"
-            fullWidth
-            name= "declaration"
-            #declaration= "ngModel"
-            class="form-control"
-            placeholder="Date de déclaration"
-            required="true"
-            [ngModel] ="Bulletins.declaration| date:'yyyy-MM-dd'"
-            (ngModelChange)="Bulletins.declaration = $event"
-            [ngModelOptions]="{standalone: true}"/>
+              type="date"
+              status="info"
+              fullWidth
+              name= "declaration"
+              #declaration= "ngModel"
+              class="form-control"
+              placeholder="Date de déclaration"
+              required="true"
+              [ngModel] ="Bulletins.declaration| date:'yyyy-MM-dd'"
+              (ngModelChange)="Bulletins.declaration = $event"
+              [ngModelOptions]="{standalone: true}"/>
           </div>
         </div>
 
@@ -83,7 +83,7 @@
                    required="true"
                    id="municipalite"
                    placeholder="Municipalité/Centre/Commune"
-                   >
+            >
           </div>
         </div>
         <div class="col-sm-4">
@@ -95,7 +95,7 @@
                         fullWidth
                         required="true"
                         placeholder="Diagnostique Attestation"
-                        >
+            >
               <nb-option *ngFor="let t of diagnostique" [value]="t" >{{ t }}</nb-option>
             </nb-select>
 
@@ -146,7 +146,7 @@
                         fullWidth
                         required="true"
                         placeholder="Cimetière"
-                        >
+            >
               <nb-option *ngFor="let t of cimetiere" [value]="t" >{{ t }}</nb-option>
             </nb-select>
 
@@ -158,17 +158,17 @@
         <div class="col-sm-4">
           <div class="form-group">
             <label  class="label">Numéro de tombe</label>
-              <input [(ngModel)]="Bulletins.numTombe"
-                     class="form-control"
-                     type="number"
-                     nbInput
-                     name= "numTombe"
-                     #numTombe= "ngModel"
-                     required="true"
-                     fullWidth
-                     id="numTombe"
-                     placeholder="Numéro de tombe"
-                     >
+            <input [(ngModel)]="Bulletins.numTombe"
+                   class="form-control"
+                   type="number"
+                   nbInput
+                   name= "numTombe"
+                   #numTombe= "ngModel"
+                   required="true"
+                   fullWidth
+                   id="numTombe"
+                   placeholder="Numéro de tombe"
+            >
 
           </div>
         </div>
@@ -206,14 +206,14 @@
               <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
           </div>
         </div>
-        </div>
+      </div>
       <div class="row">
         <div class="col-md-12">
           <div *ngIf="isAdmin">
             <button *ngIf="isAdmin" class="fa-pull-right btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Register</button>
-          <button (click)="generatePdf('open')"
-                  class="btn btn-outline-primary fa-pull-right mr-1" >
-            <span>Certificat</span></button>
+            <button (click)="generatePdf('open')"
+                    class="btn btn-outline-primary fa-pull-right mr-1" >
+              <span>Certificat</span></button>
           </div>
           <!--  <button (click)="add()" name="btnn"  class="btn btn-outline-primary fa-pull-right mr-1" >
             <span>Valider les informations</span></button> -->
@@ -539,6 +539,7 @@
     </nb-card>
   </div>
 </div>
+
 <!--
 <nb-card>
   <nb-card-header>

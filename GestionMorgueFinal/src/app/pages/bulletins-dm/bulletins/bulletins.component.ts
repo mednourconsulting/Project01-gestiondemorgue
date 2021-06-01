@@ -147,7 +147,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
   };
   source: Array<Bulletins>;
   numRgtr: number = null;
-  isAdmin: boolean;
+  isAdmin: boolean = false;
   DecedeHumain: Decedes = new Decedes();
   NomDecede = [];
   NomDMedcin = [];
@@ -180,7 +180,9 @@ export class BulletinsComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
       console.log(data);
+      console.log(this.isAdmin);
       this.isAdmin = data.role.includes('ADMIN');
+      console.log(this.isAdmin);
     });
     this.init();
   }
@@ -1000,12 +1002,17 @@ export class BulletinsComponent implements OnInit, OnChanges {
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
+        if (this.isAdmin) {
         this.Bulletins = event.data;
         this.DecedeHumain = event.data.decede;
         this.MedecinHumain = event.data.medecin;
         this.numRgtr = event.data.decede.id;
         this.medcinid = event.data.medecin.id;
         this.Bulletins.typeBulletin = event.data.typeBulletin;
+          this.toastService.toastOfEdit('success');
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
         break;
       case 'bulletin':
 
@@ -1033,7 +1040,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
 
   onChange(medcinid: number) {
     this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-      console.log(obj);
       this.Bulletins.medecin = obj1;
       this.MedecinHumain = obj1;
     });
