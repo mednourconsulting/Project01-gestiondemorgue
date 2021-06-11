@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="bundle-java8:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/bundle_java8_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="bundle-java8/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="bundle-java8" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Spring-5.2.3.RELEASE" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -60,7 +60,16 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Date déclaration</label>
-                    <input [(ngModel)]="Medicolegal.declaration" class="form-control" type="Date" nbInput fullWidth id="datedec" placeholder="Date déclaration" status="success">
+                    <input
+                           [ngModel] ="Medicolegal.declaration| date:'yyyy-MM-dd'"
+                           (ngModelChange)="Medicolegal.declaration = $event"
+                           class="form-control"
+                           type="Date"
+                           nbInput
+                           fullWidth
+                           id="datedec"
+                           placeholder="Date déclaration"
+                           status="success">
 
                 </div>
             </div>
@@ -83,7 +92,9 @@
   </div>
   <div class="table table-responsive">
 
-    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
+    <ng2-smart-table [settings]="settings"
+                     [source]="source"
+                     (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
 </div>

@@ -12,8 +12,8 @@ import jsPDF from 'jspdf';
 import { base64Str } from '../../certificat/base64.js';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {Router} from "@angular/router";
-import {ToastrService} from "../../../@core/backend/common/services/toastr.service";
+import {Router} from '@angular/router';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -47,9 +47,13 @@ export class MedicolegalComponent implements OnInit {
        },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       custom: [
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
+        },
         {
           name: 'pdfFrancais',
           title: '<i class="fas fa-file-pdf"></i>',
@@ -101,7 +105,8 @@ export class MedicolegalComponent implements OnInit {
   source: Array<CertificatMedicoLegal>;
   today = new Date();
   jstoday = '';
-
+  defunt: number;
+  MedNom: number;
   constructor(private service: CertificatMedicoLegalService,
               private userservice: UsersService,
               private router: Router,
@@ -129,22 +134,42 @@ export class MedicolegalComponent implements OnInit {
     this.init();
   }
 
-  MedNom: number;
+
   private reset() {
     this.Medicolegal = new CertificatMedicoLegal();
   }
-  defunt: number;
+
   save() {
-    this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
-      this.Medicolegal.medecin = obj;
-      this.serviceDecede.getById(this.defunt).subscribe(objj => {
-        this.Medicolegal.defunt = objj;
-        this.service.create(this.Medicolegal).subscribe(data => {
-          this.init();
-        }); }); });
-    this.init();
-    window.alert('Les données ont été ajoutées avec succès à la base de données');
-    this.init();
+    if (this.Medicolegal.id == null) {
+      this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
+        this.Medicolegal.medecin = obj;
+        this.serviceDecede.getById(this.defunt).subscribe(objj => {
+          this.Medicolegal.defunt = objj;
+          this.service.create(this.Medicolegal).subscribe(data => {
+            this.init();
+          }); }); });
+      this.init();
+      window.alert('Les données ont été ajoutées avec succès à la base de données');
+      this.init();
+    } else {
+      if (this.isAdmin) {
+
+        this.serviceMeddcin.getById(this.MedNom).subscribe(obj => {
+          this.Medicolegal.medecin = obj;
+          this.serviceDecede.getById(this.defunt).subscribe(objj => {
+            this.Medicolegal.defunt = objj;
+            this.service.getAll().subscribe(data => {
+              this.service.update(this.Medicolegal).subscribe(data1 => {
+                this.source.map(e => e);
+              });
+              this.toastService.toastOfEdit('success');
+            });
+          }); });
+      } else {
+        this.toastService.toastOfEdit('warning');
+
+      }
+    }
   }
   isAdmin: boolean;
   createConfirm(event) {
@@ -523,6 +548,15 @@ export class MedicolegalComponent implements OnInit {
 
   onCustomConfirm(event) {
     switch ( event.action) {
+      case 'edit':
+        if (this.isAdmin) {
+          this.Medicolegal = event.data;
+          this.MedNom = event.data.medecin.id;
+          this.defunt = event.data.defunt.id;
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
+        break;
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
         pdfMake.createPdf(documentDefinition).open();
