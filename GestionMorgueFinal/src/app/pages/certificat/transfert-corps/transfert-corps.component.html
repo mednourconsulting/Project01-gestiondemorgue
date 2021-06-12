@@ -1,4 +1,3 @@
-<div *ngIf="isAdmin">
 <nb-card>
   <nb-card-header>
     <div class="row">
@@ -6,32 +5,41 @@
       </div>
   </nb-card-header>
   <nb-card-body>
+    <form autocomplete="off" [formGroup]="reactiveForm">
     <div class="row">
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Médecin</label>
-          <nb-select [(ngModel)]="MedcinID"  class="type-select " nbSelect fullWidth
+          <nb-select formControlName="medecins" class="type-select " nbSelect fullWidth
                      placeholder="Médecin" required="true">
-            <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.id}}:{{t.nom}} {{t.prenom}}</nb-option>
+            <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.id}} : {{t.nom}} {{t.prenom}}</nb-option>
           </nb-select>
+          <ngx-validation-message label="Médecin"
+                                  [showRequired]="!getControl('medecins').valid && getControl('medecins').touched">
+          </ngx-validation-message>
 
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
-          <label  class="label">décédé</label>
-          <nb-select  [(ngModel)]="defauntID" class="type-select "  nbSelect fullWidth
+          <label  class="label">Décédé</label>
+          <nb-select  formControlName="defunt"  class="type-select "  nbSelect fullWidth
                       placeholder="Nom" required="true">
             <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
+          <ngx-validation-message label="Décédé"
+                                  [showRequired]="!getControl('defunt').valid && getControl('defunt').touched">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
-          <input [(ngModel)]="trnsfrCorps.declaration" class="form-control" type="Date" nbInput fullWidth
+          <input formControlName="declaration"  class="form-control" type="Date" nbInput fullWidth
                  id="dateDec" placeholder="Date de déclaration"required="true">
-
+          <ngx-validation-message label="Date de déclaration"
+                                  [showRequired]="!getControl('declaration').valid && getControl('medecins').touched">
+          </ngx-validation-message>
         </div>
       </div>
 
@@ -41,25 +49,34 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Déclarant</label>
-          <input [(ngModel)]="trnsfrCorps.declarant" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="declarant"  class="form-control" type="string" nbInput fullWidth
                  id="declarant" placeholder="Déclarant" required="true">
-
+          <ngx-validation-message label="Déclarant"
+                                  [showRequired]="!getControl('declarant').valid && getControl('declarant').touched"
+                                  [fr]="getControl('declarant').hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">CIN du déclarant</label>
-          <input [(ngModel)]="trnsfrCorps.cin" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="cin"  class="form-control" type="string" nbInput fullWidth
                  id="CINdec" placeholder="CIN du déclarant" required="true">
-
+          <ngx-validation-message label="CIN du déclarant"
+                                  [showRequired]="!getControl('cin').valid && getControl('cin').touched"
+                                  [fr]="getControl('cin').hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">N° téléphone </label>
-          <input [(ngModel)]="trnsfrCorps.tel" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="tel"  class="form-control" type="string" nbInput fullWidth
                  id="tel" placeholder="Tel.." required="true">
-
+          <ngx-validation-message label="N° téléphone"
+                                  [showRequired]="!getControl('tel').valid && getControl('tel').touched"
+                                  [number]="getControl('tel').hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
     </div>
@@ -67,29 +84,38 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="form-group">
-          <label  class="label">Le corps sera transporté en cercueil </label>
-          <nb-select  [(ngModel)]="trnsfrCorps.cercueilType" class="type-select "  nbSelect fullWidth
+          <label  class="label">Le Type de cercueil </label>
+          <nb-select  formControlName="cercueilType"  class="type-select "  nbSelect fullWidth
                       placeholder="type" required="true">
             <nb-option *ngFor="let t of cercueil" [value]="t" >{{ t }}</nb-option>
           </nb-select>
+          <ngx-validation-message label="Type de cercueil"
+                                  [showRequired]="!getControl('cercueilType').valid && getControl('cercueilType').touched">
+          </ngx-validation-message>
       </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Destination du corps</label>
-          <nb-select  [(ngModel)]="trnsfrCorps.destination" class="type-select "  nbSelect fullWidth
+          <nb-select  formControlName="destination"  class="type-select "  nbSelect fullWidth
                       placeholder="Destination du corps" required="true">
             <nb-option *ngFor="let t of destinationCorps" [value]="t" >{{ t }}</nb-option>
           </nb-select>
+          <ngx-validation-message label="Destination du corps"
+                                  [showRequired]="!getControl('destination').valid && getControl('destination').touched">
+          </ngx-validation-message>
 
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Fourgon mortuaire Mle </label>
-          <input [(ngModel)]="trnsfrCorps.mortuaire" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="mortuaire"  class="form-control" type="string" nbInput fullWidth
                  id="fourgon" placeholder="Fourgon mortuaire Mle" required="true">
-
+          <ngx-validation-message label="Mortuaire"
+                                  [showRequired]="!getControl('mortuaire').valid && getControl('mortuaire').touched"
+                                  [fr]="getControl('mortuaire').hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
 
@@ -100,36 +126,43 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">La société ou l'administration chargée de l'inhumation ou du transfert</label>
-          <input [(ngModel)]="trnsfrCorps.inhumationSociete" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="inhumationSociete"  class="form-control" type="string" nbInput fullWidth
                  id="txt" placeholder="La société ou l'administration" required="true">
+          <ngx-validation-message label="Société d'inhumation"
+                                  [showRequired]="!getControl('inhumationSociete').valid && getControl('inhumationSociete').touched"
+                                  [fr]="getControl('inhumationSociete').hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-8">
         <div class="form-group">
           <label  class="label">Remarques </label>
-          <textarea [(ngModel)]="trnsfrCorps.remarque" class="form-control" type="string"  fullWidth
-                 id="Remarque" placeholder="Remarques..." required="true">
+          <textarea formControlName="remarque" class="form-control" type="string"  fullWidth
+                 id="Remarque" placeholder="Remarques...">
           </textarea>
+          <ngx-validation-message label="Remarques"
+                                  [fr]="getControl('remarque').hasError('pattern')">
+          </ngx-validation-message>
 
         </div>
       </div>
     </div>
     <div class="float-right">
-      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Enregistrer</button>
+      <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="danger">Enregistrer</button>
+      <button class="btn mr-1 "  (click)="reactiveForm.reset()"  nbButton outline status="danger">Annuler</button>
       <!--
       <button class="btn btn-secondary mr-1" (click)="generatePdf('francais')" type="submit" nbButton  status="danger" outline> Certificat du transfert</button>
       <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton  status="danger" outline> رخصة الدفن  </button>
       -->
     </div>
+    </form>
   </nb-card-body>
 </nb-card>
-</div>
 <div class="card">
   <div class="card-header">
     Liste des certificats de transfert des corps
   </div>
   <div class="table table-responsive">
-
     <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>

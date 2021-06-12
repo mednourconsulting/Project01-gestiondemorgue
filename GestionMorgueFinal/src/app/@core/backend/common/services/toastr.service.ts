@@ -38,10 +38,12 @@ export class ToastrService {
   }
   toastOfSave(action) {
     switch (action) {
-      case 'success': this.showToast('success', 'Succès d\'ajout',
+        case 'success': this.showToast('success', 'Succès d\'ajout',
         'Les données ont bien été ajoutées'); break;
-      case 'danger': this.showToast('danger', 'Erreur d\'ajout',
+        case 'danger': this.showToast('danger', 'Erreur d\'ajout',
         'Une erreur est survenu l\'ors d\'ajout'); break;
+        case 'validate': this.showToast('danger', 'Formulaire invalide',
+        'Votre formulaire est invalide !!, les champs en rouge sont obligatoires'); break;
         case 'warning': this.showToast('warning', 'Alert',
         'Vous ne disposez pas des droits d\'ajout'); break;
     }

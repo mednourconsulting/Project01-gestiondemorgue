@@ -7,9 +7,10 @@ import { ConstationComponent } from './constation/constation.component';
 import { AttestationComponent } from './attestation/attestation.component';
 import {DocumentsAdminComponent} from './documents-admin.component';
 import {NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule, NbSelectModule} from '@nebular/theme';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {BulletinsDMModule} from '../bulletins-dm/bulletins-dm.module';
+import {ComponentsModule} from "../../@components/components.module";
 
 
 @NgModule({
@@ -25,6 +26,8 @@ import {BulletinsDMModule} from '../bulletins-dm/bulletins-dm.module';
     NbCheckboxModule,
     NbInputModule,
     NbButtonModule,
+    ReactiveFormsModule,
+    ComponentsModule,
   ],
 })
 export class DocumentsAdminModule { }

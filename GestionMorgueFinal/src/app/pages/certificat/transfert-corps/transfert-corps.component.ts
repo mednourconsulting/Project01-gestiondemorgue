@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CertificatTransfertCorps} from '../../../@core/backend/common/model/CertificatTransfertCorps';
 import {CertificatTransfertCorpsService} from '../../../@core/backend/common/services/CertificatTransfertCorps.service';
-import {LocalDataSource} from 'ng2-smart-table';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
@@ -10,11 +9,10 @@ import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
-// import * as jsPDF from 'jspdf';
 import jsPDF from 'jspdf';
 import {base64Str} from '../base64';
-import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -30,6 +28,9 @@ export class TransfertCorpsComponent implements OnInit {
   trnsfrCorps: CertificatTransfertCorps = new CertificatTransfertCorps();
   NomDecede = [];
   isAdmin: boolean;
+  reactiveForm: FormGroup;
+  frPattern = '[a-zA-Z0-9 ]*';
+  numberPattern = '[0-9]*';
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -128,14 +129,26 @@ export class TransfertCorpsComponent implements OnInit {
   NomMedcin = [];
   today = new Date();
   jstoday = '';
-
+  DecedeHumain: Decedes;
+  MedecinHumain: Medecins;
+  dd = '';
+  dn = '';
+  m: string;
+  i = 0;
   constructor(private service: CertificatTransfertCorpsService,
               private serviceM: MedecinsService,
               private userservice: UsersService,
               private serviceDecede: DecedesService,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+1');
+  }
+
+  init() {
+    this.service.getAll().subscribe(data => {
+      this.source = data;
+    });
     this.serviceDecede.getAll().subscribe(dataa => {
       dataa.forEach(obj => {
         this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
@@ -143,14 +156,21 @@ export class TransfertCorpsComponent implements OnInit {
     });
     this.serviceM.getAll().subscribe(data1 => {
       data1.forEach(obj => {
-        this.NomMedcin.push({nom: obj.nom + ' ', prenom: obj.prenom, id: obj.id});
+        this.NomMedcin.push({nom: obj.nom , prenom: obj.prenom, id: obj.id});
       });
     });
-  }
-
-  init() {
-    this.service.getAll().subscribe(data => {
-      this.source = data;
+    this.reactiveForm = this.fb.group({
+      medecins: ['', [Validators.required]],
+      cercueilType: ['', [Validators.required]],
+      declaration: ['', [Validators.required]],
+      remarque: ['', [Validators.pattern(this.frPattern)]],
+      defunt: ['', [Validators.required]],
+      declarant: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      tel: ['', [Validators.required, Validators.pattern(this.numberPattern)]],
+      destination: ['', [Validators.required]],
+      mortuaire: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      inhumationSociete: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      cin: ['', [Validators.required, Validators.pattern(this.frPattern)]],
     });
   }
 
@@ -184,15 +204,6 @@ export class TransfertCorpsComponent implements OnInit {
     //   this.init();
     // }); });
   }
-
-  private reset() {
-    this.trnsfrCorps = new CertificatTransfertCorps();
-  }
-
-  // init() {
-  //     this.source = data;
-  //   });
-  //
 
   onEditConfirm(event) {
     if (this.isAdmin) {
@@ -529,14 +540,6 @@ export class TransfertCorpsComponent implements OnInit {
       },
     };
   }
-
-  DecedeHumain: Decedes;
-  MedecinHumain: Medecins;
-  dd = '';
-  dn = '';
-  m: string;
-  i = 0;
-
   actualise() {
     this.serviceDecede.getById(this.defauntID).subscribe(obj => {
       this.DecedeHumain = obj;
@@ -668,5 +671,49 @@ export class TransfertCorpsComponent implements OnInit {
         }
         break;
     }
+  }
+
+  createCertificatFromForm(): CertificatTransfertCorps {
+    const formValues = this.reactiveForm.value;
+    const certificat = new CertificatTransfertCorps();
+    certificat.medecins = formValues.medecins;
+    certificat.declarant = formValues.declarant;
+    certificat.cin = formValues.cin;
+    certificat.declaration = formValues.declaration;
+    certificat.defunt = formValues.defunt;
+    certificat.cercueilType = formValues.cercueilType;
+    certificat.destination = formValues.destination;
+    certificat.inhumationSociete = formValues.inhumationSociete;
+    certificat.mortuaire = formValues.mortuaire;
+    certificat.remarque = formValues.remarque;
+    certificat.tel = formValues.tel;
+    return certificat;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const certificat: CertificatTransfertCorps = this.createCertificatFromForm();
+      console.warn('certificat: ', certificat);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(certificat);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
+  }
+  doSave(certificat) {
+    this.serviceM.getById(certificat.medecins).subscribe(obj1 => {
+      certificat.medecins = obj1;
+      this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
+        certificat.defunt = objj;
+        this.service.create(certificat).subscribe(obj => {
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+        });
+      });
+    });
+    this.toastService.toastOfSave('success');
+    this.reactiveForm.reset();
   }
 }

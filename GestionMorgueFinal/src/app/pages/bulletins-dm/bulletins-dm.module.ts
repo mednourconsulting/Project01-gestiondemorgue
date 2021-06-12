@@ -15,25 +15,28 @@ import {
   NbSelectModule,
   NbTabsetModule
 } from '@nebular/theme';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
+import {ComponentsModule} from "../../@components/components.module";
 
 
 @NgModule({
   declarations: [BulletinsDMComponent,
     BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent],
-  imports: [
-    CommonModule,
-    BulletinsDMRoutingModule,
-    NbCardModule,
-    NbSelectModule,
-    FormsModule,
-    NbTabsetModule,
-    Ng2SmartTableModule,
-    NbCheckboxModule,
-    NbInputModule,
-    NbButtonModule,
-  ],
+    imports: [
+        CommonModule,
+        BulletinsDMRoutingModule,
+        NbCardModule,
+        NbSelectModule,
+        FormsModule,
+        NbTabsetModule,
+        Ng2SmartTableModule,
+        NbCheckboxModule,
+        NbInputModule,
+        NbButtonModule,
+        ReactiveFormsModule,
+        ComponentsModule,
+    ],
   exports: [
     DecedesComponent,
   ],

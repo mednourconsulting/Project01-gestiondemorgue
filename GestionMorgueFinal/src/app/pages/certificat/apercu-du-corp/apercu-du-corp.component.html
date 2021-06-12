@@ -1,4 +1,3 @@
-<div *ngIf="isAdmin">
 <nb-card>
   <nb-card-header>
     <div class="row">
@@ -56,13 +55,11 @@
 
   </nb-card-body>
 </nb-card>
-</div>
 <div class="card">
   <div class="card-header">
     Liste des certificats d'aperçu de corps
   </div>
   <div class="table table-responsive">
-
     <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>

@@ -11,6 +11,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {formatDate} from '@angular/common';
 import { DatePipe } from '@angular/common';
+import { Validators, AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
@@ -42,6 +43,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
   data: any;
   ListNum = [];
   private sourceD: Decedes;
+  reactiveForm: FormGroup;
+  frPattern = '[a-zA-Z0-9 ]*';
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -151,7 +154,10 @@ export class BulletinsComponent implements OnInit, OnChanges {
   DecedeHumain: Decedes = new Decedes();
   NomDecede = [];
   NomDMedcin = [];
-
+  jstoday = '';
+  MedecinHumain: Medecins;
+  c: string;
+  i = 0;
   constructor(private service: BulletinsService,
               private serviceD: DecedesService,
               private serviceM: MedecinsService,
@@ -160,7 +166,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
               private serviceC: CauseService,
               private datePipe: DatePipe,
               private router: Router,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
     this.serviceD.getAll().subscribe( data => {
       data.forEach (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
     });
@@ -170,8 +177,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
     this.MedecinHumain = new Medecins();
     this.DecedeHumain = new Decedes();
   }
-
-
   init() {
     this.service.getAll().subscribe(data => {
       this.source = data;
@@ -179,17 +184,71 @@ export class BulletinsComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
-      console.log(data);
-      console.log(this.isAdmin);
       this.isAdmin = data.role.includes('ADMIN');
-      console.log(this.isAdmin);
     });
     this.init();
+    this.reactiveForm = this.fb.group({
+      typeBulletin: ['', Validators.required],
+      declaration: ['', Validators.required],
+      cercle: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      diagnostique: ['', Validators.required],
+      lieuEntrement: ['', Validators.required],
+      province: ['', Validators.required],
+      residece: ['', Validators.required],
+      cimetiere: ['', Validators.required],
+      numTombe: ['', [Validators.required]],
+      compostage: ['', Validators.pattern(this.frPattern)],
+      medecin: ['', [Validators.required]],
+      decede: ['', Validators.required],
+      centre: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+    });
   }
-
-
+  createBulletinFromForm(): Bulletins {
+    const formValues = this.reactiveForm.value;
+    const bulletin = new Bulletins();
+      bulletin.typeBulletin = formValues.typeBulletin;
+      bulletin.declaration = formValues.declaration;
+      bulletin.cercle = formValues.cercle;
+      bulletin.diagnostique = formValues.diagnostique;
+      bulletin.lieuEntrement = formValues.lieuEntrement;
+      bulletin.province = formValues.province;
+      bulletin.residece = formValues.residece;
+      bulletin.cimetiere = formValues.cimetiere;
+      bulletin.numTombe = formValues.numTombe;
+      bulletin.compostage = formValues.compostage;
+      bulletin.medecin = formValues.medecin;
+      bulletin.decede = formValues.decede;
+      bulletin.centre = formValues.centre;
+       return bulletin;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const bulletin: Bulletins = this.createBulletinFromForm();
+      console.warn('bulletin: ', bulletin);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(bulletin);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
+  }
+  doSave(bulletin) {
+          this.serviceM.getById(bulletin.medecin).subscribe(obj1 => {
+            bulletin.medecin = obj1;
+            this.serviceD.getById(bulletin.decede).subscribe(objj => {
+              bulletin.decede = objj;
+              this.service.create(bulletin).subscribe(obj => {
+                this.source.push(obj);
+                this.source = this.source.map(e => e);
+              });
+            });
+          });
+          this.toastService.toastOfSave('success');
+          this.reactiveForm.reset();
+  }
   save() {
-    if ( this.isAdmin) {
       if (this.Bulletins !== null) {
         if (this.Bulletins.id === null) {
           this.serviceM.getById(this.medcinid).subscribe(obj1 => {
@@ -217,10 +276,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
           });
           this.toastService.toastOfSave('success');
       } } else this.toastService.showToast('danger', 'Erreur !!', 'Remplir tous les champs');
-    } else this.toastService.toastOfSave('warning');
-
   }
-
   private reset() {
     this.Bulletins = new Bulletins();
     this.DecedeHumain = null;
@@ -235,9 +291,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
         });
-       // window.alert('Les données ont été modifiées avec succès');
         this.toastService.toastOfEdit('success');
-
       });
     } else {
       this.toastService.toastOfEdit('warning');
@@ -258,7 +312,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
 
     }
   }
-
   generatePdf(action = 'open') {
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
@@ -270,7 +323,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
     DateDeces = new Date(DateDeces);
     return ((DateDeces.getTime() - DateNaiss.getTime()) / 31536000000).toFixed(0);
   }
-
   calculateAge(dateNaiss , dateDeces ) {
     const second = 1;
     const minute = 60 * second;
@@ -287,7 +339,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
     const hours = Math.floor(restOfDays / hour);
     return (years + ' ans ' + days + ' jours ' + hours + ' heurs ' );
   }
-
   private getDocumentDefinition() {
     // sessionStorage.setItem('resume', JSON.stringify());
     return {
@@ -618,7 +669,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
     };
   }
-
   private checkIfNullOrUndefind(attribute) {
     if (attribute === null || attribute === undefined  ) {
       return ' ';
@@ -626,7 +676,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       return attribute;
     }
   }
-
   private genererBulletin(obj) {
     // sessionStorage.setItem('resume', JSON.stringify());
     return {
@@ -956,11 +1005,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
     };
   }
-
-  jstoday = '';
-  MedecinHumain: Medecins;
-  c: string;
-  i = 0;
   add() {
 
       this.serviceD.getById(this.numRgtr).subscribe(obj => {
@@ -994,11 +1038,9 @@ export class BulletinsComponent implements OnInit, OnChanges {
   passToMedecin() {
     this.router.navigateByUrl('/pages/bulletins-dm/medcins');
   }
-
   passToDecede() {
     this.router.navigateByUrl('/pages/bulletins-dm/decedes');
   }
-
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
@@ -1036,23 +1078,21 @@ export class BulletinsComponent implements OnInit, OnChanges {
         break;
     }
   }
-
-
   onChange(medcinid: number) {
     this.serviceM.getById(this.medcinid).subscribe(obj1 => {
       this.Bulletins.medecin = obj1;
       this.MedecinHumain = obj1;
     });
   }
-  ActivateMedecin(medcinid: number) {
-    this.serviceM.getById(medcinid).subscribe(obj1 => {
+  /* ActivateMedecin(medcinid: number) {
+    this.serviceM.getById(this.createBulletinFromForm().medecin.id).subscribe(obj1 => {
       this.MedecinHumain = obj1;
     });
   }
-
   ActivateDecede(numRgtr: number) {
-    this.serviceD.getById(numRgtr).subscribe(obj1 => {
+    this.serviceD.getById(this.createBulletinFromForm().decede.id).subscribe(obj1 => {
       this.DecedeHumain = obj1;
     });
   }
+  */
 }

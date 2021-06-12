@@ -12,8 +12,9 @@ import jsPDF from 'jspdf';
 import { base64Str } from '../../certificat/base64.js';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {Router} from "@angular/router";
-import {ToastrService} from "../../../@core/backend/common/services/toastr.service";
+import {Router} from '@angular/router';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -23,6 +24,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   providers: [ CertificatMedicoLegalService, UsersService, DecedesService, MedecinsService],
 })
 export class MedicolegalComponent implements OnInit {
+  reactiveForm: FormGroup;
+  frPattern = '[a-zA-Z0-9 ]*';
   Medicolegal: CertificatMedicoLegal = new CertificatMedicoLegal();
   NomMedecin = [];
   NomDecede = [];
@@ -108,7 +111,8 @@ export class MedicolegalComponent implements OnInit {
               private serviceDecede: DecedesService,
               private serviceMeddcin: MedecinsService,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-Us', '+1');
     this.serviceDecede.getAll().subscribe( dataa => {
       dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id}); });
@@ -127,6 +131,15 @@ export class MedicolegalComponent implements OnInit {
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
+    this.reactiveForm = this.fb.group({
+
+      medecin: ['', [ Validators.required ]],
+      declarant: ['', [ Validators.required, Validators.pattern(this.frPattern) ]],
+      address: ['', [ Validators.required, Validators.pattern(this.frPattern) ]],
+      cin:  ['', [ Validators.pattern(this.frPattern)]],
+      declaration: [''],
+      defunt: ['', [ Validators.required ]],
+    });
   }
 
   MedNom: number;
@@ -140,37 +153,12 @@ export class MedicolegalComponent implements OnInit {
       this.serviceDecede.getById(this.defunt).subscribe(objj => {
         this.Medicolegal.defunt = objj;
         this.service.create(this.Medicolegal).subscribe(data => {
-          this.init();
+          this.source.push(data);
+          this.source = this.source.map(e => e);
+          this.toastService.toastOfSave('success');
         }); }); });
-    this.init();
-    window.alert('Les données ont été ajoutées avec succès à la base de données');
-    this.init();
   }
   isAdmin: boolean;
-  createConfirm(event) {
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.create(event.newData).subscribe(obj => {
-        });
-        // this.init();
-      });
-      this.init();
-    }
-  }
-
-  /*onDeleteConfirm(event) {
-    if (this.isAdmin) {
-      if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
-        event.confirm.resolve(event.data);
-        this.service.delete(event.data.id).subscribe(data => {
-        });
-      }
-      this.init();
-    } else {
-      window.alert('Vous n'avez pas des droits de suppression');
-    }
-  }*/
   generatePdf(action) {
     this.actualise();
     switch (action) {
@@ -555,5 +543,44 @@ export class MedicolegalComponent implements OnInit {
   }
   passToDecede() {
     this.router.navigateByUrl('/pages/bulletins-dm/decedes');
+  }
+
+  createCertificatFromForm(): CertificatMedicoLegal {
+    const formValues = this.reactiveForm.value;
+    const certificat = new CertificatMedicoLegal();
+    certificat.medecin = formValues.medecin;
+    certificat.declarant = formValues.declarant;
+    certificat.address = formValues.adress;
+    certificat.cin = formValues.cin;
+    certificat.declaration = formValues.declaration;
+    certificat.defunt = formValues.defunt;
+    return certificat;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const certificat: CertificatMedicoLegal = this.createCertificatFromForm();
+      console.warn('certificat: ', certificat);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(certificat);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
+  }
+  doSave(certificat) {
+    this.serviceMeddcin.getById(certificat.medecin).subscribe(obj1 => {
+      certificat.medecin = obj1;
+      this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
+        certificat.defunt = objj;
+        this.service.create(certificat).subscribe(obj => {
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+        });
+      });
+    });
+    this.toastService.toastOfSave('success');
+    this.reactiveForm.reset();
   }
 }

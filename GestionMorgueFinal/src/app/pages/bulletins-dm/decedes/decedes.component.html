@@ -1,7 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<div *ngIf="isAdmin" >
 
-     <nb-card>
+<nb-card>
     <nb-card-header class="hostt">
         <div class="row">
             <div class="col-sm-12">Ajouter Les Informations D'un Décédé</div>
@@ -592,18 +591,16 @@
             </nb-tab>
         </nb-tabset>
         <div class="float-right">
-            <button *ngIf="isAdmin" class="btn mr-1 " (click)="save()" type="submit" nbButton status="info">Enregistrer</button>
+            <button class="btn mr-1 " (click)="save()" type="submit" nbButton status="info">Enregistrer</button>
             <!--<button class="btn btn-secondary mr-1" (click)="generatePdf('open')" type="submit" nbButton  status="info" outline>Certificat</button>-->
         </div>
     </nb-card-body>
 </nb-card>
-</div>
 <div class="card">
   <div class="card-header">
     Liste des décédés
   </div>
   <div class="table table-responsive">
-
     <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>

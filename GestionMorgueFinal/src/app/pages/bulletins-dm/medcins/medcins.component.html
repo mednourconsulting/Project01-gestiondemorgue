@@ -1,4 +1,3 @@
-<div *ngIf="isAdmin">
 <nb-card>
   <nb-card-header>
     <div class="row">
@@ -6,29 +5,37 @@
     </div>
   </nb-card-header>
   <nb-card-body>
+    <form autocomplete="off" [formGroup]="reactiveForm">
     <div class="row">
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Nom Medecin</label>
-          <input [(ngModel)]="medcin.nom" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="nom" class="form-control" type="string" nbInput fullWidth
                  id="nom" placeholder="Nom Médecin" required="true">
-
+          <ngx-validation-message label="Nom Medecin"
+                                  [showRequired]="!getControl('nom').valid && getControl('nom').touched"
+                                  [fr]="getControl('nom')?.hasError('pattern')"></ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Prénom Médecin</label>
-          <input [(ngModel)]="medcin.prenom" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="prenom" class="form-control" type="string" nbInput fullWidth
                  id="prenom" placeholder="Prenom Médecin" required="true">
-
+          <ngx-validation-message label="Prenom Médecin"
+                                  [showRequired]="!getControl('prenom').valid && getControl('prenom').touched"
+                                  [fr]="getControl('prenom')?.hasError('pattern')"></ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Adresse de Médecin</label>
-          <input [(ngModel)]="medcin.adress" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="adress" class="form-control" type="string" nbInput fullWidth
                  id="adresse" placeholder="Adresse de Médecin"required="true">
-
+          <ngx-validation-message label="Adresse de Médecin"
+                                  [showRequired]="!getControl('adress').valid && getControl('adress').touched"
+                                  [fr]="getControl('adress')?.hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
     </div>
@@ -36,25 +43,34 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">الإسم العائلي</label>
-          <input [(ngModel)]="medcin.nomAR" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="nomAR" class="form-control" type="string" nbInput fullWidth
                  id="nomAR" placeholder="الإسم العائلي"required="true">
-
+          <ngx-validation-message label="الإسم العائلي"
+                                  [showRequired]="!getControl('nomAR').valid && getControl('nomAR').touched"
+                                  [ar]="getControl('nomAR')?.hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">الإسم الشخصي</label>
-          <input [(ngModel)]="medcin.prenomAR" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="prenomAR" class="form-control" type="string" nbInput fullWidth
                  id="prenomAR" placeholder="الإسم الشخصي"required="true">
-
+          <ngx-validation-message label="الإسم الشخصي"
+                                  [showRequired]="!getControl('prenomAR').valid && getControl('prenomAR').touched"
+                                  [ar]="getControl('prenomAR')?.hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">العنوان</label>
-          <input [(ngModel)]="medcin.adressAR" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="adressAR" class="form-control" type="string" nbInput fullWidth
                  id="AdresseAR" placeholder="العنوان"required="true">
-
+          <ngx-validation-message label="العنوان"
+                                  [showRequired]="!getControl('adressAR').valid && getControl('adressAR').touched"
+                                  [ar]="getControl('adressAR')?.hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
     </div>
@@ -62,32 +78,31 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">CIN d'encadrant</label>
-          <input [(ngModel)]="medcin.cin" class="form-control" type="string" nbInput fullWidth
-                 id="cin" placeholder="CIN d'encadrant" required="true"required="true">
-
+          <input formControlName="cin" class="form-control" type="string" nbInput fullWidth
+                 id="cin" placeholder="CIN d'encadrant" required="true">
+          <ngx-validation-message label="CIN d'encadrant"
+                                  [showRequired]="!getControl('cin').valid && getControl('cin').touched"
+                                  [fr]="getControl('cin')?.hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
     </div>
     <div class="float-right">
-      <button *ngIf="isAdmin" class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Enregistrer</button>
-      <button *ngIf="isAdmin" class="btn btn-secondary mr-1" (click)="reset()" type="submit" nbButton  status="info" outline>Cancel</button>
+      <button  class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
+      <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()"  nbButton  status="info" outline>Annuler</button>
     </div>
-
+    </form>
   </nb-card-body>
 </nb-card>
-</div>
-
 <div class="card">
   <div class="card-header">
     Liste des Médecins
   </div>
   <div class="table table-responsive">
-
     <ng2-smart-table [settings]="settings"
                      [source]="source"
                      (deleteConfirm)="onDeleteConfirm($event)"
-                     (editConfirm)="onEditConfirm($event)"
-    >
+                     (editConfirm)="onEditConfirm($event)">
     </ng2-smart-table>
   </div>
 </div>

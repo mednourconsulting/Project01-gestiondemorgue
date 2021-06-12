@@ -57,6 +57,6 @@ nb-card-header {
   border-left: 5px solid #42A948; /* green */
 }
 
-.ng-invalid:not(form) {
-  border-left: 5px solid #a94442; /* red */
+.ng-invalid:not(form)  {
+  border-left: 5px solid #ff0400; /* red */
 }

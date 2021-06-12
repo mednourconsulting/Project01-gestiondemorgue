@@ -7,8 +7,9 @@ import { TransfertCorpsComponent } from './transfert-corps/transfert-corps.compo
 import { ApercuDuCorpComponent } from './apercu-du-corp/apercu-du-corp.component';
 import { EnterrementComponent } from './enterrement/enterrement.component';
 import {NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule, NbSelectModule} from '@nebular/theme';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
+import {ComponentsModule} from "../../@components/components.module";
 
 @NgModule({
   declarations: [CertificatComponent,
@@ -23,6 +24,8 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
     NbInputModule,
     NbCheckboxModule,
     NbButtonModule,
+    ReactiveFormsModule,
+    ComponentsModule,
   ],
 })
 export class CertificatModule { }

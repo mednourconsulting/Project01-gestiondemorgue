@@ -5,6 +5,7 @@ import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-medcins',
@@ -13,6 +14,9 @@ import {ToastrService} from '../../../@core/backend/common/services/toastr.servi
   providers: [MedecinsService],
 })
 export class MedcinsComponent implements OnInit {
+  reactiveForm: FormGroup;
+  arPattern = '[\u0621-\u064A0-9 ]*';
+  frPattern = '[a-zA-Z0-9 ]*';
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -75,7 +79,8 @@ export class MedcinsComponent implements OnInit {
   isAdmin: boolean;
   constructor(private service: MedecinsService,
               private userservice: UsersService,
-              private toastService: ToastrService) { }
+              private toastService: ToastrService,
+              private fb: FormBuilder) { }
 
   init() {
     this.service.getAll().subscribe(data => {
@@ -87,9 +92,18 @@ export class MedcinsComponent implements OnInit {
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
+    this.reactiveForm = this.fb.group({
+      nom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      prenom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      adress: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      cin: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      nomAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+      prenomAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+      adressAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+    });
   }
 
-  private reset() {
+  reset() {
     this.medcin = new Medecins();
   }
   save() {
@@ -130,5 +144,40 @@ export class MedcinsComponent implements OnInit {
       this.toastService.toastOfEdit('warning');
 
     }
+  }
+
+  createMedecinFromForm(): Medecins {
+    const formValues = this.reactiveForm.value;
+    const medecin = new Medecins();
+    medecin.nom = formValues.nom;
+    medecin.prenom = formValues.prenom;
+    medecin.adress = formValues.adress;
+    medecin.nomAR = formValues.nomAR;
+    medecin.prenomAR = formValues.prenomAR;
+    medecin.adressAR = formValues.adressAR;
+    medecin.cin = formValues.cin;
+
+    return medecin;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const medecin: Medecins = this.createMedecinFromForm();
+      console.warn('cause: ', medecin);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(medecin);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
+  }
+  doSave(medecin) {
+        this.service.create(medecin).subscribe(obj => {
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+        });
+    this.toastService.toastOfSave('success');
+    this.reactiveForm.reset();
   }
 }

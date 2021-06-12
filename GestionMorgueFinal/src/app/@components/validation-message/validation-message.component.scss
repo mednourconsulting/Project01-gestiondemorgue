@@ -9,4 +9,11 @@
    .warning {
        color: nb-theme(color-danger);
    }
+  .caption {
+    font-weight: bold;
+  }
+  .erreurs-container {
+    padding: 5px;
+    line-height: 0.5;
+  }
 }

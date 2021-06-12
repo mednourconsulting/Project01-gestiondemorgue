@@ -1,4 +1,4 @@
-<div *ngIf="isAdmin">
+
 <nb-card>
   <nb-card-header>
     <div class="row">
@@ -6,23 +6,28 @@
     </div>
   </nb-card-header>
   <nb-card-body>
-
+    <form autocomplete="off"  [formGroup]="reactiveForm">
     <div class="row">
+
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Code</label>
-          <input [(ngModel)]="Cause.code" class="form-control" type="string" nbInput fullWidth
-                 id="remarque" required="true" placeholder="code">
-
+          <input formControlName="code" class="form-control"type="string" nbInput fullWidth
+                 id="code" required="true" placeholder="code">
+          <ngx-validation-message label="code"
+                                  [showRequired]="!getControl('code').valid && getControl('code').touched"
+                                  [fr]="getControl('code')?.hasError('pattern')"></ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Description</label>
-          <textarea  [(ngModel)]="Cause.description" required="true" class="form-control"  type="string"  fullWidth
+          <textarea  formControlName="description" required="true" class="form-control"  type="string"  fullWidth
                   placeholder="Description" >
           </textarea>
-
+          <ngx-validation-message label="description"
+                                  [showRequired]="!getControl('description').valid && getControl('description').touched"
+                                  [fr]="getControl('description')?.hasError('pattern')"></ngx-validation-message>
         </div>
       </div>
 
@@ -30,21 +35,25 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">الوصف</label>
-          <textarea  [(ngModel)]="Cause.descriptionAR" required="true" class="form-control"  type="string"  fullWidth
+          <textarea  formControlName="descriptionAR" required="true" class="form-control"  type="string"  fullWidth
                      placeholder="الوصف" >
           </textarea>
+          <ngx-validation-message label="الوصف"
+                                  [showRequired]="getControl('descriptionAR').touched && !getControl('descriptionAR').valid"
+          [ar]="getControl('descriptionAR')?.hasError('pattern')"></ngx-validation-message>
 
         </div>
       </div>
+
     </div>
     <div class="float-right">
-      <button class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="info">Enregistrer</button>
-
-      <button class="btn btn-secondary mr-1" (click)="cancel()" type="submit" nbButton  status="info" outline>Annuler</button>
+      <button class="btn mr-1 "  type="submit" nbButton (click)="onSubmit()" status="info">Enregistrer</button>
+      <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()" nbButton  status="info" outline>Annuler</button>
     </div>
+    </form>
 </nb-card-body>
 </nb-card>
-</div>
+
 
 
 <div class="card">

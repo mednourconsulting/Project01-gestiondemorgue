@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Cause} from '../../../@core/backend/common/model/Cause';
-import {LocalDataSource} from 'ng2-smart-table';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-cause-deces',
@@ -17,11 +17,20 @@ export class CauseDecesComponent implements OnInit {
   lise: number;
   isAdmin: boolean;
   data: any;
+  reactiveForm: FormGroup;
+  arPattern = '[\u0621-\u064A0-9 ]*';
+  frPattern = '[a-zA-Z0-9 ]*';
+
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
+    this.reactiveForm = this.fb.group({
+      code: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      description: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      descriptionAR: ['', [ Validators.required, Validators.pattern(this.arPattern)]],
+    });
   }
   init() {
     this.service.getAll().subscribe(data => {
@@ -33,8 +42,11 @@ export class CauseDecesComponent implements OnInit {
       this.lise = data;
     });
   }
-  constructor(private service: CauseService, private userservice: UsersService,
-              private toastService: ToastrService) { }
+  constructor(private service: CauseService,
+              private userservice: UsersService,
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
+  }
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -54,11 +66,11 @@ export class CauseDecesComponent implements OnInit {
       confirmDelete: true,
 
     },
-  actions: {
-    add: false,
-    edit: true,
-    delete: true,
-  },
+    actions: {
+      add: false,
+      edit: true,
+      delete: true,
+    },
     columns: {
       code: {
         title: 'Code',
@@ -74,25 +86,14 @@ export class CauseDecesComponent implements OnInit {
       },
     },
   };
-  private reset() {
-    this.Cause = new Cause();
-  }
-  save() {
-        this.service.create(this.Cause).subscribe(obj => {
-          this.source.push(obj);
-          this.source = this.source.map(item => item);
-        });
-        this.toastService.toastOfSave('success');
-      this.reset();
-  }
   onEditConfirm(event) {
     if (this.isAdmin) {
-        event.confirm.resolve(event.newData);
-        this.service.update(event.newData).subscribe(obj => {
-        });
-        this.toastService.toastOfEdit('success');
-        this.source.map(e => e);
-      } else {
+      event.confirm.resolve(event.newData);
+      this.service.update(event.newData).subscribe(obj => {
+      });
+      this.toastService.toastOfEdit('success');
+      this.source.map(e => e);
+    } else {
       this.toastService.toastOfEdit('warning');
     }
   }
@@ -112,8 +113,33 @@ export class CauseDecesComponent implements OnInit {
 
     }
   }
-
-  cancel() {
-    this.reset();
+  save(cause) {
+    this.service.create(cause).subscribe(obj => {
+      this.source.push(obj);
+      this.source = this.source.map(item => item);
+    });
+    this.toastService.toastOfSave('success');
+    this.reactiveForm.reset();
+  }
+  createCauseFromForm(): Cause {
+    const formValues = this.reactiveForm.value;
+    const cause = new Cause();
+    cause.code = formValues.code;
+    cause.description = formValues.description;
+    cause.descriptionAR = formValues.descriptionAR;
+    return cause;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const cause: Cause = this.createCauseFromForm();
+      console.warn('cause: ', cause);
+      console.warn('formValues : ', this.reactiveForm.value);
+     this.save(cause);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
   }
 }

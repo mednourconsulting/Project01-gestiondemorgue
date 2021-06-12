@@ -223,18 +223,12 @@ export class DecedesComponent implements OnInit {
     this.init();
   }
   save() {
-    if (this.isAdmin) {
         this.service.create(this.decede).subscribe(data => {
           data.numRegister = data.id;
-          this.init();
+         this.source.push(data);
+         this.source = this.source.map(e => e);
+          this.toastService.toastOfSave('success');
     });
-
-    this.init();
-    this.toastService.toastOfSave('success');
-
-    this.init();
-    } else this.toastService.toastOfSave('warning');
-
   }
   private reset() {
     this.decede = new Decedes();
@@ -246,47 +240,17 @@ export class DecedesComponent implements OnInit {
       return attribute;
     }
   }
-  createConfirm(event) {
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.create(event.newData).subscribe(obj => {
-        });
-        this.init();
-      });
-    }
-  }
   onEditConfirm(event) {
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
         event.confirm.resolve(event.newData);
         this.service.update(event.newData).subscribe(obj => {
+          this.source.map(e => e);
+          this.toastService.toastOfEdit('success');
         });
-      //  window.alert('Les données ont été modifiées avec succès');
-        this.toastService.toastOfEdit('success');
-        this.init();
       });
     } else {
-     // window.alert('vous n\'avez pas des droits de modification');
       this.toastService.toastOfEdit('warning');
-
-    }
-  }
-  onDeleteConfirm(event) {
-    if (this.isAdmin) {
-      if (window.confirm('Are you sure you want to delete?')) {
-        event.confirm.resolve(event.data);
-        this.service.delete(event.data.id).subscribe(data => {
-          this.source = this.source.filter(item => item.id !== data.id);
-        });
-        this.toastService.toastOfDelete('success');
-
-      } else {
-        event.confirm.reject(event.data);
-      }
-    } else {
-     //  window.alert('Vous n\'avez pas des droits de suppression');
-      this.toastService.toastOfDelete('warning');
 
     }
   }

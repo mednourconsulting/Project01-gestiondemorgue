@@ -14,13 +14,10 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { PagesMenu } from './pages-menu';
 import { NbMenuModule } from '@nebular/theme';
 import { AuthModule } from '../@auth/auth.module';
-import { BulletinsDMComponent } from './bulletins-dm/bulletins-dm.component';
-import { DecedesComponent } from './bulletins-dm/decedes/decedes.component';
-import { DocumentsAdminComponent } from './documents-admin/documents-admin.component';
 import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
 import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
 import {CertificatModule} from './certificat/certificat.module';
-import { Chart } from 'chart.js';
+import {ReactiveFormsModule} from '@angular/forms';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -37,6 +34,7 @@ const PAGES_COMPONENTS = [
     NbMenuModule,
     MiscellaneousModule,
     AuthModule.forRoot(),
+    ReactiveFormsModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,

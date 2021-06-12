@@ -268,14 +268,9 @@ export class ConstationComponent implements OnInit {
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'pdf':
-        if (this.isAdmin) {
           const documentDefinition = this.getDocumentDefinition(event.data);
           pdfMake.createPdf(documentDefinition).open();
           this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT CONSTATATION DE DECES est ouvert dans un nouvel onglet');
-
-        } else {
-          this.toastService.showToast('warning', 'Alert', 'Vous ne disposez pas des droits de consultation du certificat !!');
-        }
         break;
     }
   }

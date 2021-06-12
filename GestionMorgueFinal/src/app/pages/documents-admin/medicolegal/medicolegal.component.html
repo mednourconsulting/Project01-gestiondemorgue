@@ -1,4 +1,3 @@
-<div *ngIf="isAdmin">
 <nb-card>
     <nb-card-header>
         <div class="row">
@@ -6,32 +5,43 @@
         </div>
     </nb-card-header>
     <nb-card-body>
+      <form autocomplete="off"  [formGroup]="reactiveForm">
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Médecin</label>
-                    <nb-select [(ngModel)]="MedNom" class="type-select " nbSelect fullWidth placeholder="Médecin" required="true">
+                    <nb-select formControlName="medecin" class="type-select " nbSelect fullWidth placeholder="Médecin" required="true">
                       <nb-option class="url" *ngIf="NomMedecin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
-                      <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>          </nb-select>
-
+                      <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
+                    </nb-select>
+                  <ngx-validation-message label="Médecin"
+                                          [showRequired]="!getControl('medecin').valid && getControl('medecin').touched">
+                  </ngx-validation-message>
 
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Défunt</label>
-                    <nb-select [(ngModel)]="defunt" class="type-select " nbSelect fullWidth placeholder="Défunt" required="true">
+                    <nb-select formControlName="defunt" class="type-select " nbSelect fullWidth placeholder="Défunt" required="true">
                       <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
                       <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
+                  <ngx-validation-message label="Défunt"
+                                          [showRequired]="!getControl('defunt').valid && getControl('defunt').touched">
+                  </ngx-validation-message>
                 </div>
             </div>
 
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Déclarant</label><br>
-                    <input [(ngModel)]="Medicolegal.declarant" class="form-control" ng-required="expression"
+                    <input formControlName="declarant" class="form-control"
                            type="string" nbInput fullWidth id="dec" placeholder="Déclarant"  required="true">
+                  <ngx-validation-message label="Déclarant"
+                                          [showRequired]="!getControl('declarant').valid && getControl('declarant').touched"
+                                          [fr]="getControl('declarant')?.hasError('pattern')">
+                  </ngx-validation-message>
                 </div>
             </div>
 
@@ -41,47 +51,49 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">CIN Déclarant</label><br>
-                    <input [(ngModel)]="Medicolegal.cin" class="form-control" ng-required="expression"
+                    <input formControlName="cin" class="form-control" ng-required="expression"
                            type="string" nbInput fullWidth id="cin" placeholder="CIN Déclarant" status="success">
-
-
-
-
+                  <ngx-validation-message label="CIN Déclarant"
+                                          [fr]="getControl('cin')?.hasError('pattern')">
+                  </ngx-validation-message>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Adresse Déclarant</label><br>
-                    <input [(ngModel)]="Medicolegal.address" class="form-control" type="string" nbInput fullWidth
+                    <input formControlName="address" class="form-control" type="string" nbInput fullWidth
                            id="adresse" placeholder="Adresse Déclarant"  required="true">
+                  <ngx-validation-message label="Adresse Déclarant"
+                                          [showRequired]="!getControl('address').valid && getControl('address').touched"
+                                          [fr]="getControl('address')?.hasError('pattern')">
+                  </ngx-validation-message>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Date déclaration</label>
-                    <input [(ngModel)]="Medicolegal.declaration" class="form-control" type="Date" nbInput fullWidth id="datedec" placeholder="Date déclaration" status="success">
+                    <input formControlName="declaration" class="form-control" type="Date" nbInput fullWidth id="datedec" placeholder="Date déclaration" status="success">
 
                 </div>
             </div>
 
         </div>
         <div class="float-right">
-            <button *ngIf="isAdmin" class="btn mr-1 " (click)="save()" type="submit" nbButton status="success">Enregistrer</button>
+            <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="success">Enregistrer</button>
+            <button class="btn mr-1 " (click)="reactiveForm.reset()" nbButton status="success" outline>Annuler</button>
           <!--   <button class="btn btn-secondary mr-1" (click)="generatePdf('Francais')" type="submit" nbButton status="success" outline>Certificat</button>
              <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton status="success" outline>شهادة</button>
            -->
         </div>
+      </form>
     </nb-card-body>
 
 </nb-card>
-</div>
-
 <div class="card">
   <div class="card-header">
     Liste des certificats médico-légal
   </div>
   <div class="table table-responsive">
-
     <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
