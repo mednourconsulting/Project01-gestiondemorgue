@@ -9,6 +9,8 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {CertificatMedicoLegal} from "../../../@core/backend/common/model/CertificatMedicoLegal";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -75,13 +77,18 @@ export class EnterrementComponent implements OnInit {
   };
   source: Array<CertificatEnterrement>;
   NomDecede = [];
+  isAdmin: boolean;
+  date: Date;
   DefuntId: number;
+  reactiveForm: FormGroup;
+  frPattern = '[a-zA-Z0-9 ]*';
   constructor(private service: CertificatEnterrementService,
               private userservice: UsersService,
               private serviceDecede: DecedesService,
               private serviceM: MedecinsService,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
     this.serviceDecede.getAll().subscribe( dataa => {
       dataa.forEach  (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
     });
@@ -93,13 +100,17 @@ export class EnterrementComponent implements OnInit {
       this.source = data;
     });
   }
-  isAdmin: boolean;
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
       this.date = new Date();
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
+    this.reactiveForm = this.fb.group({
+      defunt: ['', [Validators.required]],
+      ville: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      declaration: ['', [ Validators.required]],
+    });
   }
 
   save() {
@@ -109,12 +120,6 @@ export class EnterrementComponent implements OnInit {
     });
     this.toastService.toastOfSave('success');
   }
-
-  private reset() {
-    this.Enterrement = new CertificatEnterrement();
-  }
-  date: Date;
-
   onEditConfirm(event) {
     if (this.isAdmin) {
       this.service.getAll().subscribe(data => {
@@ -305,5 +310,34 @@ export class EnterrementComponent implements OnInit {
         }
         break;
     }
+  }
+  createCertificatFromForm(): CertificatEnterrement {
+    const formValues = this.reactiveForm.value;
+    const certificat = new CertificatEnterrement();
+    certificat.ville = formValues.ville;
+    certificat.declaration = formValues.declaration;
+    certificat.defunt = formValues.defunt;
+    return certificat;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const certificat: CertificatEnterrement = this.createCertificatFromForm();
+      console.warn('certificat: ', certificat);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(certificat);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
+  }
+  doSave(certificat) {
+        this.service.create(certificat).subscribe(obj => {
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+        });
+    this.toastService.toastOfSave('success');
+    this.reactiveForm.reset();
   }
 }

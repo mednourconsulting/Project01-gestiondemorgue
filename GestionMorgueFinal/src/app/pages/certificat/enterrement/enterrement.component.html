@@ -5,22 +5,29 @@
     </div>
   </nb-card-header>
   <nb-card-body>
+    <form autocomplete="off" [formGroup]="reactiveForm">
     <div class="row">
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Défunt</label>
-          <nb-select  [(ngModel)]="Enterrement.defunt" class="type-select "  nbSelect fullWidth
-                      placeholder="Num regestre" required="true">
+          <nb-select  formControlName="defunt" class="type-select "  nbSelect fullWidth
+                      placeholder="Choisir Défunt..." required="true">
             <nb-option *ngFor="let t of NomDecede" [value]="t.nom + ' ' + t.prenom" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
+          <ngx-validation-message label="Décédé"
+                                  [showRequired]="!getControl('defunt').valid && getControl('defunt').touched">
+          </ngx-validation-message>
         </div>
       </div>
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Ville</label>
-          <input [(ngModel)]="Enterrement.ville" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="ville" class="form-control" type="string" nbInput fullWidth
                  id="centre" placeholder="Ville"required="true">
-
+          <ngx-validation-message label="ville"
+                                  [showRequired]="!getControl('ville').valid && getControl('ville').touched"
+                                  [fr]="getControl('declaration').hasError('pattern')">
+          </ngx-validation-message>
         </div>
       </div>
     </div>
@@ -28,18 +35,22 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Date declaration</label>
-          <input [(ngModel)]="Enterrement.declaration" class="form-control" type="Date" nbInput fullWidth
-                 id="dateDec" placeholder="Declarant" status="danger">
-
+          <input formControlName="declaration" class="form-control" type="Date" nbInput fullWidth
+                 id="dateDec" placeholder="Declarant" status="danger" required="true">
+          <ngx-validation-message label="Date de déclaration"
+                                  [showRequired]="!getControl('declaration').valid && getControl('declaration').touched">
+          </ngx-validation-message>
         </div>
       </div>
     </div>
     <div class="float-right">
-      <button class="btn mr-1 "  (click)="save()" type="submit" nbButton  status="danger">Enregister</button>
+      <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="danger">Enregistrer</button>
+      <button class="btn mr-1 "  (click)="reactiveForm.reset()" type="submit" nbButton  status="danger" outline>Annuler</button>
       <!--
       <button class="btn btn-secondary" (click)="generatePdf('open')" type="submit" nbButton  status="danger" outline>Certificat</button>
       -->
     </div>
+    </form>
   </nb-card-body>
 </nb-card>
 <div class="card">

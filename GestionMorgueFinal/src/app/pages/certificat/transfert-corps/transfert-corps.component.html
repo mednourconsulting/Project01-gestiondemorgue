@@ -38,7 +38,7 @@
           <input formControlName="declaration"  class="form-control" type="Date" nbInput fullWidth
                  id="dateDec" placeholder="Date de déclaration"required="true">
           <ngx-validation-message label="Date de déclaration"
-                                  [showRequired]="!getControl('declaration').valid && getControl('medecins').touched">
+                                  [showRequired]="!getControl('declaration').valid && getControl('declaration').touched">
           </ngx-validation-message>
         </div>
       </div>

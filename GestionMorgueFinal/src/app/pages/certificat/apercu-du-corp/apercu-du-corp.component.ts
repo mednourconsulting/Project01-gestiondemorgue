@@ -11,6 +11,7 @@ import {base64Str} from '../base64';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -44,7 +45,7 @@ export class ApercuDuCorpComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       custom: [
         {
@@ -58,6 +59,10 @@ export class ApercuDuCorpComponent implements OnInit {
         {
           name: 'delete',
           title: '<i class="fas fa-trash"></i>',
+        },
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
         },
       ],
     },
@@ -89,20 +94,24 @@ export class ApercuDuCorpComponent implements OnInit {
   };
   isAdmin: boolean;
   NomMedcin = [];
-  NomDecede = [];
   NomDeced = [];
+  DecedeHumain: Decedes;
   source: Array<ApercuCorps>;
   MedecinID: number;
   defauntID: number;
   today = new Date();
   jstoday = '';
-
+  frPattern = '[a-zA-Z0-9 ]*';
+  reactiveForm: FormGroup;
+  e: string;
+  MedecinHumain: Medecins;
   constructor(private service: ApercuCorpsService,
               private userservice: UsersService,
               private serviceMedcin: MedecinsService,
               private serviceDecede: DecedesService,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
     this.serviceDecede.getAll().subscribe(dataa => {
       dataa.forEach(obj => {
         this.NomDeced.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
@@ -127,42 +136,13 @@ export class ApercuDuCorpComponent implements OnInit {
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
-  }
-
-  save() {
-    if (this.isAdmin) {
-    this.serviceMedcin.getById(this.MedecinID).subscribe(obj => {
-      this.ApercuCorps.medecin = obj;
-      this.serviceDecede.getById(this.defauntID).subscribe(objj => {
-        this.ApercuCorps.defunt = objj;
-        this.service.create(this.ApercuCorps).subscribe(data => {
-          this.source.push(data);
-          this.source = this.source.map(item => item);
-        });
-      });
+    this.reactiveForm = this.fb.group({
+      defunt: ['', [Validators.required]],
+      centerMedicoLegal:  ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      dateDeclaration: ['', [Validators.required]],
+      medecin: ['', [Validators.required]],
     });
-    this.toastService.toastOfSave('success');
-  } else  this.toastService.toastOfSave('warning');
-
   }
-
-  private reset() {
-    this.ApercuCorps = new ApercuCorps();
-  }
-  onEditConfirm(event) {
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.update(event.newData).subscribe(obj => {
-        });
-        this.toastService.toastOfEdit('success');
-      });
-    } else {
-      this.toastService.toastOfEdit('warning');
-
-    }
-  }
-
   pdf() {
     const doc = new jsPDF({
       compress: false,
@@ -242,8 +222,6 @@ export class ApercuDuCorpComponent implements OnInit {
     doc.text('إمضاء ', 100, 450);
     doc.save('pdfمعاينة الجثة.pdf');
   }
-  DecedeHumain: Decedes;
-
   getNature(Mot) {
     if (Mot === 'Mort non naturelle') {
       return 'وفاة غير طبيعية';
@@ -252,10 +230,6 @@ export class ApercuDuCorpComponent implements OnInit {
       return 'وفاة طبيعية';
     }
   }
-
-  e: string;
-  MedecinHumain: Medecins;
-
   actualise() {
     this.serviceDecede.getById(this.defauntID).subscribe(obj => {
       this.DecedeHumain = obj;
@@ -454,18 +428,19 @@ export class ApercuDuCorpComponent implements OnInit {
       },
     };
   }
-
+  ConvertDate(date) {
+    if (date !== undefined)
+      return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+  }
   onCustomConfirm(event) {
     switch (event.action) {
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
         pdfMake.createPdf(documentDefinition).open();
-        console.log(event.data);
         this.toastService.showToast('primary', 'Pdf ouvert', 'Le CERTIFICAT APERCU DU CORPS est ouvert dans un nouvel onglet');
         break;
       case 'pdfArabe':
         this.pdff(event.data);
-        console.log(event.data);
         this.toastService.showToast('primary', 'Téléchargement du Pdf ', 'Si vous n\'annuler pas le téléchargement du' +
           ' CERTIFICAT \'معاينة الجثة\' va bientôt être téléchargé');
         break;
@@ -483,6 +458,79 @@ export class ApercuDuCorpComponent implements OnInit {
 
         }
         break;
+      case 'edit':
+        if (this.isAdmin) {
+          console.warn('event.data', event.data);
+          let formValues = this.reactiveForm.value;
+          console.warn('formValues', formValues);
+          this.ApercuCorps = event.data;
+          console.warn('certificat', this.ApercuCorps);
+          formValues = event.data;
+          formValues.medecin = event.data.medecin.id;
+          formValues.defunt = event.data.defunt.id;
+          this.ApercuCorps.dateDeclaration = this.ConvertDate(event.data.dateDeclaration) as any as Date;
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
+        break;
+    }
+  }
+  createCertificatFromForm(): ApercuCorps {
+    const formValues = this.reactiveForm.value;
+    const certificat = new ApercuCorps();
+    certificat.medecin = formValues.medecin;
+    certificat.defunt = formValues.defunt;
+    certificat.centerMedicoLegal = formValues.centerMedicoLegal;
+    certificat.dateDeclaration = formValues.dateDeclaration;
+    return certificat;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const certificat: ApercuCorps = this.createCertificatFromForm();
+      console.warn('certificat: ', certificat);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(certificat);
+    } else {
+      this.toastService.toastOfSave('validate');
+    }
+  }
+  doSave(certificat) {
+    if (this.ApercuCorps.id == null) {
+      this.serviceMedcin.getById(certificat.medecin).subscribe(obj1 => {
+        certificat.medecin = obj1;
+        this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
+          certificat.defunt = objj;
+          this.service.create(certificat).subscribe(obj => {
+            this.source.push(obj);
+            this.source = this.source.map(e => e);
+          });
+        });
+      });
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+        const formValues = this.reactiveForm.value;
+        this.ApercuCorps.dateDeclaration = formValues.dateDeclaration;
+        this.ApercuCorps.centerMedicoLegal = formValues.centerMedicoLegal;
+        console.warn('formValues from doSave', formValues);
+        console.warn('ApercuCorps from doSave', this.ApercuCorps);
+        this.serviceMedcin.getById(formValues.medecin).subscribe(obj => {
+          this.ApercuCorps.medecin = obj;
+          this.serviceDecede.getById(formValues.defunt).subscribe(objj => {
+            this.ApercuCorps.defunt = objj;
+            this.service.update(this.ApercuCorps).subscribe(data1 => {
+              this.source = this.source.map(e => e);
+              this.reactiveForm.reset();
+            });
+            this.toastService.toastOfEdit('success');
+          }); });
+      } else {
+        this.toastService.toastOfEdit('warning');
+      }
     }
   }
 }

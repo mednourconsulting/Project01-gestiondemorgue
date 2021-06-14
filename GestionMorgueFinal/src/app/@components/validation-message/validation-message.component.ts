@@ -21,8 +21,12 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
              <p class="caption status-danger" *ngIf="showPattern"> Incorrect "{{ label }}" </p>
              <p class="caption status-danger" *ngIf="showRequired"> Le champs "{{ label }}" est obligatoire</p>
              <p class="caption status-danger" *ngIf="ar">Le champs "{{ label }}" n'accepte que les lettre en arabe, les espaces et les nombres</p>
+             <p class="caption status-danger" *ngIf="addressAr">Le champs "{{ label }}" n'accepte que les lettre en arabe,
+                 les espaces et les nombres, et les caractères suivantes ° et ,</p>
              <p class="caption status-danger" *ngIf="fr">Le champs "{{ label }}" n'accepte que les lettre en français, les espaces et
                les nombres</p>
+             <p class="caption status-danger" *ngIf="addressFr">Le champs "{{ label }}" n'accepte que les lettre en français, les espaces et
+               les nombres, et les caractères suivantes ° et ,</p>
              <p class="caption status-danger" *ngIf="showMin">la minimum valeur qu'accepte  {{ label }} est {{ min }}</p>
              <p class="caption status-danger" *ngIf="showMax">la maximum valeur qu'accepte  {{ label }} est {{ max }}</p>
       </div>
@@ -47,6 +51,12 @@ export class NgxValidationMessageComponent {
 
     @Input()
     fr?: boolean;
+
+    @Input()
+    addressFr?: boolean;
+
+    @Input()
+    addressAr?: boolean;
 
     @Input()
     number?: boolean;

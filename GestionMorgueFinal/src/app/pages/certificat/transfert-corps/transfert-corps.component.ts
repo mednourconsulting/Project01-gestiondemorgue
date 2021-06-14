@@ -159,6 +159,13 @@ export class TransfertCorpsComponent implements OnInit {
         this.NomMedcin.push({nom: obj.nom , prenom: obj.prenom, id: obj.id});
       });
     });
+  }
+
+  ngOnInit() {
+    this.userservice.getCurrentUser().subscribe(data => {
+      this.isAdmin = data.role.includes('ADMIN');
+    });
+    this.init();
     this.reactiveForm = this.fb.group({
       medecins: ['', [Validators.required]],
       cercueilType: ['', [Validators.required]],
@@ -172,13 +179,6 @@ export class TransfertCorpsComponent implements OnInit {
       inhumationSociete: ['', [Validators.required, Validators.pattern(this.frPattern)]],
       cin: ['', [Validators.required, Validators.pattern(this.frPattern)]],
     });
-  }
-
-  ngOnInit() {
-    this.userservice.getCurrentUser().subscribe(data => {
-      this.isAdmin = data.role.includes('ADMIN');
-    });
-    this.init();
   }
 
   save() {

@@ -1,5 +1,5 @@
 
-<div *ngIf="isAdmin == true" >
+
 <nb-card>
     <nb-card-header>
         <div class="row">
@@ -12,8 +12,8 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Médecin</label>
-                    <nb-select formControlName="medecin" class="type-select " nbSelect fullWidth placeholder="Médecin" required="true">
-                      <nb-option class="url" *ngIf="NomMedecin.length == 0 " (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
+                    <nb-select formControlName="medecin" [ngModel]="this.Medicolegal.medecin" class="type-select "  nbSelect fullWidth placeholder="Médecin" required="true">
+                      <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
                       <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
                   <ngx-validation-message label="Médecin"
@@ -25,8 +25,9 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Défunt</label>
-                    <nb-select formControlName="defunt" class="type-select " nbSelect fullWidth placeholder="Défunt" required="true">
-                      <nb-option class="url" *ngIf="NomDecede.length == 0 " (click)="passToDecede()">Ajouter un Décédé....</nb-option>
+                    <nb-select formControlName="defunt" [ngModel]="this.Medicolegal.defunt"class="type-select "
+                               nbSelect fullWidth placeholder="Défunt" required="true">
+                      <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
                       <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
                   <ngx-validation-message label="Défunt"
@@ -38,7 +39,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Déclarant</label><br>
-                    <input formControlName="declarant" class="form-control"
+                    <input formControlName="declarant" [ngModel]="this.Medicolegal.declarant" class="form-control"
                            type="string" nbInput fullWidth id="dec" placeholder="Déclarant"  required="true">
                   <ngx-validation-message label="Déclarant"
                                           [showRequired]="!getControl('declarant').valid && getControl('declarant').touched"
@@ -53,7 +54,7 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">CIN Déclarant</label><br>
-                    <input formControlName="cin" class="form-control" ng-required="expression"
+                    <input formControlName="cin" [ngModel]="this.Medicolegal.cin"class="form-control" ng-required="expression"
                            type="string" nbInput fullWidth id="cin" placeholder="CIN Déclarant" status="success">
                   <ngx-validation-message label="CIN Déclarant"
                                           [fr]="getControl('cin')?.hasError('pattern')">
@@ -63,18 +64,19 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Adresse Déclarant</label><br>
-                    <input formControlName="address" class="form-control" type="string" nbInput fullWidth
+                    <input formControlName="address"[ngModel]="this.Medicolegal.address" class="form-control" type="string" nbInput fullWidth
                            id="adresse" placeholder="Adresse Déclarant"  required="true">
                   <ngx-validation-message label="Adresse Déclarant"
                                           [showRequired]="!getControl('address').valid && getControl('address').touched"
-                                          [fr]="getControl('address')?.hasError('pattern')">
+                                          [addressFr]="getControl('address')?.hasError('pattern')">
                   </ngx-validation-message>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Date déclaration</label>
-                    <input formControlName="declaration" class="form-control" type="Date" nbInput fullWidth id="datedec" placeholder="Date déclaration" status="success">
+                    <input formControlName="declaration" [ngModel]="this.Medicolegal.declaration"
+                           class="form-control" type="Date" nbInput fullWidth id="datedec" placeholder="Date déclaration" status="success">
 
                 </div>
             </div>
@@ -91,7 +93,7 @@
     </nb-card-body>
 
 </nb-card>
-</div>
+
 
 <div class="card">
   <div class="card-header">

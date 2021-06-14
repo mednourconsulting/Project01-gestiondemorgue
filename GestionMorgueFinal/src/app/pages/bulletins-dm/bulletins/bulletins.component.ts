@@ -1051,7 +1051,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
         this.numRgtr = event.data.decede.id;
         this.medcinid = event.data.medecin.id;
         this.Bulletins.typeBulletin = event.data.typeBulletin;
-          this.toastService.toastOfEdit('success');
         } else {
           this.toastService.toastOfEdit('warning');
         }
