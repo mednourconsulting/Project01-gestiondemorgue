@@ -110,6 +110,8 @@ export class MedicolegalComponent implements OnInit {
   jstoday = '';
   defunt: number;
   MedNom: number;
+  id: null;
+
   constructor(private service: CertificatMedicoLegalService,
               private userservice: UsersService,
               private router: Router,
@@ -137,7 +139,6 @@ export class MedicolegalComponent implements OnInit {
     });
     this.init();
     this.reactiveForm = this.fb.group({
-
       medecin: ['', [ Validators.required ]],
       declarant: ['', [ Validators.required, Validators.pattern(this.frPattern) ]],
       address: ['', [ Validators.required, Validators.pattern(this.adressFrPattern) ]],
@@ -146,6 +147,7 @@ export class MedicolegalComponent implements OnInit {
       defunt: ['', [ Validators.required ]],
     });
   }
+
   isAdmin: boolean;
   generatePdf(action) {
     this.actualise();
@@ -396,7 +398,6 @@ export class MedicolegalComponent implements OnInit {
       return 'وفاة طبيعية';
     }
   }
-
   pdff(list) {
     const doc = new jsPDF({
       compress: false,
@@ -435,7 +436,6 @@ export class MedicolegalComponent implements OnInit {
     doc.text('إمضاء ', 100, 420);
     doc.save('شهادة طبية' + '.pdf');
   }
-
   pdf() {
     const doc = new jsPDF( {
       compress: false,
@@ -495,24 +495,26 @@ export class MedicolegalComponent implements OnInit {
 
     }
   }
-
+  onEdit (data: any) {
+    if (this.isAdmin) {
+      this.id = data.id;
+      this.reactiveForm.setValue({
+        medecin: data.medecin.id,
+        declarant: data.declarant,
+        address: data.address,
+        cin:  data.cin,
+        declaration: this.ConvertDate(data.declaration) as any as Date,
+        defunt: data.defunt.id,
+      });
+      this.active = true;
+    } else {
+      this.toastService.toastOfEdit('warning');
+    }
+  }
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
-        if (this.isAdmin) {
-          console.warn('event.data Before', event.data);
-          let formValues = this.reactiveForm.value;
-          this.Medicolegal = event.data;
-          console.warn('certificat', this.Medicolegal);
-          formValues = event.data;
-          console.warn('formValues', formValues);
-          formValues.medecin = event.data.medecin.id;
-          formValues.defunt = event.data.defunt.id;
-          this.Medicolegal.declaration = this.ConvertDate(event.data.declaration) as any as Date;
-          console.warn('event.data After', event.data);
-        } else {
-          this.toastService.toastOfEdit('warning');
-        }
+           this.onEdit(event.data);
         break;
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition1(event.data);
@@ -540,17 +542,16 @@ export class MedicolegalComponent implements OnInit {
         break;
     }
   }
-
   passToMedecin() {
     this.router.navigateByUrl('/pages/bulletins-dm/medcins');
   }
   passToDecede() {
     this.router.navigateByUrl('/pages/bulletins-dm/decedes');
   }
-
   createCertificatFromForm(): CertificatMedicoLegal {
     const formValues = this.reactiveForm.value;
     const certificat = new CertificatMedicoLegal();
+    certificat.id = this.id;
     certificat.medecin = formValues.medecin;
     certificat.declarant = formValues.declarant;
     certificat.address = formValues.address;
@@ -566,6 +567,7 @@ export class MedicolegalComponent implements OnInit {
     if (date !== undefined)
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
   }
+  // on submit data
   onSubmit() {
     if (this.reactiveForm.valid) {
       const certificat: CertificatMedicoLegal = this.createCertificatFromForm();
@@ -577,11 +579,12 @@ export class MedicolegalComponent implements OnInit {
     }
   }
   doSave(certificat) {
-    if (this.Medicolegal.id == null) {
-      this.serviceMeddcin.getById(certificat.medecin).subscribe(obj1 => {
-        certificat.medecin = obj1;
-        this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
-          certificat.defunt = objj;
+    console.log('certificat :: ' + certificat);
+    if (this.id == null) {
+      this.serviceMeddcin.getById(certificat.medecin).subscribe(medecin => {
+        certificat.medecin = medecin;
+        this.serviceDecede.getById(certificat.defunt).subscribe(defunt => {
+          certificat.defunt = defunt;
           this.service.create(certificat).subscribe(obj => {
             this.source.push(obj);
             this.source = this.source.map(e => e);
@@ -592,27 +595,26 @@ export class MedicolegalComponent implements OnInit {
       this.reactiveForm.reset();
     } else {
       if (this.isAdmin) {
-        const formValues = this.reactiveForm.value;
-        this.Medicolegal.declaration = formValues.declaration;
-        this.Medicolegal.address = formValues.address;
-        this.Medicolegal.declarant = formValues.declarant;
-        this.Medicolegal.cin = formValues.cin;
-        console.warn('formValues from doSave', formValues);
-        console.warn('medicolegal from doSave', this.Medicolegal);
-        this.serviceMeddcin.getById(formValues.medecin).subscribe(obj => {
-          this.Medicolegal.medecin = obj;
-          this.serviceDecede.getById(formValues.defunt).subscribe(objj => {
-            this.Medicolegal.defunt = objj;
-              this.service.update(this.Medicolegal).subscribe(data1 => {
-                this.source = this.source.map(e => e);
-                this.init();
-                this.reactiveForm.reset();
-              });
-              this.toastService.toastOfEdit('success');
-          }); });
+        this.serviceMeddcin.getById(certificat.medecin).subscribe(medecin => {
+          certificat.medecin = medecin;
+          this.serviceDecede.getById(certificat.defunt).subscribe(defunt => {
+            certificat.defunt = defunt;
+            this.service.update(certificat).subscribe(data1 => {
+              this.source = this.source.map(e => e);
+              this.init();
+              this.reactiveForm.reset();
+            });
+          });
+        });
+        this.toastService.toastOfSave('success');
       } else {
         this.toastService.toastOfEdit('warning');
       }
     }
+  }
+
+  reset() {
+    this.reactiveForm.reset();
+    this.Medicolegal = new CertificatMedicoLegal();
   }
 }

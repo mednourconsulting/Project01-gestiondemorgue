@@ -25,9 +25,13 @@ import {Router} from '@angular/router';
 })
 
 export class BulletinsComponent implements OnInit, OnChanges {
-    ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-        throw new Error('Method not implemented.');
-    }
+  public active: boolean = false;
+  public id = null;
+
+  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    throw new Error('Method not implemented.');
+  }
+
   compostage: string;
   medcinid: number = null;
   constation: string;
@@ -158,6 +162,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
   MedecinHumain: Medecins;
   c: string;
   i = 0;
+
   constructor(private service: BulletinsService,
               private serviceD: DecedesService,
               private serviceM: MedecinsService,
@@ -168,20 +173,26 @@ export class BulletinsComponent implements OnInit, OnChanges {
               private router: Router,
               private toastService: ToastrService,
               private fb: FormBuilder) {
-    this.serviceD.getAll().subscribe( data => {
-      data.forEach (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
+    this.serviceD.getAll().subscribe(data => {
+      data.forEach(obj => {
+        this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
+      });
     });
-    this.serviceM.getAll().subscribe( dataa => {
-      dataa.forEach (  obj => { this.NomDMedcin.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
+    this.serviceM.getAll().subscribe(dataa => {
+      dataa.forEach(obj => {
+        this.NomDMedcin.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
+      });
     });
     this.MedecinHumain = new Medecins();
     this.DecedeHumain = new Decedes();
   }
+
   init() {
     this.service.getAll().subscribe(data => {
       this.source = data;
     });
   }
+
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
@@ -203,27 +214,31 @@ export class BulletinsComponent implements OnInit, OnChanges {
       centre: ['', [Validators.required, Validators.pattern(this.frPattern)]],
     });
   }
+
   createBulletinFromForm(): Bulletins {
     const formValues = this.reactiveForm.value;
     const bulletin = new Bulletins();
-      bulletin.typeBulletin = formValues.typeBulletin;
-      bulletin.declaration = formValues.declaration;
-      bulletin.cercle = formValues.cercle;
-      bulletin.diagnostique = formValues.diagnostique;
-      bulletin.lieuEntrement = formValues.lieuEntrement;
-      bulletin.province = formValues.province;
-      bulletin.residece = formValues.residece;
-      bulletin.cimetiere = formValues.cimetiere;
-      bulletin.numTombe = formValues.numTombe;
-      bulletin.compostage = formValues.compostage;
-      bulletin.medecin = formValues.medecin;
-      bulletin.decede = formValues.decede;
-      bulletin.centre = formValues.centre;
-       return bulletin;
+    bulletin.id = this.id;
+    bulletin.typeBulletin = formValues.typeBulletin;
+    bulletin.declaration = formValues.declaration;
+    bulletin.cercle = formValues.cercle;
+    bulletin.diagnostique = formValues.diagnostique;
+    bulletin.lieuEntrement = formValues.lieuEntrement;
+    bulletin.province = formValues.province;
+    bulletin.residece = formValues.residece;
+    bulletin.cimetiere = formValues.cimetiere;
+    bulletin.numTombe = formValues.numTombe;
+    bulletin.compostage = formValues.compostage;
+    bulletin.medecin = formValues.medecin;
+    bulletin.decede = formValues.decede;
+    bulletin.centre = formValues.centre;
+    return bulletin;
   }
+
   getControl(name: string): AbstractControl {
     return this.reactiveForm.get(name);
   }
+
   onSubmit() {
     if (this.reactiveForm.valid) {
       const bulletin: Bulletins = this.createBulletinFromForm();
@@ -234,56 +249,51 @@ export class BulletinsComponent implements OnInit, OnChanges {
       this.toastService.toastOfSave('validate');
     }
   }
+
   doSave(bulletin) {
-          this.serviceM.getById(bulletin.medecin).subscribe(obj1 => {
-            bulletin.medecin = obj1;
-            this.serviceD.getById(bulletin.decede).subscribe(objj => {
-              bulletin.decede = objj;
-              this.service.create(bulletin).subscribe(obj => {
-                this.source.push(obj);
-                this.source = this.source.map(e => e);
-              });
+    if (this.id == null) {
+      this.serviceM.getById(bulletin.medecin.id).subscribe(medecin => {
+        bulletin.medecin = medecin;
+        this.serviceD.getById(bulletin.decede.id).subscribe(decede => {
+          bulletin.decede = decede;
+          this.service.create(bulletin).subscribe(data => {
+            this.source.push(data);
+            this.source = this.source.map(e => e);
+          });
+        });
+      });
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+        this.serviceM.getById(bulletin.medecin).subscribe(medecin => {
+          bulletin.medecin = medecin;
+          this.serviceD.getById(bulletin.decede).subscribe(defunt => {
+            bulletin.decede = defunt;
+            this.service.update(bulletin).subscribe(data1 => {
+              this.source = this.source.map(e => e);
+              this.init();
+              this.active = false;
+              this.reactiveForm.reset();
             });
           });
-          this.toastService.toastOfSave('success');
-          this.reactiveForm.reset();
+        });
+        this.toastService.toastOfSave('success');
+      } else {
+        this.toastService.toastOfEdit('warning');
+      }
+    }
+
   }
-  save() {
-      if (this.Bulletins !== null) {
-        if (this.Bulletins.id === null) {
-          this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-            this.Bulletins.medecin = obj1;
-            this.serviceD.getById(this.numRgtr).subscribe(objj => {
-              this.Bulletins.decede = objj;
-              this.service.create(this.Bulletins).subscribe(obj => {
-                this.source.push(obj);
-                this.source = this.source.map(e => e);
-              });
-            });
-          });
-          this.toastService.toastOfSave('success');
-        } else {
-          this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-            this.Bulletins.medecin = obj1;
-            this.serviceD.getById(this.numRgtr).subscribe(objj => {
-              this.Bulletins.decede = objj;
-              this.service.update(this.Bulletins).subscribe(obj => {
-                // this.source.push(obj);
-                this.reset();
-                this.source = this.source.map(e => e);
-              });
-            });
-          });
-          this.toastService.toastOfSave('success');
-      } } else this.toastService.showToast('danger', 'Erreur !!', 'Remplir tous les champs');
-  }
-  private reset() {
+
+  reset() {
     this.Bulletins = new Bulletins();
     this.DecedeHumain = null;
     this.MedecinHumain = null;
     this.numRgtr = null;
     this.medcinid = null;
   }
+
   onEditConfirm(event) {
     this.settings.columns.medecin = event.data.medecin;
     if (this.isAdmin) {
@@ -297,6 +307,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
       this.toastService.toastOfEdit('warning');
     }
   }
+
   onDeleteConfirm(event) {
     if (this.isAdmin) {
       if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
@@ -312,18 +323,23 @@ export class BulletinsComponent implements OnInit, OnChanges {
 
     }
   }
+
   generatePdf(action = 'open') {
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
-      case 'open': pdfMake.createPdf(documentDefinition).open(); break;
+      case 'open':
+        pdfMake.createPdf(documentDefinition).open();
+        break;
     }
   }
-  getAgeParAnnee(DateNaiss , DateDeces ) {
+
+  getAgeParAnnee(DateNaiss, DateDeces) {
     DateNaiss = new Date(DateNaiss);
     DateDeces = new Date(DateDeces);
     return ((DateDeces.getTime() - DateNaiss.getTime()) / 31536000000).toFixed(0);
   }
-  calculateAge(dateNaiss , dateDeces ) {
+
+  calculateAge(dateNaiss, dateDeces) {
     const second = 1;
     const minute = 60 * second;
     const hour = 60 * minute;
@@ -331,15 +347,16 @@ export class BulletinsComponent implements OnInit, OnChanges {
     const year = 365 * day;
     dateNaiss = new Date(dateNaiss).getTime();
     dateDeces = new Date(dateDeces).getTime();
-    const counter = ( dateDeces - dateNaiss ) / 1000;
+    const counter = (dateDeces - dateNaiss) / 1000;
     const years = Math.floor(counter / year);
     const restOfYears = counter % year;
     const days = Math.floor(restOfYears / day);
     const restOfDays = restOfYears % day;
     const hours = Math.floor(restOfDays / hour);
-    return (years + ' ans ' + days + ' jours ' + hours + ' heurs ' );
+    return (years + ' ans ' + days + ' jours ' + hours + ' heurs ');
   }
-  private getDocumentDefinition() {
+
+  getDocumentDefinition() {
     // sessionStorage.setItem('resume', JSON.stringify());
     return {
       pageSize: 'A4',
@@ -347,7 +364,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
       content: [
         {
           table: {
-            widths: ['30%', '30%' , '40%'],
+            widths: ['30%', '30%', '40%'],
             height: 'auto',
             body: [
               [
@@ -366,7 +383,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   text: 'Province/ préfecture : ' +
-                    this.checkIfNullOrUndefind(this.Bulletins.province)  +
+                    this.checkIfNullOrUndefind(this.Bulletins.province) +
                     '\n Cercle ' + this.checkIfNullOrUndefind(this.Bulletins.cercle) +
                     '\n Municipalité /centre/commune : ' + this.checkIfNullOrUndefind(this.Bulletins.centre),
                   fontSize: 10,
@@ -394,7 +411,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   text: 'Décès survenu le:  ' +
                     this.checkIfNullOrUndefind(formatDate(this.DecedeHumain.dateDeces,
                       'dd-MM-yyyy', 'en-US', '+0530')) +
-                    '\t à l\'heure  '  + this.checkIfNullOrUndefind(this.DecedeHumain.heure)
+                    '\t à l\'heure  ' + this.checkIfNullOrUndefind(this.DecedeHumain.heure)
                     + '\t à  ' + this.checkIfNullOrUndefind(this.DecedeHumain.lieuxDeces)
                     + '  \n' + 'Nom et prénom de décédé:  '
                     + this.checkIfNullOrUndefind(this.DecedeHumain.nom) + ' '
@@ -432,7 +449,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
         },
         {
           table: {
-            widths: ['30%' , '70%'],
+            widths: ['30%', '70%'],
             body: [
               [
                 {
@@ -440,7 +457,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   text: 'PARTIE ANONYME \n',
                   alignment: 'center',
                   fontSize: 14,
-                  border: [true, true , true , false],
+                  border: [true, true, true, false],
                 },
                 '',
               ],
@@ -452,7 +469,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   alignment: 'center',
                   fontSize: 10,
                   bold: true,
-                  border: [true, false , true , true],
+                  border: [true, false, true, true],
                 },
                 '',
               ],
@@ -468,7 +485,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
               ],
               [
                 {
-                  text: 'N° de l\'acte au registre  ' + this.numRgtr ,
+                  text: 'N° de l\'acte au registre  ' + this.numRgtr,
                   border: [true, false, false, false],
                 },
                 {
@@ -481,7 +498,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   text: 'Lieu de déclaration:',
                   border: [true, false, false, false],
                 },
-                {border: [false, false, true, false],
+                {
+                  border: [false, false, true, false],
                   fontSize: 12,
                   // margin: [0, 10, 0, 10],
                   ul: [
@@ -496,7 +514,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   border: [true, false, false, false],
                   text: 'Domicile habituel:',
                 },
-                {border: [false, false, true, false],
+                {
+                  border: [false, false, true, false],
                   fontSize: 12,
                   // margin: [0, 10, 0, 10],
                   ul: [
@@ -530,31 +549,31 @@ export class BulletinsComponent implements OnInit, OnChanges {
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Type de bulletin :' ,
+                  text: 'Type de bulletin :',
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.Bulletins.typeBulletin ,
+                  text: this.Bulletins.typeBulletin,
                 },
               ],
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Date de décès :' ,
+                  text: 'Date de décès :',
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.jstoday ,
+                  text: this.jstoday,
                 },
               ],
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Lieu où décès est survenu:' ,
+                  text: 'Lieu où décès est survenu:',
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.lieuxDeces ,
+                  text: this.DecedeHumain.lieuxDeces,
                 },
               ],
               [
@@ -564,13 +583,13 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.sexe ,
+                  text: this.DecedeHumain.sexe,
                 },
               ],
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Age :' ,
+                  text: 'Age :',
                 },
                 {
                   border: [false, false, true, false],
@@ -584,7 +603,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.nationalite ,
+                  text: this.DecedeHumain.nationalite,
                 },
               ],
               [
@@ -603,7 +622,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, true],
-                  text: this.DecedeHumain.profession ,
+                  text: this.DecedeHumain.profession,
                 },
               ],
             ],
@@ -669,14 +688,15 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
     };
   }
-  private checkIfNullOrUndefind(attribute) {
-    if (attribute === null || attribute === undefined  ) {
+
+  checkIfNullOrUndefind(attribute) {
+    if (attribute === null || attribute === undefined) {
       return ' ';
     } else {
       return attribute;
     }
   }
-  private genererBulletin(obj) {
+  genererBulletin(obj) {
     // sessionStorage.setItem('resume', JSON.stringify());
     return {
       pageSize: 'A4',
@@ -684,7 +704,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
       content: [
         {
           table: {
-            widths: ['30%', '30%' , '40%'],
+            widths: ['30%', '30%', '40%'],
             body: [
               [
                 {
@@ -702,7 +722,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   text: 'Province/ préfecture : ' + this.checkIfNullOrUndefind(obj.province)
-                    + '\n Cercle : ' + this.checkIfNullOrUndefind(obj.cercle ) +
+                    + '\n Cercle : ' + this.checkIfNullOrUndefind(obj.cercle) +
                     '\n Municipalité /centre/commune : ' + this.checkIfNullOrUndefind(obj.centre),
                   fontSize: 10,
                   alignment: 'left',
@@ -726,8 +746,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   border: [true, false, true, false],
                   fontSize: 12,
                   text: 'Décès survenu le:  ' +
-                    this.checkIfNullOrUndefind(formatDate( obj.decede.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530'))  +
-                    '\t à l\'heure  '  + this.checkIfNullOrUndefind(obj.decede.heure) + '\t à  ' +
+                    this.checkIfNullOrUndefind(formatDate(obj.decede.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530')) +
+                    '\t à l\'heure  ' + this.checkIfNullOrUndefind(obj.decede.heure) + '\t à  ' +
                     this.checkIfNullOrUndefind(obj.decede.lieuxDeces) + '  \n' + 'Nom et prénom de décédé:  ' +
                     this.checkIfNullOrUndefind(obj.decede.nom) + ' ' + this.checkIfNullOrUndefind(obj.decede.prenom) +
                     '\t\t Sexe:   ' + this.checkIfNullOrUndefind(obj.decede.sexe) +
@@ -743,7 +763,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   fontSize: 9,
                   text: 'Le Docteur en médecine soussigné \n nom signature \n\n',
                   alignment: 'center',
-                  margin: [300 , 10, 0, 0 ],
+                  margin: [300, 10, 0, 0],
                 },
               ],
               [
@@ -767,7 +787,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
         },
         {
           table: {
-            widths: ['30%' , '70%'],
+            widths: ['30%', '70%'],
             body: [
               [
                 {
@@ -775,7 +795,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   text: 'PARTIE ANONYME \n',
                   alignment: 'center',
                   fontSize: 14,
-                  border: [true, true , true , false],
+                  border: [true, true, true, false],
                 },
                 '',
               ],
@@ -787,7 +807,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   alignment: 'center',
                   fontSize: 10,
                   bold: true,
-                  border: [true, false , true , true],
+                  border: [true, false, true, true],
                 },
                 '',
               ],
@@ -803,7 +823,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
               ],
               [
                 {
-                  text: 'N° de l\'acte au registre  ' + this.checkIfNullOrUndefind(obj.decede.numRegister) ,
+                  text: 'N° de l\'acte au registre  ' + this.checkIfNullOrUndefind(obj.decede.numRegister),
                   border: [true, false, false, false],
                 },
                 {
@@ -816,7 +836,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   text: 'Lieu de déclaration:',
                   border: [true, false, false, false],
                 },
-                {border: [false, false, true, false],
+                {
+                  border: [false, false, true, false],
                   fontSize: 12,
                   // margin: [0, 10, 0, 10],
                   ul: [
@@ -831,7 +852,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   border: [true, false, false, false],
                   text: 'Domicile habituel:',
                 },
-                {border: [false, false, true, false],
+                {
+                  border: [false, false, true, false],
                   fontSize: 12,
                   // margin: [0, 10, 0, 10],
                   ul: [
@@ -865,31 +887,31 @@ export class BulletinsComponent implements OnInit, OnChanges {
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Type de bulletin :' ,
+                  text: 'Type de bulletin :',
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(obj.typeBulletin) ,
+                  text: this.checkIfNullOrUndefind(obj.typeBulletin),
                 },
               ],
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Date de décès :' ,
+                  text: 'Date de décès :',
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(formatDate( obj.decede.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530')) ,
+                  text: this.checkIfNullOrUndefind(formatDate(obj.decede.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530')),
                 },
               ],
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Lieu où décès est survenu:' ,
+                  text: 'Lieu où décès est survenu:',
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(obj.decede.lieuxDeces) ,
+                  text: this.checkIfNullOrUndefind(obj.decede.lieuxDeces),
                 },
               ],
               [
@@ -899,13 +921,13 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(obj.decede.sexe) ,
+                  text: this.checkIfNullOrUndefind(obj.decede.sexe),
                 },
               ],
               [
                 {
                   border: [true, false, false, false],
-                  text: 'Age :' ,
+                  text: 'Age :',
                 },
                 {
                   border: [false, false, true, false],
@@ -919,7 +941,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.checkIfNullOrUndefind(obj.decede.nationalite) ,
+                  text: this.checkIfNullOrUndefind(obj.decede.nationalite),
                 },
               ],
               [
@@ -938,7 +960,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, true],
-                  text: this.checkIfNullOrUndefind(obj.decede.profession) ,
+                  text: this.checkIfNullOrUndefind(obj.decede.profession),
                 },
               ],
             ],
@@ -1005,52 +1027,68 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
     };
   }
+
   add() {
 
-      this.serviceD.getById(this.numRgtr).subscribe(obj => {
-        this.DecedeHumain = obj;
-        this.jstoday = formatDate(this.DecedeHumain.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530');
-      });
-      this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-        this.MedecinHumain = obj1;
-      });
-}
- /* onCustomConfirm(event) {
-    switch ( event.action) {
-      case 'pdfFrancais':
-        const documentDefinition = this.getDocumentDefinition(event.data);
-        pdfMake.createPdf(documentDefinition).open();
-        break;
-      case 'delete':
-        if (this.isAdmin) {
-          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
-            // event.confirm.resolve(event.data);
-            this.service.delete(event.data.id).subscribe(data => {
-            });
-          }
-        } else {
-          window.alert('Vous n\'avez pas des droits de suppression');
-        }
-        this.init();
-        break;
-    }
-  } */
+    this.serviceD.getById(this.numRgtr).subscribe(obj => {
+      this.DecedeHumain = obj;
+      this.jstoday = formatDate(this.DecedeHumain.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530');
+    });
+    this.serviceM.getById(this.medcinid).subscribe(obj1 => {
+      this.MedecinHumain = obj1;
+    });
+  }
+
+  /* onCustomConfirm(event) {
+     switch ( event.action) {
+       case 'pdfFrancais':
+         const documentDefinition = this.getDocumentDefinition(event.data);
+         pdfMake.createPdf(documentDefinition).open();
+         break;
+       case 'delete':
+         if (this.isAdmin) {
+           if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
+             // event.confirm.resolve(event.data);
+             this.service.delete(event.data.id).subscribe(data => {
+             });
+           }
+         } else {
+           window.alert('Vous n\'avez pas des droits de suppression');
+         }
+         this.init();
+         break;
+     }
+   } */
   passToMedecin() {
     this.router.navigateByUrl('/pages/bulletins-dm/medcins');
   }
+
   passToDecede() {
     this.router.navigateByUrl('/pages/bulletins-dm/decedes');
   }
+
   onCustomConfirm(event) {
-    switch ( event.action) {
+    switch (event.action) {
       case 'edit':
         if (this.isAdmin) {
-        this.Bulletins = event.data;
-        this.DecedeHumain = event.data.decede;
-        this.MedecinHumain = event.data.medecin;
-        this.numRgtr = event.data.decede.id;
-        this.medcinid = event.data.medecin.id;
-        this.Bulletins.typeBulletin = event.data.typeBulletin;
+          this.reactiveForm.setValue({
+            typeBulletin: event.data.typeBulletin,
+            declaration: this.ConvertDate(event.data.declaration) as any as Date,
+            cercle: event.data.cercle,
+            diagnostique: event.data.diagnostique,
+            lieuEntrement: event.data.lieuEntrement,
+            province: event.data.province,
+            residece: event.data.residece,
+            cimetiere: event.data.cimetiere,
+            numTombe: event.data.numTombe,
+            compostage: event.data.compostage,
+            medecin: event.data.medecin.id,
+            decede: event.data.decede.id,
+            centre: event.data.centre,
+          });
+          this.id = event.data.id;
+          this.active = true;
+          this.onChange(event.data);
         } else {
           this.toastService.toastOfEdit('warning');
         }
@@ -1077,12 +1115,26 @@ export class BulletinsComponent implements OnInit, OnChanges {
         break;
     }
   }
-  onChange(medcinid: number) {
-    this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-      this.Bulletins.medecin = obj1;
-      this.MedecinHumain = obj1;
+
+  ConvertDate(date) {
+    if (date !== undefined)
+      return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+  }
+
+  onChange(data: any) {
+    this.active = true;
+    this.serviceM.getById(data.medecin.id).subscribe(medecin => {
+      this.Bulletins.medecin = medecin;
+      this.MedecinHumain = medecin;
+      console.log('id:: ' + medecin);
+    });
+    this.serviceD.getById(data.decede.id).subscribe(decede => {
+      this.Bulletins.decede = decede;
+      this.DecedeHumain = decede;
+      console.log('id:: ' + decede);
     });
   }
+}
   /* ActivateMedecin(medcinid: number) {
     this.serviceM.getById(this.createBulletinFromForm().medecin.id).subscribe(obj1 => {
       this.MedecinHumain = obj1;
@@ -1093,5 +1145,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       this.DecedeHumain = obj1;
     });
   }
-  */
 }
+   */
+

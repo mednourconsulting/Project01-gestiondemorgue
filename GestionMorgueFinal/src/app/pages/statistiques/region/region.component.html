@@ -27,7 +27,8 @@
               <i class="fa fa-chart-bar" ></i></span> -->
           <input type="text"
                  name="name" class="form-control"
-                 required minlength="4" appForbiddenName="bob"
+                  minlength="4"
+                 required="true"
                  [(ngModel)]="annee" #name="ngModel"
                  (ngModelChange)="get(annee)">
         </div>
