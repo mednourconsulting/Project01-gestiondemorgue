@@ -1,16 +1,14 @@
 
 import { Component, OnInit } from '@angular/core';
-import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {LocalDataSource} from 'ng2-smart-table';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
-import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
-import {ToastrService} from "../../../@core/backend/common/services/toastr.service";
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -187,7 +185,7 @@ export class DecedesComponent implements OnInit {
   etat = ['Célibataire', 'Marié', 'Divorcé', 'Veuf(ve)'];
   LieuD = ['Domicile', 'Hopital public', 'Clinique', 'Voie public', 'Lieu de travail', 'Autre'];
   NatureMort = ['Mort naturelle', 'Mort non naturelle'];
-  GrossesseList = ['Oui', 'Non', 'Inconnu'];
+  reponse = ['Oui', 'Non', 'Inconnu'];
   CauseMort = ['accident', 'homicide', 'suicide', 'Inconnu',
     'noyade', 'brûlure', 'intoxication', 'traumatisme', 'Maladie'];
   causes = [];
@@ -199,11 +197,18 @@ export class DecedesComponent implements OnInit {
     'Larache', 'Al Hoceïma', 'Chefchaouen', 'Ouezzane'];
   decede: Decedes = new Decedes();
   source: Array<Decedes>;
+  frPattern = '[a-zA-Zéàçèê()\'0-9 ]*';
+  arPattern = '[\u0621-\u064A0-9 ]*';
+  adressFrPattern = '[a-zA-Z0-9°, ]*';
+  adressArPattern = '[\u0621-\u064A0-9°, ]*';
+  heurePattern = '[0-9PAMpam:]*';
+  private reactiveForm: FormGroup;
   constructor(private service: DecedesService,
               private userservice: UsersService,
               private serviceCause: CauseService,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private fb: FormBuilder) {
     this.serviceCause.getAll().subscribe( data => {
       data.forEach ( obj => { this.causes.push({description: obj.description , id: obj.id}); });
     });
@@ -214,6 +219,54 @@ export class DecedesComponent implements OnInit {
   init() {
     this.service.getAll().subscribe(data => {
     this.source = data;
+    });
+    this.reactiveForm = this.fb.group({
+      nom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      prenom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      sexe: ['', [Validators.required]],
+      dateDeces: ['', [Validators.required]],
+      dateNaissance: ['', [Validators.required]],
+      mortNe: [''],
+      lieuNaiss: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      nationalite: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      cin: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      adresse: ['', [Validators.required, Validators.pattern(this.adressFrPattern)]],
+      etat: ['', [Validators.required]],
+      fils: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      heure: ['', [Validators.required, Validators.pattern(this.heurePattern)]],
+      lieuxDeces: ['', [Validators.required]],
+      provinceD: [''],
+      prefectureD: ['', Validators.pattern(this.frPattern)],
+      communeD: ['', Validators.pattern(this.frPattern)],
+      natureMort: ['', [Validators.required]],
+      causeMort: [''],
+      causeInitial: [''],
+      causeImmdiate: [''],
+      profession: ['', [Validators.required]],
+      obstacle: [''],
+      autopsie: [''],
+      operation: [''],
+      resultatsAutopsie: [''],
+      nomAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+      prenomAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+      lieuDecesAR: ['', [Validators.pattern(this.arPattern)]],
+      nationaliteAR: ['', [Validators.pattern(this.arPattern)]],
+      filsAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+      adresseAR: ['', [Validators.required, Validators.pattern(this.adressArPattern)]],
+      ageMere: ['', Validators.pattern(this.frPattern)],
+      ageGestationnel: ['', Validators.pattern(this.frPattern)],
+      grossesseMultiple: [''],
+      poidsNaissance: ['', Validators.pattern(this.frPattern)],
+      decesGrossesse: [''],
+      decesFemme: [''],
+      contribueGros: [''],
+      maladie: ['', Validators.pattern(this.frPattern)],
+      dateServ: [''],
+      lieuServ: [''],
+      circonServ: [''],
+      dateOperation: [''],
+      motifOperation: ['', Validators.pattern(this.frPattern)],
+      numRegister: [''],
     });
   }
   ngOnInit() {
@@ -360,7 +413,7 @@ export class DecedesComponent implements OnInit {
                 {
                   border: [true, false, true, true],
                   fontSize: 10,
-                  text: '\n Signuature et cachet \n\n\n\n\n\n Constatation faite : \n A: \n le:'
+                  text: '\n Signuature et cachet \n\n\n\n\n\n Constatation faite : \n A: \n le:',
                 },
               ],
             ],
@@ -784,6 +837,78 @@ export class DecedesComponent implements OnInit {
 
         }
         break;
+    }
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+  createDecedeFromForm(): Decedes {
+    const formValues = this.reactiveForm.value;
+    const decede = new Decedes();
+      decede.nom = formValues.nom;
+      decede.prenom = formValues.prenom;
+      decede.sexe = formValues.sexe;
+      decede.dateDeces = formValues.dateDeces;
+      decede.dateNaissance = formValues.dateNaissance;
+      decede.mortNe = formValues.mortNe;
+      decede.lieuNaiss = formValues.lieuNaiss;
+      decede.nationalite = formValues.nationalite;
+      decede.cin = formValues.cin;
+      decede.adresse = formValues.adresse;
+      decede.etat = formValues.etat;
+      decede.fils = formValues.fils;
+      decede.heure = formValues.heure;
+      decede.lieuxDeces = formValues.lieuxDeces;
+      decede.provinceD = formValues.provinceD;
+      decede.prefectureD = formValues.prefectureD;
+      decede.communeD = formValues.communeD;
+      decede.natureMort = formValues.natureMort;
+      decede.causeMort = formValues.causeMort ;
+      decede.causeInitial = formValues.causeInitial;
+      decede.causeImmdiate = formValues.causeImmdiate ;
+      decede.profession = formValues.profession;
+      decede.obstacle = formValues.obstacle;
+      decede.autopsie = formValues.autopsie ;
+      decede.operation = formValues.operation;
+      decede.resultatsAutopsie = formValues.resultatsAutopsie;
+      decede.nomAR = formValues.nomAR;
+      decede.prenomAR = formValues.prenomAR ;
+      decede.lieuDecesAR = formValues.lieuDecesAR;
+      decede.nationaliteAR = formValues.nationaliteAR;
+      decede.filsAR = formValues.filsAR;
+      decede.adresseAR = formValues.adresseAR;
+      decede.ageMere = formValues.ageMere;
+      decede.ageGestationnel = formValues.ageGestationnel;
+      decede.grossesseMultiple = formValues.grossesseMultiple;
+      decede.poidsNaissance = formValues.poidsNaissance;
+      decede.decesGrossesse = formValues.decesGrossesse;
+      decede.decesFemme = formValues.decesFemme;
+      decede.contribueGros = formValues.contribueGros;
+      decede.maladie = formValues.maladie ;
+      decede.dateServ = formValues.dateServ;
+      decede.lieuServ = formValues.lieuServ ;
+      decede.circonServ = formValues.circonServ ;
+      decede.dateOperation = formValues.dateOperation;
+      decede.motifOperation = formValues.motifOperation ;
+      decede.numRegister = formValues.numRegister;
+    return decede;
+  }
+  doSave(decede) {
+        this.service.create(decede).subscribe(obj => {
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+        });
+    this.toastService.toastOfSave('success');
+    this.reactiveForm.reset();
+  }
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      const decede: Decedes = this.createDecedeFromForm();
+      console.warn('decede: ', decede);
+      console.warn('formValues : ', this.reactiveForm.value);
+      this.doSave(decede);
+    } else {
+      this.toastService.toastOfSave('validate');
     }
   }
 }

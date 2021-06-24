@@ -29,6 +29,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
                les nombres, et les caractères suivantes ° et ,</p>
              <p class="caption status-danger" *ngIf="showMin">la minimum valeur qu'accepte  {{ label }} est {{ min }}</p>
              <p class="caption status-danger" *ngIf="showMax">la maximum valeur qu'accepte  {{ label }} est {{ max }}</p>
+             <p class="caption status-danger" *ngIf="heurePattern">Merci de respecter la forme de l'heure (HH:mm PM/AM)</p>
       </div>
   `,
     providers: [
@@ -87,4 +88,8 @@ export class NgxValidationMessageComponent {
 
     @Input()
     showPattern?: boolean;
+
+    @Input()
+    heurePattern?: boolean;
+
 }
