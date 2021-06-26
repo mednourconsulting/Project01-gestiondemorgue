@@ -16,7 +16,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 export class MedcinsComponent implements OnInit {
   reactiveForm: FormGroup;
   arPattern = '[\u0621-\u064A0-9 ]*';
-  frPattern = '[a-zA-Z0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',

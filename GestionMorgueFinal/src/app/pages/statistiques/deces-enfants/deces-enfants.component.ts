@@ -3,6 +3,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {NbThemeService} from '@nebular/theme';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 @Component({
   selector: 'ngx-deces-enfants',
   templateUrl: './deces-enfants.component.html',
@@ -10,7 +11,7 @@ import {DecedesService} from '../../../@core/backend/common/services/Decedes.ser
   providers: [DecedesService],
 })
 export class DecesEnfantsComponent implements OnInit {
-  public List = [];
+  public statistics = [];
   public list = [];
   public h: number;
   public f: number;
@@ -32,9 +33,13 @@ export class DecesEnfantsComponent implements OnInit {
     responsive: true,
   };
   public currentDate = (new Date).getFullYear().toString();
+  reactiveForm: FormGroup;
+  message: string = '';
+  messageAnnee: string = '';
 
 
-  constructor(private theme: NbThemeService, private serviceDecede: DecedesService) {
+  constructor(private theme: NbThemeService, private serviceDecede: DecedesService,
+              private fb: FormBuilder) {
   }
 
 
@@ -47,11 +52,16 @@ export class DecesEnfantsComponent implements OnInit {
   }
 
 
-  get(annee: string) {
+  get(annee) {
     this.h = this.f = this.i = 0;
-    this.currentDate = annee;
+    this.messageAnnee = '';
+    this.message = '';
+    this.statistics = [];
     this.list.forEach(obj => {
-      if (obj.dateDeces.toString().includes(annee)) {
+      if (obj.dateDeces.substring(0, 4) === annee) {
+        this.statistics.push(obj);
+        this.message = 'Les statistiques selon le décès  des enfants (1j-30j) pour l\'année';
+        this.messageAnnee = annee;
       const  age = this.getAgeParJour(obj.dateNaissance, obj.dateDeces);
           if (parseInt(age, 10 ) <= 30) {
           if (obj.sexe === 'Homme') {
@@ -65,9 +75,11 @@ export class DecesEnfantsComponent implements OnInit {
           }
 
         }
-
       }
     });
+    if (this.statistics.length === 0) {
+      this.message = 'Il n\'y a pas de statistiques pour cette année' ;
+    }
     this.chartDatasets = [this.f, this.h, this.i];
   }
 
@@ -76,5 +88,24 @@ export class DecesEnfantsComponent implements OnInit {
       this.list = data;
       this.get(this.currentDate);
     });
+    this.reactiveForm = this.fb.group({
+      annee: ['', [
+        Validators.min(1900),
+        Validators.max(2099),
+        Validators.required]],
+    });
+  }
+
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+
+  OnSubmit() {
+    const annee = this.reactiveForm.value.annee;
+    if (this.reactiveForm.valid) {
+      if (annee !== null) {
+        this.get(annee.toString());
+      }
+    }
   }
 }

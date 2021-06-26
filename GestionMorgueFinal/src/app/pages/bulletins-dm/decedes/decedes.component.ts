@@ -197,9 +197,9 @@ export class DecedesComponent implements OnInit {
     'Larache', 'Al Hoceïma', 'Chefchaouen', 'Ouezzane'];
   decede: Decedes = new Decedes();
   source: Array<Decedes>;
-  frPattern = '[a-zA-Zéàçèê()\'0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   arPattern = '[\u0621-\u064A0-9 ]*';
-  adressFrPattern = '[a-zA-Z0-9°, ]*';
+  adressFrPattern = '[a-zA-Z0-9éàçèêûù()\'°, ]*';
   adressArPattern = '[\u0621-\u064A0-9°, ]*';
   heurePattern = '[0-9PAMpam:]*';
   private reactiveForm: FormGroup;

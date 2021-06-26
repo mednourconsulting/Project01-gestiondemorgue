@@ -29,7 +29,7 @@ export class TransfertCorpsComponent implements OnInit {
   NomDecede = [];
   isAdmin: boolean;
   reactiveForm: FormGroup;
-  frPattern = '[a-zA-Z0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   numberPattern = '[0-9]*';
   settings = {
     add: {

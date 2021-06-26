@@ -101,7 +101,7 @@ export class ApercuDuCorpComponent implements OnInit {
   defauntID: number;
   today = new Date();
   jstoday = '';
-  frPattern = '[a-zA-Z0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   reactiveForm: FormGroup;
   e: string;
   MedecinHumain: Medecins;

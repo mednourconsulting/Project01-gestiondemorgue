@@ -19,7 +19,7 @@ export class CauseDecesComponent implements OnInit {
   data: any;
   reactiveForm: FormGroup;
   arPattern = '[\u0621-\u064A0-9 ]*';
-  frPattern = '[a-zA-Z0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
 
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {

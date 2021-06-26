@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {DatePipe} from '@angular/common';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-sexe-deces',
@@ -20,7 +20,13 @@ export class SexeDecesComponent implements OnInit {
   annee: string;
   isDataFound: boolean = false;
   currentDate = (new Date).getFullYear().toString();
-  constructor (private service: DecedesService, private datePipe: DatePipe) {
+  message: string = '';
+  messageAnnee: string = '';
+  private reactiveForm: FormGroup;
+  private statistics = [];
+  constructor (private service: DecedesService,
+               private datePipe: DatePipe,
+               private fb: FormBuilder) {
 }
   public chartType: string = 'pie';
 
@@ -47,15 +53,18 @@ export class SexeDecesComponent implements OnInit {
 
   get(annee: any) {
     this.h = this.f = this.i = 0;
-    this.data = [];
-
+    this.messageAnnee = '';
+    this.message = '';
+    this.statistics = [];
     this.service.getAll().subscribe( data => {
       this.list = data;
 
     });
-    this.currentDate = annee
     this.list.forEach(obj => {
-      if (obj.dateDeces.toString().includes(annee)) {
+      if (obj.dateDeces.substring(0, 4) === annee) {
+        this.statistics.push(obj);
+        this.message = 'Les statistiques selon le sexe de décès pour l\'année';
+        this.messageAnnee = annee;
         if (obj.sexe === 'Homme') {
           this.h = this.h + 1;
         }
@@ -67,6 +76,10 @@ export class SexeDecesComponent implements OnInit {
         }
       }
     });
+
+    if (this.statistics.length === 0) {
+      this.message = 'Il n\'y a pas de statistiques pour cette année' ;
+    }
     this.chartDatasets = [this.f, this.h, this.i];
   }
 
@@ -75,11 +88,24 @@ export class SexeDecesComponent implements OnInit {
       this.list = data;
       this.get(this.currentDate);
     });
-    new FormGroup({
-      name: new FormControl(this.annee, [
-        Validators.required,
-        Validators.minLength(4),
-      ]),
+    this.reactiveForm = this.fb.group({
+      annee: ['', [
+        Validators.min(1900),
+        Validators.max(2099),
+        Validators.required]],
     });
+  }
+
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+
+  OnSubmit() {
+    const annee = this.reactiveForm.value.annee;
+    if (this.reactiveForm.valid) {
+      if (annee !== null) {
+        this.get(annee.toString());
+      }
+    }
   }
 }

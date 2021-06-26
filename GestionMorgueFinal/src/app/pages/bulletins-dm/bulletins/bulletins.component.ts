@@ -44,7 +44,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
   ListNum = [];
   private sourceD: Decedes;
   reactiveForm: FormGroup;
-  frPattern = '[a-zA-Z0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -1015,26 +1015,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
         this.MedecinHumain = obj1;
       });
 }
- /* onCustomConfirm(event) {
-    switch ( event.action) {
-      case 'pdfFrancais':
-        const documentDefinition = this.getDocumentDefinition(event.data);
-        pdfMake.createPdf(documentDefinition).open();
-        break;
-      case 'delete':
-        if (this.isAdmin) {
-          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
-            // event.confirm.resolve(event.data);
-            this.service.delete(event.data.id).subscribe(data => {
-            });
-          }
-        } else {
-          window.alert('Vous n\'avez pas des droits de suppression');
-        }
-        this.init();
-        break;
-    }
-  } */
+
   passToMedecin() {
     this.router.navigateByUrl('/pages/bulletins-dm/medcins');
   }

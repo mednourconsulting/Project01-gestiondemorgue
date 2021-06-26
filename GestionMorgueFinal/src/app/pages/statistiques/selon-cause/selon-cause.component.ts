@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {NbThemeService} from '@nebular/theme';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
-import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-selon-cause',
@@ -9,7 +9,7 @@ import {BulletinsService} from '../../../@core/backend/common/services/Bulletins
   styleUrls: ['./selon-cause.component.scss'],
   providers: [DecedesService],
 })
-export class SelonCauseComponent {
+export class SelonCauseComponent implements OnInit {
   public TA: number; A: number; M: number; T: number; F: number; L: number; C: number; O: number; ML: number;
   public chartType: string = 'bar';
   public chartDatasets: Array<any> = [ { data: [0, 0, 0, 0, 0, 0, 0, 0, 0], label: '' }];
@@ -18,19 +18,25 @@ export class SelonCauseComponent {
   public chartLabels: Array<any> =
     ['Accident', 'Homicide', 'Suicide', 'Noyade',
       'Brûlure', 'Intoxication', 'Traumatisme', 'Inconnu', 'Maladie' , 'Autres'];
-  private List: any [] = [];
   private others: any;
-  private ListCurrentDate: any[] = [];
+  private List: any[] = [];
+  message: string = '';
+  messageAnnee: string = '';
+  private reactiveForm: FormGroup;
 
-  constructor(private theme: NbThemeService, private serviceD: DecedesService) {
-    this.serviceD.getAll().subscribe(data1 => {
-      data1.forEach(obj => {
-        if (obj.dateDeces.toString().includes(this.currentDate)) {
-          this.ListCurrentDate.push({dt: obj.dateDeces, cause: obj.causeMort});
-        }
-      });
-      this.condestions (this.ListCurrentDate);
-      this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O, this.ML , this.others];
+
+  constructor(private theme: NbThemeService,
+              private serviceD: DecedesService,
+              private fb: FormBuilder) {}
+  ngOnInit() {
+    this.serviceD.getAll().subscribe(data => {
+      this.get(this.currentDate);
+    });
+    this.reactiveForm = this.fb.group({
+      annee: ['', [
+        Validators.min(1900),
+        Validators.max(2099),
+        Validators.required]],
     });
   }
 
@@ -38,18 +44,28 @@ export class SelonCauseComponent {
   public chartHovered(e: any): void { }
 
   get(annee: any) {
-    this.ListCurrentDate = [];
-    this.currentDate = annee;
+    this.messageAnnee = '';
+    this.message = '';
+    this.initialise();
+    this.List = [];
     this.serviceD.getAll().subscribe(data1 => {
       data1.forEach(obj => {
-        if (obj.dateDeces.toString().includes(annee)) {
-          this.ListCurrentDate.push({dt: obj.dateDeces, cause: obj.causeMort});
+        if (obj.dateDeces.toString().substring(0, 4) === annee) {
+          this.message = 'Les statistiques selon la cause de décès pour l\'année';
+          this.messageAnnee = annee;
+          this.List.push({dt: obj.dateDeces, cause: obj.causeMort});
         }
       });
-      console.log(this.ListCurrentDate);
-    this.condestions (this.ListCurrentDate);
+      console.warn('List', this.List);
+    this.condestions (this.List);
       this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O, this.ML , this.others];
     });
+    if (this.List.length === 0) {
+      this.message = 'Il n\'y a pas de statistiques pour cette année' ;
+    } else {
+      this.message = 'Les statistiques selon la cause de décès pour l\'année';
+      this.messageAnnee = annee;
+    }
     }
 
 
@@ -57,18 +73,8 @@ export class SelonCauseComponent {
   chartColors: any;
   chartOptions: any;
   condestions (list: any[]) {
-    console.log(list);
-    this.TA = 0;
-    this.A = 0;
-    this.M = 0;
-    this.T = 0;
-    this.F = 0;
-    this.L = 0;
-    this.C = 0;
-    this.ML = 0;
-    this.ML = 0;
-    this.O = 0;
-    this.others = 0;
+    console.warn(list);
+    this.initialise();
     list.forEach( data => {
       if ( data.cause === 'accident') {
         this.TA = this.TA + 1;
@@ -91,7 +97,7 @@ export class SelonCauseComponent {
                   if ( data.cause === 'traumatisme') {
                     this.C = this.C + 1;
                   } else {
-                    if ( data.cause === 'Inconnu') {
+                    if ( data.cause === 'Inconnu' || data.cause === '') {
                       this.O = this.O + 1;
                     } else {
                       if (data.cause === 'Maladie') {
@@ -109,4 +115,30 @@ export class SelonCauseComponent {
       }
     });
     }
+  initialise() {
+      this.TA = 0;
+      this.A = 0;
+      this.M = 0;
+      this.T = 0;
+      this.F = 0;
+      this.L = 0;
+      this.C = 0;
+      this.ML = 0;
+      this.ML = 0;
+      this.O = 0;
+      this.others = 0;
+    }
+
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+
+  OnSubmit() {
+    const annee = this.reactiveForm.value.annee;
+    if (this.reactiveForm.valid) {
+      if (annee !== null) {
+        this.get(annee.toString());
+      }
+    }
+  }
 }

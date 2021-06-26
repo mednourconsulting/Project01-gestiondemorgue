@@ -24,8 +24,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class MedicolegalComponent implements OnInit {
   reactiveForm: FormGroup;
-  frPattern = '[a-zA-Z0-9 ]*';
-  adressFrPattern = '[a-zA-Z0-9°, ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
+  adressFrPattern = '[a-zA-Z0-9éàçèêûù()\'°, ]*';
   Medicolegal: CertificatMedicoLegal = new CertificatMedicoLegal();
   NomMedecin = [];
   NomDecede = [];

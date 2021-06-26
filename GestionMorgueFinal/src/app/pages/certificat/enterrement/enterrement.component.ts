@@ -81,7 +81,7 @@ export class EnterrementComponent implements OnInit {
   date: Date;
   DefuntId: number;
   reactiveForm: FormGroup;
-  frPattern = '[a-zA-Z0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   constructor(private service: CertificatEnterrementService,
               private userservice: UsersService,
               private serviceDecede: DecedesService,

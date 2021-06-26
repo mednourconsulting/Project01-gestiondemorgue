@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {NbThemeService} from '@nebular/theme';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-nature-deces',
@@ -19,6 +20,11 @@ export class NatureDecesComponent implements OnInit {
   MN: number; MNN: number;
   public chartType: string = 'line';
   public currentDate = (new Date).getFullYear().toString();
+  reactiveForm: FormGroup;
+  message: string = '';
+  messageAnnee: string = '';
+  private statistics = [] ;
+
   initialData () {
     this.MNN = 0;
     this.MN = 0;
@@ -74,7 +80,9 @@ export class NatureDecesComponent implements OnInit {
 
 
 
-  constructor(private theme: NbThemeService, private serviceD: DecedesService) {
+  constructor(private theme: NbThemeService,
+              private serviceD: DecedesService,
+              private fb: FormBuilder) {
   }
 
 
@@ -83,9 +91,13 @@ export class NatureDecesComponent implements OnInit {
   public chartHovered(e: any): void { }
 
     get(annee: string) {
+    this.messageAnnee = '';
+    this.message = '';
+    this.statistics = [];
     this.initialData();
-    this.currentDate = annee;
     this.list.forEach (  obj => {
+      if (obj.dateDeces.substring(0, 4) === annee) {
+        this.statistics.push(obj);
         if (obj.natureMort === 'Mort naturelle') {
         if (obj.dateDeces.toString().includes(annee + '-01')) {
         this.m1++;
@@ -163,19 +175,44 @@ export class NatureDecesComponent implements OnInit {
           this.mm12 = this.mm12 + 1;
         }
       }
+      }
   });
+      if (this.statistics.length === 0) {
+        this.message = 'Il n\'y a pas de statistiques pour cette année' ;
+      } else {
+        this.message = 'Les statistiques selon la nature du décès pour l\'année ' ;
+        this.messageAnnee = annee;
+      }
       this.chartDatasets = [
         { data: [this.m1, this.m2, this.m3, this.m4, this.m5, this.m6,
             this.m7, this.m8, this.m9, this.m10, this.m11, this.m12], label: 'Mort naturelle' },
         { data: [this.mm1, this.mm2, this.mm3, this.mm4, this.mm5, this.mm6,
             this.mm7, this.mm8, this.mm9, this.mm10, this.mm11, this.mm12], label: 'Mort non naturelle' },
       ];
-    }
+  }
 
   ngOnInit(): void {
     this.serviceD.getAll().subscribe( data => {
       this.list = data;
       this.get(this.currentDate);
     });
+    this.reactiveForm = this.fb.group({
+      annee: ['', [
+        Validators.min(1900),
+        Validators.max(2099),
+        Validators.required]],
+    });
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+
+  OnSubmit() {
+    const annee = this.reactiveForm.value.annee;
+    if (this.reactiveForm.valid) {
+      if (annee !== null) {
+        this.get(annee.toString());
+      }
+    }
   }
 }

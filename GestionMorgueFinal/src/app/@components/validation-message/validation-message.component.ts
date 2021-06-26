@@ -27,8 +27,8 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
                les nombres</p>
              <p class="caption status-danger" *ngIf="addressFr">Le champs "{{ label }}" n'accepte que les lettre en français, les espaces et
                les nombres, et les caractères suivantes ° et ,</p>
-             <p class="caption status-danger" *ngIf="showMin">la minimum valeur qu'accepte  {{ label }} est {{ min }}</p>
-             <p class="caption status-danger" *ngIf="showMax">la maximum valeur qu'accepte  {{ label }} est {{ max }}</p>
+             <p class="caption status-danger" *ngIf="showMin">La valeur minimale qu'accepte  ce champs est {{ min }}</p>
+             <p class="caption status-danger" *ngIf="showMax">La valeur maximum  qu'accepte  ce champs est {{ max }}</p>
              <p class="caption status-danger" *ngIf="heurePattern">Merci de respecter la forme de l'heure (HH:mm PM/AM)</p>
       </div>
   `,

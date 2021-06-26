@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-region',
@@ -9,33 +10,18 @@ import {DecedesService} from '../../../@core/backend/common/services/Decedes.ser
   providers: [DecedesService]
 ,
 })
-export class RegionComponent {
+export class RegionComponent implements OnInit {
   public annee: any;
   public TA: number; A: number; M: number; T: number; F: number; L: number; C: number; O: number;
   public currentDate = (new Date).getFullYear().toString();
-  private ListCurrentDate: any [] = [];
+  message: string = '';
+  messageAnnee: string = '';
+  private reactiveForm: FormGroup;
+  List = [];
 
-  constructor(private theme: NbThemeService, private serviceD: DecedesService) {
-    this.serviceD.getAll().subscribe(data1 => {
-      data1.forEach(obj => {
-
-        if (obj.dateDeces.toString().indexOf(this.currentDate)) {
-          console.log(obj.dateDeces);
-          console.log(obj.provinceD);
-          this.List.push({ date : obj.dateDeces, province : obj.provinceD});
-        }
-      });
-      this.TA = 0;
-      this.A = 0;
-      this.M = 0;
-      this.T = 0;
-      this.F = 0;
-      this.L = 0;
-      this.C = 0;
-      this.O = 0;
-      this.SelonRegion(this.List)
-      this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O];
-    });
+  constructor(private theme: NbThemeService,
+              private serviceD: DecedesService,
+              private fb: FormBuilder) {
   }
   public chartType: string = 'bar';
   public chartDatasets: Array<any> = [
@@ -70,34 +56,36 @@ export class RegionComponent {
   public chartOptions: any = {
     responsive: true,
   };
-  List = [];
+
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
 
   get(annee: any) {
     this.List = [];
-    this.currentDate = annee;
+    this.messageAnnee = '';
+    this.message = '';
+    this.initialise();
     this.serviceD.getAll().subscribe(data1 => {
       data1.forEach(obj => {
-        if (obj.dateDeces.toString().indexOf(annee)) {
+        if (obj.dateDeces.toString().substring(0, 4) === annee) {
+          console.warn(this.List);
           this.List.push({ date : obj.dateDeces, province : obj.provinceD});
+          this.message = 'Les statistiques selon les régions pour l\'année';
+          this.messageAnnee = annee;
         }
       });
-      this.TA = 0;
-      this.A = 0;
-      this.M = 0;
-      this.T = 0;
-      this.F = 0;
-      this.L = 0;
-      this.C = 0;
-      this.O = 0;
-      this.SelonRegion(this.List);
-
+      this.selonRegion(this.List);
+      this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O];
     });
-    this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O];
+    if (this.List.length === 0) {
+      this.message = 'Il n\'y a pas de statistiques pour cette année' ;
+    } else {
+      this.message = 'Les statistiques selon les régions pour l\'année';
+      this.messageAnnee = annee;
+    }
 }
 
-  SelonRegion(List: any[]) {
+  selonRegion(List: any[]) {
     this.List.forEach( obj => {
       if (obj.province === 'Tanger-Assilah' ) {
         this.TA = this.TA + 1;
@@ -122,7 +110,6 @@ export class RegionComponent {
                    } else {
                      if (obj.province === 'Ouezzane') {
                        this.O = this.O + 1;
-                     } else {
                      }
                    }
                  }
@@ -132,7 +119,40 @@ export class RegionComponent {
         }
       }
     });
-      }
+  }
+  ngOnInit() {
+    this.serviceD.getAll().subscribe(data => {
+      this.get(this.currentDate);
+    });
+    this.reactiveForm = this.fb.group({
+      annee: ['', [
+        Validators.min(1900),
+        Validators.max(2099),
+        Validators.required]],
+    });
+  }
 
+  initialise() {
+    this.TA = 0;
+    this.A = 0;
+    this.M = 0;
+    this.T = 0;
+    this.F = 0;
+    this.L = 0;
+    this.C = 0;
+    this.O = 0;
+  }
+  getControl(name: string): AbstractControl {
+    return this.reactiveForm.get(name);
+  }
+
+  OnSubmit() {
+    const annee = this.reactiveForm.value.annee;
+    if (this.reactiveForm.valid) {
+      if (annee !== null) {
+        this.get(annee.toString());
+      }
+    }
+  }
 }
 

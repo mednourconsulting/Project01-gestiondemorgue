@@ -1,7 +1,6 @@
 nb-card-header {
   color: white;
   font-size: large;
-  font-family: 'Courier New', Monospace;
   background-color: #2d8ac7;
 }
 .ng-valid[required], .ng-valid.required  {
@@ -9,7 +8,7 @@ nb-card-header {
 }
 
 .ng-invalid:not(form)  {
-  border-left: 5px solid #a94442; /* red */
+  border-left: 5px solid #ff0400; /* red */
 }
 
 .alert div {
@@ -31,4 +30,12 @@ label {
 select {
   width: 100%;
   padding: .5rem;
+}
+.message{
+  margin-top:15px;
+  margin-buttom:15px;
+  font-size: 18px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-decoration: #0c2c43;
+  text-decoration-line: underline;
 }
