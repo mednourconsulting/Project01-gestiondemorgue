@@ -22,18 +22,15 @@
   <nb-card-body>
     <div class="row">
       <div class="col-md-3">
-        <form  autocomplete="off" [formGroup]="reactiveForm" (ngSubmit)="OnSubmit()">
-          <input type="number" min="1900" max="2099" step="1"
-                 class="form-control"
-                 formControlName="annee">
-          <ngx-validation-message label="filtre"
-                                  [showMin]="getControl('annee')?.hasError('min')"
-                                  [showMax]="getControl('annee')?.hasError('max')"
-                                  [min]="1900"
-                                  [max]="2099"
-                                  [showRequired]="!getControl('annee').valid && getControl('annee').touched">
-          </ngx-validation-message>
-        </form>
+        <div class="input-group-prepend">
+          <!--  <span class="input-group-text" id="basic-addon1" *ngIf="name.valid" (click)="get(annee)">
+              <i class="fa fa-chart-bar" ></i></span> -->
+          <input type="text"
+                 name="name" class="form-control"
+                 required minlength="4" appForbiddenName="bob"
+                 [(ngModel)]="annee" #name="ngModel"
+                 (ngModelChange)="get(annee)">
+        </div>
       </div>
       <!--
        <div class="col-8">

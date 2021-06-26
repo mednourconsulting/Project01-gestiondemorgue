@@ -12,7 +12,12 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Médecin</label>
-                    <nb-select formControlName="medecin" [ngModel]="this.Medicolegal.medecin" class="type-select "  nbSelect fullWidth placeholder="Médecin" required="true">
+                    <nb-select formControlName="medecin"
+                               class="type-select "
+                               nbSelect
+                               fullWidth
+                               placeholder="Médecin"
+                               required="true">
                       <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
                       <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
@@ -25,8 +30,12 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Défunt</label>
-                    <nb-select formControlName="defunt" [ngModel]="this.Medicolegal.defunt"class="type-select "
-                               nbSelect fullWidth placeholder="Défunt" required="true">
+                    <nb-select formControlName="defunt"
+                               class="type-select "
+                               nbSelect
+                               fullWidth
+                               placeholder="Défunt"
+                               required="true">
                       <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
                       <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select>
@@ -39,8 +48,14 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Déclarant</label><br>
-                    <input formControlName="declarant" [ngModel]="this.Medicolegal.declarant" class="form-control"
-                           type="string" nbInput fullWidth id="dec" placeholder="Déclarant"  required="true">
+                    <input formControlName="declarant"
+                           class="form-control"
+                           type="string"
+                           nbInput
+                           fullWidth
+                           id="dec"
+                           placeholder="Déclarant"
+                           required="true">
                   <ngx-validation-message label="Déclarant"
                                           [showRequired]="!getControl('declarant').valid && getControl('declarant').touched"
                                           [fr]="getControl('declarant')?.hasError('pattern')">
@@ -54,8 +69,16 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">CIN Déclarant</label><br>
-                    <input formControlName="cin" [ngModel]="this.Medicolegal.cin"class="form-control" ng-required="expression"
-                           type="string" nbInput fullWidth id="cin" placeholder="CIN Déclarant" status="success">
+                    <input formControlName="cin"
+                           [ngModel]="this.Medicolegal.cin"
+                           class="form-control"
+                           ng-required="expression"
+                           type="string"
+                           nbInput
+                           fullWidth
+                           id="cin"
+                           placeholder="CIN Déclarant"
+                           status="success">
                   <ngx-validation-message label="CIN Déclarant"
                                           [fr]="getControl('cin')?.hasError('pattern')">
                   </ngx-validation-message>
@@ -64,8 +87,14 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Adresse Déclarant</label><br>
-                    <input formControlName="address"[ngModel]="this.Medicolegal.address" class="form-control" type="string" nbInput fullWidth
-                           id="adresse" placeholder="Adresse Déclarant"  required="true">
+                    <input formControlName="address"
+                           class="form-control"
+                           type="string"
+                           nbInput
+                           fullWidth
+                           id="adresse"
+                           placeholder="Adresse Déclarant"
+                           required="true">
                   <ngx-validation-message label="Adresse Déclarant"
                                           [showRequired]="!getControl('address').valid && getControl('address').touched"
                                           [addressFr]="getControl('address')?.hasError('pattern')">
@@ -75,8 +104,14 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Date déclaration</label>
-                    <input formControlName="declaration" [ngModel]="this.Medicolegal.declaration"
-                           class="form-control" type="Date" nbInput fullWidth id="datedec" placeholder="Date déclaration" status="success">
+                    <input formControlName="declaration"
+                           class="form-control"
+                           type="Date"
+                           nbInput
+                           fullWidth
+                           id="datedec"
+                           placeholder="Date déclaration"
+                           status="success">
 
                 </div>
             </div>
@@ -84,10 +119,7 @@
         </div>
         <div class="float-right">
             <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="success">Enregistrer</button>
-            <button class="btn mr-1 " (click)="reactiveForm.reset()" nbButton status="success" outline>Annuler</button>
-          <!--   <button class="btn btn-secondary mr-1" (click)="generatePdf('Francais')" type="submit" nbButton status="success" outline>Certificat</button>
-             <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton status="success" outline>شهادة</button>
-           -->
+            <button class="btn mr-1 " (click)="reset()" nbButton status="success" outline>Annuler</button>
         </div>
       </form>
     </nb-card-body>

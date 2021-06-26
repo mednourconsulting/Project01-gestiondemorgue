@@ -199,8 +199,14 @@
         <div class="col-sm-4">
           <div class="form-group">
             <label  class="label">Compostage</label>
-            <input formControlName="compostage" class="form-control"  type="text" nbInput fullWidth
-                   id="Compostage" placeholder="Compostage" status="info">
+            <input formControlName="compostage"
+                   class="form-control"
+                   type="text"
+                   nbInput
+                   fullWidth
+                   id="Compostage"
+                   placeholder="Compostage"
+                   status="info">
             <ngx-validation-message label="Compostage"
                                     [fr]="getControl('compostage')?.hasError('pattern')">
             </ngx-validation-message>
@@ -209,8 +215,12 @@
         <div class="col-sm-4">
           <div class="form-group">
             <label  class="label">Décédé</label><br>
-            <nb-select  formControlName="decede" class="type-select "  nbSelect fullWidth
-                        placeholder="registration number"  required="true">
+            <nb-select  formControlName="decede"
+                        class="type-select "
+                        nbSelect
+                        fullWidth
+                        placeholder="registration number"
+                        required="true">
               <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
 
               <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
@@ -225,8 +235,11 @@
         <div class="col-sm-4">
           <div class="form-group">
             <label  class="label">Médecin</label><br>
-            <nb-select  formControlName="medecin" class="type-select "  nbSelect fullWidth
-                        placeholder="registration number" required="true"
+            <nb-select  formControlName="medecin" class="type-select "
+                        nbSelect
+                        fullWidth
+                        placeholder="registration number"
+                        required="true"
                         (change)="onChange($event.target.value)">
 
               <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
@@ -252,7 +265,7 @@
       </form>
     </nb-card-body>
   </nb-card>
-  <div *ngIf="(numRgtr && medcinid)">
+  <div *ngIf="active">
     <nb-card>
       <nb-card-body>
         <nb-tabset>
@@ -270,14 +283,20 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label  class="label">Nom Medecin</label>
-                      <output status="info"[value]="this.MedecinHumain.nom" class="form-control" type="text" fullWid status="info">
+                      <output status="info"
+                              [value]="this.MedecinHumain.nom"
+                              class="form-control"
+                              type="text" fullWid status="info">
                       </output>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label  class="label">الإسم العائلي</label>
-                      <output status="info"[value]="this.MedecinHumain.nomAR" class="form-control" type="text" fullWidth status="info" >
+                      <output status="info"
+                              [value]="this.MedecinHumain.nomAR"
+                              class="form-control"
+                              type="text" fullWidth status="info" >
                       </output>
                     </div>
                   </div>
@@ -424,7 +443,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label  class="label">CIN</label>
-                      <output status="info"[value]="this.DecedeHumain.CIN" class="form-control" type="text" fullWid >
+                      <output status="info"[value]="this.DecedeHumain.cin" class="form-control" type="text" fullWid >
                       </output>
                     </div>
                   </div>
