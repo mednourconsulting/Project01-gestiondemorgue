@@ -16,12 +16,11 @@
                         nbSelect fullWidth
                         placeholder="Type de bulletin"
                         required>
-              <nb-option *ngFor="let t of typeBulletin" [value]="t" >{{ t }}</nb-option>
+              <nb-option *ngFor="let t of typeBulletinList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
-            <ngx-validation-message label="Type de bulletin"
-                                    [showRequired]="!getControl('typeBulletin').valid && getControl('typeBulletin').touched">
-            </ngx-validation-message>
-
+              <ngx-validation-message label="Type de bulletin"
+                                      [showRequired]="!getControl('typeBulletin').valid && getControl('typeBulletin').touched">
+              </ngx-validation-message>
           </div>
         </div>
         <div class="col-sm-4">
@@ -32,7 +31,7 @@
                         nbSelect fullWidth
                         placeholder="Province ou préfecture"
                         required="true">
-              <nb-option *ngFor="let t of province" [value]="t" >{{ t }}</nb-option>
+              <nb-option *ngFor="let t of provinceList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Province ou préfecture"
                                     [showRequired]="!getControl('province').valid && getControl('province').touched">
@@ -110,7 +109,7 @@
                         required="true"
                         placeholder="Diagnostique Attestation"
             >
-              <nb-option *ngFor="let t of diagnostique" [value]="t" >{{ t }}</nb-option>
+              <nb-option *ngFor="let t of diagnostiqueList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Diagnostique Attestation"
                                     [showRequired]="!getControl('diagnostique').valid && getControl('diagnostique').touched">
@@ -131,7 +130,7 @@
                         required="true"
                         placeholder="Milieu de résidence"
                         >
-              <nb-option *ngFor="let t of Milieu" [value]="t" >{{ t }}</nb-option>
+              <nb-option *ngFor="let t of milieuList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Milieu de résidence"
                                     [showRequired]="!getControl('residece').valid && getControl('residece').touched">
@@ -150,7 +149,7 @@
                         required="true"
                         placeholder="Lieu Enterrement"
                         >
-              <nb-option *ngFor="let t of Lieu" [value]="t" >{{ t }}</nb-option>
+              <nb-option *ngFor="let t of lieuList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Lieu d'enterrement"
                                     [showRequired]="!getControl('lieuEntrement').valid && getControl('lieuEntrement').touched">
@@ -168,7 +167,7 @@
                         required="true"
                         placeholder="Cimetière"
             >
-              <nb-option *ngFor="let t of cimetiere" [value]="t" >{{ t }}</nb-option>
+              <nb-option *ngFor="let t of cimetiereList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Cimetière"
                                     [showRequired]="!getControl('cimetiere').valid && getControl('cimetiere').touched">
@@ -265,7 +264,7 @@
       </form>
     </nb-card-body>
   </nb-card>
-  <div *ngIf="active">
+  <div *ngIf="medecinDetails">
     <nb-card>
       <nb-card-body>
         <nb-tabset>

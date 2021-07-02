@@ -9,6 +9,7 @@ package com.akveo.bundlejava.user;
 import com.akveo.bundlejava.authentication.SignUpDTO;
 import com.akveo.bundlejava.authentication.exception.PasswordsDontMatchException;
 import com.akveo.bundlejava.authentication.exception.UserNotFoundHttpException;
+import com.akveo.bundlejava.role.RoleRepository;
 import com.akveo.bundlejava.role.RoleService;
 import com.akveo.bundlejava.settings.Settings;
 import com.akveo.bundlejava.settings.SettingsService;
@@ -34,18 +35,22 @@ public class UserService {
     private RoleService roleService;
 
     private SettingsService settingsService;
+    private RoleRepository roleRepository;
+
 
     @Autowired
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        ModelMapper modelMapper,
                        SettingsService settingsService,
-                       RoleService roleService) {
+                       RoleService roleService,
+                       RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.settingsService = settingsService;
         this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
     public User findByEmail(String email) throws UserNotFoundException {
@@ -149,11 +154,11 @@ public class UserService {
         User user = new User();
         user.setEmail(signUpDTO.getEmail());
         user.setUserName(signUpDTO.getFullName());
-
+        String role = signUpDTO.getRole();
         String encodedPassword = encodePassword(signUpDTO.getPassword());
         user.setPasswordHash(encodedPassword);
-        user.setRole(new HashSet<>(Collections.singletonList(roleService.getDefaultRole())));
-        user.setSettings(new Settings("cosmic"));
+        user.setRole(new HashSet<>(Collections.singletonList(this.roleRepository.findByName(role))));
+        user.setSettings(new Settings("default"));
         return user;
     }
 

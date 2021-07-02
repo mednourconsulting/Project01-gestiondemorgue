@@ -1,5 +1,9 @@
 
-:host ::ng-deep ng2-st-tbody-edit-delete { display: flex !important; height: 0 !important; }:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom{ display: inline-block; width: 33% ; text-align: center; font-size: 0em; }:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover { color: #5DCFE3; }
+:host ::ng-deep ng2-st-tbody-edit-delete {
+  display: inline-block  !important; height: 0 !important; }
+:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom{
+  display: inline-block; width: 33% ; text-align: center; font-size: 0em; }
+:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover { color: #5DCFE3; }
 
 
 :host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-trash:before {
@@ -7,9 +11,9 @@
   font-size: 20px;
 }
 :host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-edit:before {
-  color: #21335a;
-  font-size: 20px;
-}
+   color: #0d1b40;
+   font-size: 20px;
+ }
 .ng-valid[required], .ng-valid.required  {
   border-left: 5px solid #42A948; /* green */
 }

@@ -30,6 +30,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
              <p class="caption status-danger" *ngIf="showMin">La valeur minimale qu'accepte  ce champs est {{ min }}</p>
              <p class="caption status-danger" *ngIf="showMax">La valeur maximum  qu'accepte  ce champs est {{ max }}</p>
              <p class="caption status-danger" *ngIf="heurePattern">Merci de respecter la forme de l'heure (HH:mm PM/AM)</p>
+             <p class="caption status-danger" *ngIf="showConfirmPassword">Les mots de passe que vous avez entrés ne sont pas identiques.</p>
       </div>
   `,
     providers: [
@@ -91,5 +92,8 @@ export class NgxValidationMessageComponent {
 
     @Input()
     heurePattern?: boolean;
+
+    @Input()
+    showConfirmPassword: boolean;
 
 }

@@ -19,6 +19,52 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class DecedesComponent implements OnInit {
   isAdmin: boolean;
+  public id = null;
+  sexeList = [{value: 'Femme', title: 'Femme'},
+    {value: 'Homme', title: 'Homme'},
+    {value: 'Indéterminé', title: 'Indéterminé'}];
+  etatList = [{value: 'Célibataire', title: 'Célibataire'},
+    {value: 'Marié', title: 'Marié'},
+    {value: 'Divorcé', title: 'Divorcé'},
+    {value: 'Veuf(ve)', title: 'Veuf(ve)'}];
+  lieuDecesList = [{value: 'Domicile', title: 'Domicile'},
+    {value: 'Hopital public', title: 'Hopital public'},
+    {value: 'Clinique', title: 'Clinique'},
+    {value: 'Voie public', title: 'Voie public'},
+    {value: 'Lieu de travail', title: 'Lieu de travail'},
+    {value: 'Autre', title: 'Autre'}];
+  natureMortList = [{value: 'Mort naturelle', title: 'Mort naturelle'},
+    {value: 'Mort non naturelle', title: 'Mort non naturelle'}];
+  confirmationList = [{value: 'Oui', title: 'Oui'},
+    {value: 'Non', title: 'Non'},
+    {value: 'Inconnu', title: 'Inconnu'}];
+  CauseMort = ['accident', 'homicide', 'suicide', 'Inconnu',
+    'noyade', 'brûlure', 'intoxication', 'traumatisme', 'Maladie'];
+  causes = [];
+  lieuList = [{value: 'Domicile', title: 'Domicile'},
+    {value: 'Ecole/administration publique', title: 'Ecole/administration publique'},
+    {value: 'Lieu de sport', title: 'Lieu de sport'},
+    {value: 'Voie public', title: 'Voie public'},
+    {value: 'Zone de commerce/service', title: 'Zone de commerce/service'},
+    {value: 'Etablissement collectif', title: 'Etablissement collectif'},
+    {value: 'Local industriel/chantier', title: 'Local industriel/chantier'},
+    {value: 'Local industriel/chantier', title: 'Local industriel/chantier'},
+    {value: 'Exploitation agricole', title: 'Exploitation agricole'},
+    {value: 'Autre', title: 'Autre'},
+    {value: 'Inconnu', title: 'Inconnu'}];
+  decesFemmeList = [{value: 'Au cours de la grossesse', title: 'Au cours de la grossesse'},
+    {value: 'Dans un délai de 42 jours après la terminaison de la grossesse',
+      title: 'Dans un délai de 42 jours après la terminaison de la grossesse'},
+    {value: 'Plus de 42 jours mais moind d\'un an après la terminaison de la grossesse',
+      title: 'Plus de 42 jours mais moind d\'un an après la terminaison de la grossesse'}];
+  provinceList = [{value: 'Tanger-Assilah', title: 'Tanger-Assilah'},
+                  {value: 'M\'diq-Fnideq', title: 'M\'diq-Fnideq'},
+                  {value: 'Tétouan', title: 'Tétouan'},
+                  {value: 'Fahs-Anjra', title: 'Fahs-Anjra'},
+                  {value: 'Larache', title: 'Larache'},
+                  {value: 'Al Hoceïma', title: 'Al Hoceïma'},
+                  {value: 'Chefchaouen', title: 'Chefchaouen'},
+                  {value: 'Ouezzane', title: 'Ouezzane'}];
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -40,7 +86,7 @@ export class DecedesComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       custom: [
         {
@@ -50,6 +96,10 @@ export class DecedesComponent implements OnInit {
         {
           name: 'delete',
           title: '<i class="fa fa-trash"></i>',
+        },
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
         },
       ],
     },
@@ -73,11 +123,7 @@ export class DecedesComponent implements OnInit {
           type: 'list',
           config: {
             selectText: 'Select',
-            list: [
-              {value: 'Femme', title: 'Femme'},
-              {value: 'Homme', title: 'Homme'},
-              {value: 'Indéterminé', title: 'Indéterminé'},
-            ],
+            list: this.sexeList,
           },
         },
       },
@@ -110,7 +156,13 @@ export class DecedesComponent implements OnInit {
       },
       etat: {
         title: 'Etat Matrimonial',
-        type: 'String',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select',
+            list: this.etatList,
+          },
+        },
       },
       profession: {
         title: 'Profession',
@@ -129,19 +181,49 @@ export class DecedesComponent implements OnInit {
       },
       lieuxDeces: {
         title: 'Lieu de décès',
-        type: 'String',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select',
+            list: this.lieuDecesList,
+          },
+        },
       },
       natureMort: {
         title: 'Nature de mort',
-        type: 'String',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select',
+            list: this.natureMortList,
+          },
+        },
       },
       mortNe: {
         title: 'S\'agit-il d\'un mort né',
-        type: 'boolean',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          if ( cell === true ) {
+            return 'oui';
+          } else {
+            return `non`;
+          }
+
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: true, title: 'oui '},
+              { value: false, title: 'non' },
+            ],
+          },
+        },
       },
       causeMort: {
         title: 'Cause de mort',
-        type: 'String',
+        type: 'html',
       },
       causeInitial: {
         title: 'Cause initiale',
@@ -149,11 +231,29 @@ export class DecedesComponent implements OnInit {
       },
       causeImmdiate: {
         title: 'Cause immédiate',
-       type: 'String',
+        type: 'String',
       },
       obstacle: {
         title: 'Obstacle medicolégal',
-        type: 'boolean',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          if ( cell === true ) {
+            return 'oui';
+          } else {
+            return `non`;
+          }
+
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: true, title: 'oui '},
+              { value: false, title: 'non' },
+            ],
+          },
+        },
       },
       nomAR: {
         title: 'النسب',
@@ -181,40 +281,21 @@ export class DecedesComponent implements OnInit {
       },
     },
   };
-  sexe = ['Femme', 'Homme', 'Indéterminé'];
-  etat = ['Célibataire', 'Marié', 'Divorcé', 'Veuf(ve)'];
-  LieuD = ['Domicile', 'Hopital public', 'Clinique', 'Voie public', 'Lieu de travail', 'Autre'];
-  NatureMort = ['Mort naturelle', 'Mort non naturelle'];
-  reponse = ['Oui', 'Non', 'Inconnu'];
-  CauseMort = ['accident', 'homicide', 'suicide', 'Inconnu',
-    'noyade', 'brûlure', 'intoxication', 'traumatisme', 'Maladie'];
-  causes = [];
-  lieuList = ['Domicile', 'Ecole/administration publique', 'Lieu de sport', 'Voie public', 'Zone de commerce/service',
-    'Etablissement collectif', 'Local industriel/chantier', 'Exploitation agricole', 'Autre', 'Inconnu'];
-  decesFemmeList = ['Au cours de la grossesse', 'Dans un délai de 42 jours après la terminaison de la grossesse',
-    'Plus de 42 jours mais moind d\'un an après la terminaison de la grossesse'];
-  province = ['Tanger-Assilah', 'M\'diq-Fnideq', 'Tétouan', 'Fahs-Anjra',
-    'Larache', 'Al Hoceïma', 'Chefchaouen', 'Ouezzane'];
   decede: Decedes = new Decedes();
   source: Array<Decedes>;
-  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
+  frPattern = '[a-zA-Zéàçèêûùï/()\'0-9 ]*';
   arPattern = '[\u0621-\u064A0-9 ]*';
-  adressFrPattern = '[a-zA-Z0-9éàçèêûù()\'°, ]*';
+  adressFrPattern = '[a-zA-Z0-9éàçèêûùï/()\'°, ]*';
   adressArPattern = '[\u0621-\u064A0-9°, ]*';
   heurePattern = '[0-9PAMpam:]*';
   private reactiveForm: FormGroup;
+  private causesList = [];
   constructor(private service: DecedesService,
               private userservice: UsersService,
               private serviceCause: CauseService,
               private datePipe: DatePipe,
               private toastService: ToastrService,
               private fb: FormBuilder) {
-    this.serviceCause.getAll().subscribe( data => {
-      data.forEach ( obj => { this.causes.push({description: obj.description , id: obj.id}); });
-    });
-    this.service.getAll().subscribe(data => {
-      this.source = data;
-    });
   }
   init() {
     this.service.getAll().subscribe(data => {
@@ -274,10 +355,17 @@ export class DecedesComponent implements OnInit {
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
+    this.serviceCause.getAll().subscribe( data => {
+      data.forEach ( obj => {
+        this.causes.push({description: obj.description , id: obj.id}); });
+    });
+    this.service.getAll().subscribe(data => {
+      this.source = data;
+    });
+    console.warn(this.causesList);
   }
   save() {
         this.service.create(this.decede).subscribe(data => {
-          data.numRegister = data.id;
          this.source.push(data);
          this.source = this.source.map(e => e);
           this.toastService.toastOfSave('success');
@@ -319,7 +407,7 @@ export class DecedesComponent implements OnInit {
   }
   ConvertDate(date) {
     if (date !== undefined)
-      return formatDate(date, 'dd-MM-yyyy', 'en-US', '+1');
+      return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
   }
   getTexte(value) {
     if (value === true)
@@ -819,7 +907,61 @@ export class DecedesComponent implements OnInit {
         pdfMake.createPdf(documentDefinition).open();
         this.toastService.showToast('success', 'PDf ouvert',
           'Le certificat de deces est ouvert dans un nouvel onglet ');
-
+        break;
+      case 'edit':
+        if (this.isAdmin) {
+          this.reactiveForm.setValue({
+            nom: event.data.nom,
+            prenom: event.data.prenom,
+            sexe: event.data.sexe,
+            dateDeces: this.ConvertDate(event.data.dateDeces) as any as Date,
+            dateNaissance: this.ConvertDate(event.data.dateNaissance) as any as Date,
+            mortNe: event.data.mortNe,
+            lieuNaiss: event.data.lieuNaiss,
+            nationalite: event.data.nationalite,
+            cin: event.data.cin,
+            adresse: event.data.adresse,
+            etat: event.data.etat,
+            fils: event.data.fils,
+            heure: event.data.heure,
+            lieuxDeces: event.data.lieuxDeces,
+            provinceD: event.data.provinceD,
+            prefectureD: event.data.prefectureD,
+            communeD: event.data.communeD,
+            natureMort: event.data.natureMort,
+            causeMort: event.data.causeMort,
+            causeInitial: event.data.causeInitial,
+            causeImmdiate: event.data.causeImmdiate,
+            profession: event.data.profession,
+            obstacle: event.data.obstacle,
+            autopsie: event.data.autopsie,
+            operation: event.data.operation,
+            resultatsAutopsie: event.data.resultatsAutopsie,
+            nomAR: event.data.nomAR,
+            prenomAR: event.data.prenomAR,
+            lieuDecesAR: event.data.lieuDecesAR,
+            nationaliteAR: event.data.nationaliteAR,
+            filsAR: event.data.filsAR,
+            adresseAR: event.data.adresseAR,
+            ageMere: event.data.ageMere,
+            ageGestationnel: event.data.ageGestationnel,
+            grossesseMultiple: event.data.grossesseMultiple,
+            poidsNaissance: event.data.poidsNaissance,
+            decesGrossesse: event.data.decesGrossesse,
+            decesFemme: event.data.decesFemme,
+            contribueGros: event.data.contribueGros,
+            maladie: event.data.maladie,
+            dateServ: event.data.dateServ,
+            lieuServ: event.data.lieuServ,
+            circonServ: event.data.circonServ,
+            dateOperation: this.ConvertDate(event.data.dateOperation) as any as Date,
+            motifOperation: event.data.motifOperation,
+            numRegister: event.data.numRegister,
+          });
+          this.id = event.data.id;
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
         break;
       case 'delete':
         if (this.isAdmin) {
@@ -845,6 +987,7 @@ export class DecedesComponent implements OnInit {
   createDecedeFromForm(): Decedes {
     const formValues = this.reactiveForm.value;
     const decede = new Decedes();
+      decede.id = this.id;
       decede.nom = formValues.nom;
       decede.prenom = formValues.prenom;
       decede.sexe = formValues.sexe;
@@ -894,12 +1037,26 @@ export class DecedesComponent implements OnInit {
     return decede;
   }
   doSave(decede) {
-        this.service.create(decede).subscribe(obj => {
-          this.source.push(obj);
-          this.source = this.source.map(e => e);
-        });
-    this.toastService.toastOfSave('success');
-    this.reactiveForm.reset();
+    if ( this.id == null) {
+      this.service.create(decede).subscribe(obj => {
+        // decede.numRegister = 'DC00' + decede.id;
+        this.source.push(obj);
+        this.source = this.source.map(e => e);
+      });
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+      this.service.update(decede).subscribe(data1 => {
+        this.source = this.source.map(e => e);
+        this.init();
+        this.reactiveForm.reset();
+      });
+      this.toastService.toastOfEdit('success');
+    } else {
+      this.toastService.toastOfEdit('warning');
+    }
+  }
   }
   onSubmit() {
     if (this.reactiveForm.valid) {
@@ -907,6 +1064,7 @@ export class DecedesComponent implements OnInit {
       console.warn('decede: ', decede);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(decede);
+      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
     }

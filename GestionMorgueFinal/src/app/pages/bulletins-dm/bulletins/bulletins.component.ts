@@ -25,8 +25,10 @@ import {Router} from '@angular/router';
 })
 
 export class BulletinsComponent implements OnInit, OnChanges {
-  public active: boolean = false;
+  public medecinDetails: boolean = false;
   public id = null;
+  private filterMedecin = [];
+  private filterDecede = [];
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     throw new Error('Method not implemented.');
@@ -36,19 +38,42 @@ export class BulletinsComponent implements OnInit, OnChanges {
   medcinid: number = null;
   constation: string;
   Bulletins: Bulletins = new Bulletins();
-  typeBulletin = ['Bulletin de décès', 'Bulletin de mortinatalité'];
-  Milieu = ['Urbain', 'Rural', 'Inconnu'];
-  Lieu = ['Tanger', 'Asila', 'Tetouan'];
-  province = ['Tanger-Assilah', 'M\'diq-Fnideq', 'Tétouan', 'Fahs-Anjra',
-    'Larache', 'Al Hoceïma', 'Chefchaouen', 'Ouezzane'];
-
-  diagnostique = ['Mort naturelle', 'Mort non naturelle'];
-  cimetiere = ['Cimetière Almojahidine', 'Cimetière Sidi Omar'];
+  typeBulletinList = [{value: 'Bulletin de décès', title: 'Bulletin de décès'},
+                      {value: 'Bulletin de mortinatalité', title: 'Bulletin de mortinatalité'}];
+  milieuList = [{value: 'Urbain', title: 'Urbain'},
+                {value: 'Rural', title: 'Rural'},
+                {value: 'Inconnu', title: 'Inconnu'}];
+  lieuList = [{value: 'Tanger', title: 'Tanger'},
+              {value: 'Asila', title: 'Asila'},
+              {value: 'Tetouan', title: 'Tetouan'}];
+  provinceList = [{value: 'Tanger-Assilah', title: 'Tanger-Assilah'},
+                  {value: 'M\'diq-Fnideq', title: 'M\'diq-Fnideq'},
+                  {value: 'Tétouan', title: 'Tétouan'},
+                  {value: 'Fahs-Anjra', title: 'Fahs-Anjra'},
+                  {value: 'Larache', title: 'Larache'},
+                  {value: 'Al Hoceïma', title: 'Al Hoceïma'},
+                  {value: 'Chefchaouen', title: 'Chefchaouen'},
+                  {value: 'Ouezzane', title: 'Ouezzane'},
+                ];
+  cimetiereList = [{value: 'Cimetière Almojahidine', title: 'Cimetière Almojahidine'},
+                      {value: 'Cimetière Sidi Omar', title: 'Cimetière Sidi Omar'}];
+  diagnostiqueList = [{value: 'Mort naturelle', title: 'Mort naturelle'},
+                      {value: 'Mort non naturelle', title: 'Mort non naturelle'}];
   data: any;
   ListNum = [];
   private sourceD: Decedes;
   reactiveForm: FormGroup;
   frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
+  source: Array<Bulletins>;
+  numRgtr: number = null;
+  isAdmin: boolean = false;
+  DecedeHumain: Decedes = new Decedes();
+  NomDecede = [];
+  NomDMedcin = [];
+  jstoday = '';
+  MedecinHumain: Medecins;
+  c: string;
+  i = 0;
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -79,19 +104,26 @@ export class BulletinsComponent implements OnInit, OnChanges {
           title: '<i class="fas fa-file-pdf"></i>',
         },
         {
-          name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
-        },
-        {
           name: 'delete',
           title: '<i class="fa fa-trash"></i>',
+        },
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
         },
       ],
     },
     columns: {
       typeBulletin: {
         title: 'Type de Bulletin',
-        type: 'string',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.typeBulletinList,
+          },
+        },
       },
       declaration: {
         title: 'Date de déclaration',
@@ -102,21 +134,90 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
       medecin: {
         title: 'Médecin',
-        type: Medecins,
+        type: 'html',
         valuePrepareFunction: (data) => {
           return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(medecin?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(medecin).map(u => medecin.nom + ' ' + medecin.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
         },
       },
       decede: {
         title: 'Décédé',
-        type: Decedes,
+        type: 'html',
         valuePrepareFunction: (data) => {
           return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(decede?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(decede).map(u => decede.nom + ' ' + decede.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
         },
       },
       province: {
         title: 'Province ou préfecture',
-        type: 'number',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.provinceList,
+          },
+        },
       },
       cercle: {
         title: 'Cercle',
@@ -128,19 +229,47 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
       diagnostique: {
         title: 'Diagnostique Attestation',
-        type: 'number',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.diagnostiqueList,
+          },
+        },
       },
       residece: {
         title: 'Milieu de résidence',
-        type: 'number',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.milieuList,
+          },
+        },
       },
       lieuEntrement: {
         title: 'Lieu Enterrement',
-        type: 'number',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.lieuList,
+          },
+        },
       },
       cimetiere: {
         title: 'Cimetière',
-        type: 'number',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.cimetiereList,
+          },
+        },
       },
       numTombe: {
         title: 'Numéro de tombe',
@@ -152,16 +281,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
     },
   };
-  source: Array<Bulletins>;
-  numRgtr: number = null;
-  isAdmin: boolean = false;
-  DecedeHumain: Decedes = new Decedes();
-  NomDecede = [];
-  NomDMedcin = [];
-  jstoday = '';
-  MedecinHumain: Medecins;
-  c: string;
-  i = 0;
+
   constructor(private service: BulletinsService,
               private serviceD: DecedesService,
               private serviceM: MedecinsService,
@@ -172,18 +292,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
               private router: Router,
               private toastService: ToastrService,
               private fb: FormBuilder) {
-    this.serviceD.getAll().subscribe(data => {
-      data.forEach(obj => {
-        this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
-      });
-    });
-    this.serviceM.getAll().subscribe(dataa => {
-      dataa.forEach(obj => {
-        this.NomDMedcin.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
-      });
-    });
-    this.MedecinHumain = new Medecins();
-    this.DecedeHumain = new Decedes();
   }
   init() {
     this.service.getAll().subscribe(data => {
@@ -194,6 +302,31 @@ export class BulletinsComponent implements OnInit, OnChanges {
     this.userservice.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
     });
+    this.serviceD.getAll().subscribe(data => {
+      data.forEach(obj => {
+        this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
+        this.filterDecede.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        });
+      });
+    });
+    this.serviceM.getAll().subscribe(dataa => {
+      dataa.forEach(obj => {
+        this.NomDMedcin.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
+        this.filterMedecin.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        });
+      });
+      this.settings.columns.medecin.filter.config.list = this.filterMedecin;
+      this.settings.columns.decede.filter.config.list = this.filterDecede;
+      this.settings = Object.assign({}, this.settings);
+    });
+    this.MedecinHumain = new Medecins();
+    this.DecedeHumain = new Decedes();
     this.init();
     this.reactiveForm = this.fb.group({
       typeBulletin: ['', Validators.required],
@@ -239,15 +372,16 @@ export class BulletinsComponent implements OnInit, OnChanges {
       console.warn('bulletin: ', bulletin);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(bulletin);
+      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
     }
   }
   doSave(bulletin) {
     if (this.id == null) {
-      this.serviceM.getById(bulletin.medecin.id).subscribe(medecin => {
+      this.serviceM.getById(bulletin.medecin).subscribe(medecin => {
         bulletin.medecin = medecin;
-        this.serviceD.getById(bulletin.decede.id).subscribe(decede => {
+        this.serviceD.getById(bulletin.decede).subscribe(decede => {
           bulletin.decede = decede;
           this.service.create(bulletin).subscribe(data => {
             this.source.push(data);
@@ -266,53 +400,17 @@ export class BulletinsComponent implements OnInit, OnChanges {
             this.service.update(bulletin).subscribe(data1 => {
               this.source = this.source.map(e => e);
               this.init();
-              this.active = false;
-              this.reactiveForm.reset();
             });
           });
         });
-        this.toastService.toastOfSave('success');
+        this.medecinDetails = false;
+        this.reactiveForm.reset();
+        this.toastService.toastOfEdit('success');
       } else {
         this.toastService.toastOfEdit('warning');
       }
     }
 
-  }
-
-  reset() {
-    this.Bulletins = new Bulletins();
-    this.DecedeHumain = null;
-    this.MedecinHumain = null;
-    this.numRgtr = null;
-    this.medcinid = null;
-  }
-  onEditConfirm(event) {
-    this.settings.columns.medecin = event.data.medecin;
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.update(event.newData).subscribe(obj => {
-        });
-        this.toastService.toastOfEdit('success');
-      });
-    } else {
-      this.toastService.toastOfEdit('warning');
-    }
-  }
-  onDeleteConfirm(event) {
-    if (this.isAdmin) {
-      if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
-        event.confirm.resolve(event.data);
-        this.toastService.toastOfDelete('success');
-        this.service.delete(event.data.id).subscribe(data => {
-        });
-      } else {
-        event.confirm.reject(event.data);
-      }
-    } else {
-      this.toastService.toastOfDelete('warning');
-
-    }
   }
   generatePdf(action = 'open') {
     const documentDefinition = this.getDocumentDefinition();
@@ -1011,17 +1109,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       },
     };
   }
-  add() {
-
-      this.serviceD.getById(this.numRgtr).subscribe(obj => {
-        this.DecedeHumain = obj;
-        this.jstoday = formatDate(this.DecedeHumain.dateDeces, 'dd-MM-yyyy', 'en-US', '+0530');
-      });
-      this.serviceM.getById(this.medcinid).subscribe(obj1 => {
-        this.MedecinHumain = obj1;
-      });
-}
-
   passToMedecin() {
     this.router.navigateByUrl('/pages/bulletins-dm/medcins');
   }
@@ -1048,7 +1135,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
             centre: event.data.centre,
           });
           this.id = event.data.id;
-          this.active = true;
+          this.medecinDetails = true;
           this.onChange(event.data);
         } else {
           this.toastService.toastOfEdit('warning');
@@ -1083,27 +1170,14 @@ export class BulletinsComponent implements OnInit, OnChanges {
   }
 
   onChange(data: any) {
-    this.active = true;
+    this.medecinDetails = true;
     this.serviceM.getById(data.medecin.id).subscribe(medecin => {
       this.Bulletins.medecin = medecin;
       this.MedecinHumain = medecin;
-      console.warn('id:: ' + medecin);
     });
     this.serviceD.getById(data.decede.id).subscribe(decede => {
       this.Bulletins.decede = decede;
       this.DecedeHumain = decede;
-      console.warn('id:: ' + decede);
     });
   }
-  /* ActivateMedecin(medcinid: number) {
-    this.serviceM.getById(this.createBulletinFromForm().medecin.id).subscribe(obj1 => {
-      this.MedecinHumain = obj1;
-    });
-  }
-  ActivateDecede(numRgtr: number) {
-    this.serviceD.getById(this.createBulletinFromForm().decede.id).subscribe(obj1 => {
-      this.DecedeHumain = obj1;
-    });
-  }
-  */
 }

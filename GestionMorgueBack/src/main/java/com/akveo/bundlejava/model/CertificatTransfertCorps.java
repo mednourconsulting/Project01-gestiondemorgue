@@ -20,7 +20,7 @@ public class CertificatTransfertCorps {
     @OneToOne
     private Decedes defunt;
     private String declarant;
-    private long tel;
+    private String tel;
     private String destination;
     private String mortuaire;
     private String inhumationSociete;
@@ -85,11 +85,11 @@ public class CertificatTransfertCorps {
         this.declarant = declarant;
     }
 
-    public long getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(long tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 

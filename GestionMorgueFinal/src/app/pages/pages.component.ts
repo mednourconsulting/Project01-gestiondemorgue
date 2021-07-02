@@ -10,7 +10,7 @@ import { NbTokenService } from '@nebular/auth';
 import { NbMenuItem } from '@nebular/theme';
 import { PagesMenu } from './pages-menu';
 import { InitUserService } from '../@theme/services/init-user.service';
-import {UsersService} from "../@core/backend/common/services/users.service";
+import {UsersService} from '../@core/backend/common/services/users.service';
 
 @Component({
   selector: 'ngx-pages',

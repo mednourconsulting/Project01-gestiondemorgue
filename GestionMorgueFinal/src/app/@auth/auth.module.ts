@@ -33,13 +33,14 @@ import {
 } from './components';
 
 import {
-  NbAlertModule,
-  NbCardModule,
-  NbIconModule,
-  NbLayoutModule,
-  NbCheckboxModule,
-  NbInputModule,
-  NbButtonModule,
+    NbAlertModule,
+    NbCardModule,
+    NbIconModule,
+    NbLayoutModule,
+    NbCheckboxModule,
+    NbInputModule,
+    NbButtonModule,
+    NbSelectModule,
 } from '@nebular/theme';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ComponentsModule } from '../@components/components.module';
@@ -75,14 +76,15 @@ export function filterInterceptorRequest(req: HttpRequest<any>): boolean {
 
 @NgModule({
   declarations: [...PIPES, ...COMPONENTS],
-  imports: [
-    AuthRoutingModule,
-    ReactiveFormsModule,
-    CommonModule,
-    ComponentsModule,
-    ...NB_MODULES,
-    NbAuthModule.forRoot(authOptions),
-  ],
+    imports: [
+        AuthRoutingModule,
+        ReactiveFormsModule,
+        CommonModule,
+        ComponentsModule,
+        ...NB_MODULES,
+        NbAuthModule.forRoot(authOptions),
+        NbSelectModule,
+    ],
   exports: [...PIPES],
   providers: [
     NbSecurityModule.forRoot({

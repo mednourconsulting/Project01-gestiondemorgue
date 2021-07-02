@@ -30,6 +30,9 @@ import {BulletinsDMModule} from '../bulletins-dm/bulletins-dm.module';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 
 @NgModule({
+  declarations: [
+    DashboardComponent,
+  ],
   imports: [
     FormsModule,
     ThemeModule,
@@ -51,8 +54,6 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
     Ng2SmartTableModule,
     ChartsModule,
   ],
-  declarations: [
-    DashboardComponent,
-  ],
+
 })
 export class DashboardModule {}

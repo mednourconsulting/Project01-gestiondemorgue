@@ -24,13 +24,17 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class TransfertCorpsComponent implements OnInit {
   cercueil = ['En zinc et bois', 'En bois'];
-  destinationCorps = ['tanger', 'Rabat'];
+  cercueilList = [{value: 'En zinc et bois', title: 'En zinc et bois'}, {value: 'En bois', title: 'En bois'}];
+  destinationCorpsList = [{value: 'Tanger', title: 'Tanger'}, {value: 'Rabat', title: 'Rabat'}];
   trnsfrCorps: CertificatTransfertCorps = new CertificatTransfertCorps();
   NomDecede = [];
   isAdmin: boolean;
   reactiveForm: FormGroup;
   frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   numberPattern = '[0-9]*';
+  id = null;
+  private filterMedecin = [];
+  private filterDecede = [];
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -52,7 +56,7 @@ export class TransfertCorpsComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       custom: [
         {
@@ -67,9 +71,89 @@ export class TransfertCorpsComponent implements OnInit {
           name: 'delete',
           title: '<i class="fas fa-trash"></i>',
         },
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
+        },
       ],
     },
     columns: {
+      defunt: {
+        title: 'Défunt',
+        type: 'html',
+        valuePrepareFunction: (data) => {
+          return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(decede?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(decede).map(u => decede.nom + ' ' + decede.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
+        },
+      },
+      medecins: {
+        title: 'Médecin',
+        type: 'html',
+        valuePrepareFunction: (data) => {
+          return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(medecins?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(medecins).map(u => medecins.nom + ' ' + medecins.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
+        },
+      },
       declarant: {
         title: 'Déclarant',
         type: 'string',
@@ -87,15 +171,29 @@ export class TransfertCorpsComponent implements OnInit {
       },
       destination: {
         title: 'Destination',
-        type: 'string',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.destinationCorpsList,
+          },
+        },
       },
       cercueilType: {
         title: 'Type de cercueil',
-        type: 'string',
+        type: 'html',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.cercueilList,
+          },
+        },
       },
       tel: {
         title: 'Télèphone',
-        type: 'number',
+        type: 'string',
       },
       mortuaire: {
         title: 'Fourgon mortuaire',
@@ -104,18 +202,6 @@ export class TransfertCorpsComponent implements OnInit {
       inhumationSociete: {
         title: 'Société d\'inhumation',
         type: 'string',
-      },
-      medecins: {
-        title: 'Médecin',
-        valuePrepareFunction: (data) => {
-          return data.nom + ' ' + data.prenom;
-        },
-      },
-      defunt: {
-        title: 'Défunt',
-        valuePrepareFunction: (data) => {
-          return data.nom + ' ' + data.prenom;
-        },
       },
       remarque: {
         title: 'Remarques',
@@ -152,13 +238,26 @@ export class TransfertCorpsComponent implements OnInit {
     this.serviceDecede.getAll().subscribe(dataa => {
       dataa.forEach(obj => {
         this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
+        this.filterDecede.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        });
       });
     });
     this.serviceM.getAll().subscribe(data1 => {
       data1.forEach(obj => {
         this.NomMedcin.push({nom: obj.nom , prenom: obj.prenom, id: obj.id});
+        this.filterMedecin.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        });
       });
-    });
+      this.settings.columns.medecins.filter.config.list = this.filterMedecin;
+      this.settings.columns.defunt.filter.config.list = this.filterDecede;
+      this.settings = Object.assign({}, this.settings);
+      });
   }
 
   ngOnInit() {
@@ -179,42 +278,6 @@ export class TransfertCorpsComponent implements OnInit {
       inhumationSociete: ['', [Validators.required, Validators.pattern(this.frPattern)]],
       cin: ['', [Validators.required, Validators.pattern(this.frPattern)]],
     });
-  }
-
-  save() {
-    this.serviceM.getById(this.MedcinID).subscribe(obj => {
-      this.trnsfrCorps.medecins = obj;
-      this.serviceDecede.getById(this.defauntID).subscribe(objj => {
-        this.trnsfrCorps.defunt = objj;
-        this.service.create(this.trnsfrCorps).subscribe(data => {
-          this.source.push(data);
-          this.source = this.source.map(item => item);
-        });
-      });
-    });
-    this.init();
-    window.alert('Les données ont été ajoutées avec succès à la base de données');
-    //   this.serviceM.getById(this.MedcinID).subscribe(objj => {
-    //     this.trnsfrCorps.medecins = objj;
-    //     this.serviceDecede.getById(this.defauntID).subscribe(obj1 => {
-    //       this.trnsfrCorps.defunt = obj1;
-    //   this.service.create(this.trnsfrCorps).subscribe(data => {}); });
-    //   this.reset();
-    //   window.alert('Les données ont été ajoutées avec succès à la base de données');
-    //   this.init();
-    // }); });
-  }
-
-  onEditConfirm(event) {
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.update(event.newData);
-        window.alert('Les données ont été modifiées avec succès');
-      });
-    } else {
-      window.alert('Vous n\'avez pas des droits de modification');
-    }
   }
   generatePdf(action) {
     this.actualise();
@@ -643,7 +706,10 @@ export class TransfertCorpsComponent implements OnInit {
     // doc.save('رخصة الدفن.pdf');
     doc.save('رخصة دفن المرحوم ' + list.defunt.nomAR + ' ' + list.defunt.prenomAR + '.pdf');
   }
-
+  ConvertDate(date) {
+    if (date !== undefined)
+      return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+  }
   onCustomConfirm(event) {
     switch (event.action) {
       case 'pdfFrancais':
@@ -670,12 +736,33 @@ export class TransfertCorpsComponent implements OnInit {
           this.toastService.toastOfDelete('warning');
         }
         break;
+      case 'edit' :
+        if (this.isAdmin) {
+          this.reactiveForm.setValue({
+            medecins: event.data.medecins.id,
+            defunt: event.data.defunt.id,
+            cercueilType: event.data.cercueilType,
+            declaration: this.ConvertDate(event.data.declaration) as any as Date,
+            remarque: event.data.remarque,
+            declarant: event.data.declarant,
+            tel: event.data.tel,
+            destination: event.data.destination,
+            mortuaire: event.data.mortuaire,
+            inhumationSociete: event.data.inhumationSociete,
+            cin: event.data.cin,
+          });
+          this.id = event.data.id;
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
+        break;
     }
   }
 
   createCertificatFromForm(): CertificatTransfertCorps {
     const formValues = this.reactiveForm.value;
     const certificat = new CertificatTransfertCorps();
+    certificat.id = this.id;
     certificat.medecins = formValues.medecins;
     certificat.declarant = formValues.declarant;
     certificat.cin = formValues.cin;
@@ -698,22 +785,42 @@ export class TransfertCorpsComponent implements OnInit {
       console.warn('certificat: ', certificat);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
+      this.id = null;
     } else {
       this.toastService.toastOfSave('validate');
     }
   }
   doSave(certificat) {
-    this.serviceM.getById(certificat.medecins).subscribe(obj1 => {
-      certificat.medecins = obj1;
-      this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
-        certificat.defunt = objj;
-        this.service.create(certificat).subscribe(obj => {
-          this.source.push(obj);
-          this.source = this.source.map(e => e);
+    if (this.id == null) {
+      this.serviceM.getById(certificat.medecins).subscribe(obj1 => {
+        certificat.medecins = obj1;
+        this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
+          certificat.defunt = objj;
+          this.service.create(certificat).subscribe(obj => {
+            this.source.push(obj);
+            this.source = this.source.map(e => e);
+          });
         });
       });
-    });
-    this.toastService.toastOfSave('success');
-    this.reactiveForm.reset();
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+        this.serviceM.getById(certificat.medecins).subscribe(obj1 => {
+          certificat.medecins = obj1;
+          this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
+            certificat.defunt = objj;
+            this.service.update(certificat).subscribe(obj => {
+              this.source = this.source.map(e => e);
+              this.init();
+            });
+          });
+        });
+        this.toastService.toastOfEdit('success');
+        this.reactiveForm.reset();
+      } else {
+        this.toastService.toastOfEdit('warning');
+      }
+    }
   }
 }

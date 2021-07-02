@@ -74,8 +74,78 @@ export class MedicolegalComponent implements OnInit {
     columns: {
       medecin: {
         title: 'Médecin',
+        type: 'html',
         valuePrepareFunction: (data) => {
           return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(medecin?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(medecin).map(u => medecin.nom + ' ' + medecin.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
+        },
+      },
+      defunt: {
+        title: 'Décédé',
+        type: 'html',
+        valuePrepareFunction: (data) => {
+          return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(decede?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(decede).map(u => decede.nom + ' ' + decede.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
         },
       },
       declarant: {
@@ -97,12 +167,6 @@ export class MedicolegalComponent implements OnInit {
           return this.datePipe.transform(r, 'dd-MM-yyyy');
         },
       },
-      defunt: {
-        title: 'Défunt',
-        valuePrepareFunction: (data) => {
-          return data.nom + ' ' + data.prenom;
-        },
-      },
     },
   };
   source: Array<CertificatMedicoLegal>;
@@ -111,7 +175,8 @@ export class MedicolegalComponent implements OnInit {
   defunt: number;
   MedNom: number;
   id: null;
-
+  private filterMedecin = [];
+  private filterDecede = [];
   constructor(private service: CertificatMedicoLegalService,
               private userservice: UsersService,
               private router: Router,
@@ -119,15 +184,7 @@ export class MedicolegalComponent implements OnInit {
               private serviceMeddcin: MedecinsService,
               private datePipe: DatePipe,
               private toastService: ToastrService,
-              private fb: FormBuilder) {
-    this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-Us', '+1');
-    this.serviceDecede.getAll().subscribe( dataa => {
-      dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id}); });
-    });
-    this.serviceMeddcin.getAll().subscribe( data1 => {
-      data1.forEach (  obj => { this.NomMedecin.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id}); });
-    });
-  }
+              private fb: FormBuilder) {}
   init() {
     this.service.getAll().subscribe(data => {
       this.source = data;
@@ -146,8 +203,32 @@ export class MedicolegalComponent implements OnInit {
       declaration: [''],
       defunt: ['', [ Validators.required ]],
     });
+    this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-Us', '+1');
+    this.serviceDecede.getAll().subscribe( dataa => {
+      dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id});
+      this.filterDecede.push({
+        id: obj.id,
+        value: obj.nom + ' ' + obj.prenom,
+        title: obj.nom + ' ' +  obj.prenom,
+      }); });
+      this.settings.columns.defunt.filter.config.list = this.filterDecede;
+    });
+    this.serviceMeddcin.getAll().subscribe( data1 => {
+      data1.forEach (  obj => { this.NomMedecin.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id});
+        this.filterMedecin.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        }); });
+      this.settings.columns.medecin.filter.config.list = this.filterMedecin;
+      this.settings = Object.assign({}, this.settings);
+    });
   }
-
+  i = 0;
+  DecedeHumain: Decedes;
+  MedecinHumain: Medecins;
+  dd = '';
+  e: string;
   isAdmin: boolean;
   generatePdf(action) {
     this.actualise();
@@ -370,11 +451,6 @@ export class MedicolegalComponent implements OnInit {
       },
     };
   }
-  i = 0;
-  DecedeHumain: Decedes;
-  MedecinHumain: Medecins;
-  dd = '';
-  e: string;
   actualise() {
       this.serviceDecede.getById(this.defunt).subscribe(obj => {
         this.DecedeHumain = obj;
@@ -481,20 +557,6 @@ export class MedicolegalComponent implements OnInit {
     doc.text('إمضاء ', 100, 420);
     doc.save('شهادة طبية' + '.pdf');
   }
-  onEditConfirm(event) {
-    if (this.isAdmin) {
-      this.service.getAll().subscribe(data => {
-        event.confirm.resolve(event.newData);
-        this.service.update(event.newData).subscribe(obj => {
-          this.source.map(e => e);
-        });
-        this.toastService.toastOfEdit('success');
-      });
-    } else {
-      this.toastService.toastOfEdit('warning');
-
-    }
-  }
   onEdit (data: any) {
     if (this.isAdmin) {
       this.id = data.id;
@@ -506,7 +568,6 @@ export class MedicolegalComponent implements OnInit {
         declaration: this.ConvertDate(data.declaration) as any as Date,
         defunt: data.defunt.id,
       });
-      this.active = true;
     } else {
       this.toastService.toastOfEdit('warning');
     }
@@ -567,19 +628,18 @@ export class MedicolegalComponent implements OnInit {
     if (date !== undefined)
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
   }
-  // on submit data
   onSubmit() {
     if (this.reactiveForm.valid) {
       const certificat: CertificatMedicoLegal = this.createCertificatFromForm();
       console.warn('certificat: ', certificat);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
+      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
     }
   }
   doSave(certificat) {
-    console.log('certificat :: ' + certificat);
     if (this.id == null) {
       this.serviceMeddcin.getById(certificat.medecin).subscribe(medecin => {
         certificat.medecin = medecin;
@@ -606,13 +666,12 @@ export class MedicolegalComponent implements OnInit {
             });
           });
         });
-        this.toastService.toastOfSave('success');
+        this.toastService.toastOfEdit('success');
       } else {
         this.toastService.toastOfEdit('warning');
       }
     }
   }
-
   reset() {
     this.reactiveForm.reset();
     this.Medicolegal = new CertificatMedicoLegal();

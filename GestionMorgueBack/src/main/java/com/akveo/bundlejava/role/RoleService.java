@@ -22,5 +22,8 @@ public class RoleService {
     public Role getDefaultRole() {
         return roleRepository.findDefault();
     }
+    public Role findByName(String name) {
+        return roleRepository.findByName(name);
+    }
 
 }

@@ -13,11 +13,11 @@ import {
   NbCheckboxModule,
   NbInputModule,
   NbSelectModule,
-  NbTabsetModule
+  NbTabsetModule,
 } from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
-import {ComponentsModule} from "../../@components/components.module";
+import {ComponentsModule} from '../../@components/components.module';
 
 
 @NgModule({

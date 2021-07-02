@@ -59,11 +59,11 @@ export class DecesEnfantsComponent implements OnInit {
     this.statistics = [];
     this.list.forEach(obj => {
       if (obj.dateDeces.substring(0, 4) === annee) {
-        this.statistics.push(obj);
-        this.message = 'Les statistiques selon le décès  des enfants (1j-30j) pour l\'année';
-        this.messageAnnee = annee;
       const  age = this.getAgeParJour(obj.dateNaissance, obj.dateDeces);
           if (parseInt(age, 10 ) <= 30) {
+            this.statistics.push(obj);
+            this.message = 'Les statistiques selon le décès  des enfants (1j-30j) pour l\'année';
+            this.messageAnnee = annee;
           if (obj.sexe === 'Homme') {
             this.h = this.h + 1;
           }

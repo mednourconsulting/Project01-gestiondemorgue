@@ -11,6 +11,7 @@ public class Decedes implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    public static int counter = 1;
     private String nomAR;
     private String prenomAR;
     private String adresseAR;
@@ -40,7 +41,7 @@ public class Decedes implements Serializable {
     private String lieuxDeces;
     private String etat;
     private boolean obstacle;
-    private Long numRegister;
+    private String numRegister;
     private String autopsie;
     private String operation;
     private String ageMere;
@@ -59,6 +60,7 @@ public class Decedes implements Serializable {
     private String motifOperation;
 
     public Decedes() {
+        counter = counter++;
     }
 
     public long getId() {
@@ -301,11 +303,11 @@ public class Decedes implements Serializable {
         this.obstacle = obstacle;
     }
 
-    public Long getNumRegister() {
+    public String getNumRegister() {
         return numRegister;
     }
 
-    public void setNumRegister(Long numRegister) {
+    public void setNumRegister(String numRegister) {
         this.numRegister = numRegister;
     }
 

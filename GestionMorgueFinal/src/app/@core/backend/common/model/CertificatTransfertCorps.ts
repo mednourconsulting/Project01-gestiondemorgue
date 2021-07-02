@@ -9,7 +9,7 @@ declaration: Date;
 remarque: string ;
 defunt: Decedes ;
 declarant: string;
-tel: number;
+tel: string;
 destination: string ;
 mortuaire: string;
 inhumationSociete: string;

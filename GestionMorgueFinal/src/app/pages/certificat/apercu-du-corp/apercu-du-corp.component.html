@@ -10,7 +10,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Décédé</label>
-          <nb-select formControlName="defunt" [(ngModel)]="this.ApercuCorps.defunt" class="type-select "  nbSelect fullWidth
+          <nb-select formControlName="defunt" class="type-select "  nbSelect fullWidth
                       placeholder="choisir décédé..." required="true">
             <nb-option *ngFor="let t of NomDeced" [value]="t.id" >{{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
@@ -22,7 +22,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Centre médico-légal</label>
-          <input formControlName="centerMedicoLegal" [(ngModel)]="this.ApercuCorps.centerMedicoLegal" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="centerMedicoLegal"class="form-control" type="string" nbInput fullWidth
                  id="centre" placeholder="Centre médico-légal" required="true">
           <ngx-validation-message label="Centre médico-légal"
                                   [showRequired]="!getControl('centerMedicoLegal').valid && getControl('centerMedicoLegal').touched"
@@ -36,7 +36,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Médecin/ Assistant de santé</label>
-          <nb-select formControlName="medecin" [(ngModel)]="this.ApercuCorps.medecin"  class="type-select " nbSelect fullWidth
+          <nb-select formControlName="medecin"  class="type-select " nbSelect fullWidth
                      placeholder="choisir médecin..." required="true">
             <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.nom}} {{t.prenom}}</nb-option>
           </nb-select>
@@ -48,7 +48,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
-          <input formControlName="dateDeclaration" [(ngModel)]="this.ApercuCorps.dateDeclaration" class="form-control" type="Date" nbInput fullWidth
+          <input formControlName="dateDeclaration" class="form-control" type="Date" nbInput fullWidth
                  id="dateDec" placeholder="Date de déclaration" required="true">
           <ngx-validation-message label="Date de déclaration"
                                   [showRequired]="!getControl('dateDeclaration').valid && getControl('dateDeclaration').touched">

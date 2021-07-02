@@ -5,9 +5,6 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { takeWhile } from 'rxjs/operators' ;
-import { SolarData, SolarEnergyStatistics } from '../../@core/interfaces/iot/solar';
-import { Device, DevicesData } from '../../@core/interfaces/iot/devices';
 import {Decedes} from '../../@core/backend/common/model/Decedes';
 import {DecedesService} from '../../@core/backend/common/services/Decedes.service';
 import {DatePipe} from '@angular/common';
@@ -18,7 +15,25 @@ import {DatePipe} from '@angular/common';
   templateUrl: './dashboard.component.html',
   providers: [DecedesService],
 })
-export class DashboardComponent implements OnDestroy {
+export class DashboardComponent {
+  sexeList = [{value: 'Femme', title: 'Femme'},
+    {value: 'Homme', title: 'Homme'},
+    {value: 'Indéterminé', title: 'Indéterminé'}];
+  etatList = [{value: 'Célibataire', title: 'Célibataire'},
+    {value: 'Marié', title: 'Marié'},
+    {value: 'Divorcé', title: 'Divorcé'},
+    {value: 'Veuf(ve)', title: 'Veuf(ve)'}];
+  lieuDecesList = [{value: 'Domicile', title: 'Domicile'},
+    {value: 'Hopital public', title: 'Hopital public'},
+    {value: 'Clinique', title: 'Clinique'},
+    {value: 'Voie public', title: 'Voie public'},
+    {value: 'Lieu de travail', title: 'Lieu de travail'},
+    {value: 'Autre', title: 'Autre'}];
+  natureMortList = [{value: 'Mort naturelle', title: 'Mort naturelle'},
+    {value: 'Mort non naturelle', title: 'Mort non naturelle'}];
+  confirmationList = [{value: 'Oui', title: 'Oui'},
+    {value: 'Non', title: 'Non'},
+    {value: 'Inconnu', title: 'Inconnu'}];
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -63,11 +78,7 @@ export class DashboardComponent implements OnDestroy {
           type: 'list',
           config: {
             selectText: 'Select',
-            list: [
-              {value: 'Femme', title: 'Femme'},
-              {value: 'Homme', title: 'Homme'},
-              {value: 'Indéterminé', title: 'Indéterminé'},
-            ],
+            list: this.sexeList,
           },
         },
       },
@@ -100,7 +111,13 @@ export class DashboardComponent implements OnDestroy {
       },
       etat: {
         title: 'Etat Matrimonial',
-        type: 'String',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select',
+            list: this.etatList,
+          },
+        },
       },
       profession: {
         title: 'Profession',
@@ -119,15 +136,45 @@ export class DashboardComponent implements OnDestroy {
       },
       lieuxDeces: {
         title: 'Lieu de décès',
-        type: 'String',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.lieuDecesList,
+          },
+        },
       },
       natureMort: {
         title: 'Nature de mort',
-        type: 'String',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: this.natureMortList,
+          },
+        },
       },
       mortNe: {
         title: 'S\'agit-il d\'un mort né',
-        type: 'boolean',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          if ( cell === true ) {
+            return 'oui';
+          } else {
+            return `non`;
+          }
+
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: true, title: 'oui '},
+              { value: false, title: 'non' },
+            ],
+          },
+        },
       },
       causeMort: {
         title: 'Cause de mort',
@@ -143,7 +190,25 @@ export class DashboardComponent implements OnDestroy {
       },
       obstacle: {
         title: 'Obstacle medicolégal',
-        type: 'boolean',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          if ( cell === true ) {
+            return 'oui';
+          } else {
+            return `non`;
+          }
+
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: true, title: 'oui '},
+              { value: false, title: 'non' },
+            ],
+          },
+        },
       },
       nomAR: {
         title: 'النسب',
@@ -178,91 +243,9 @@ export class DashboardComponent implements OnDestroy {
       this.source = data;
     });
   }
-
-  private alive = true;
-
-  solarValue: SolarEnergyStatistics;
-
-  devices: Device[];
-
-  constructor(private devicesService: DevicesData, private service: DecedesService, private datePipe: DatePipe,
-              private solarService: SolarData) {
+  constructor(private service: DecedesService, private datePipe: DatePipe) {
     this.service.getAll().subscribe(data => {
       this.source = data;
     });
-    this.devicesService.list()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(data => {
-        this.devices = data.filter(x => x.settings);
-      });
-
-
-    this.solarService.getSolarData()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((data) => {
-        this.solarValue = data;
-      });
-  }
-
-  changeDeviceStatus(device: Device, isOn: boolean) {
-    device.isOn = isOn;
-    this.devicesService.edit(device)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe();
-  }
-
-  ngOnDestroy() {
-    this.alive = false;
-  }
-
-
-  public chartType: string = 'pie';
-
-  public chartDatasets: Array<any> = [
-    { data: [0, 0, 0], label: 'My First dataset' },
-  ];
-
-  public chartLabels: Array<any> = ['Femme', 'Homme', 'Indéterminé'];
-
-  public chartColors: Array<any> = [
-    {
-      backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
-      hoverBackgroundColor: ['#FF5A5E', '#5AD3D1', '#FFC870', '#A8B3C5', '#616774'],
-      borderWidth: 2,
-    },
-  ];
-
-  public chartOptions: any = {
-    responsive: true,
-  };
-  public chartClicked(e: any): void { }
-  public chartHovered(e: any): void { }
-  List = [];
-  f: number;
-  i: number;
-  h: number;
-  dash: string;
-  get () {
-    this.service.getAll().subscribe(data1 => {
-      data1.forEach(obj => {
-        this.List.push(obj.sexe);
-      });
-      this.h = 0;
-      this.f = 0;
-      this.i = 0;
-      for (let j = 0; j < this.List.length; j++) {
-        if (this.List[j] === 'Femme') {
-          this.f = this.f + 1;
-        }
-        if (this.List[j] === 'Homme') {
-          this.h = this.h + 1;
-        }
-        if (this.List[j] === 'indéterminé') {
-          this.i = this.i + 1;
-        }
-      }
-      this.chartDatasets = [  { data: [this.f, this.h, this.i], label: 'My First dataset' } ];
-    });
-  }
 }
-
+}

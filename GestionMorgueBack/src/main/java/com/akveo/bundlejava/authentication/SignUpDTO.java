@@ -29,6 +29,8 @@ public class SignUpDTO {
     @NotEmpty
     private String confirmPassword;
 
+    private String role;
+
     public SignUpDTO() {
     }
 
@@ -70,5 +72,12 @@ public class SignUpDTO {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

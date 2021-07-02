@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {LocalDataSource} from 'ng2-smart-table';
 import {CertificatEnterrement} from '../../../@core/backend/common/model/CertificatEnterrement';
 import {CertificatEnterrementService} from '../../../@core/backend/common/services/CertificatEnterrement.service';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
@@ -9,8 +8,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CertificatMedicoLegal} from "../../../@core/backend/common/model/CertificatMedicoLegal";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -44,7 +42,7 @@ export class EnterrementComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: false,
       custom: [
         {
@@ -54,6 +52,10 @@ export class EnterrementComponent implements OnInit {
         {
           name: 'delete',
           title: '<i class="fas fa-trash"></i>',
+        },
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
         },
       ],
     },
@@ -79,9 +81,9 @@ export class EnterrementComponent implements OnInit {
   NomDecede = [];
   isAdmin: boolean;
   date: Date;
-  DefuntId: number;
   reactiveForm: FormGroup;
   frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
+  id = null;
   constructor(private service: CertificatEnterrementService,
               private userservice: UsersService,
               private serviceDecede: DecedesService,
@@ -309,11 +311,29 @@ export class EnterrementComponent implements OnInit {
 
         }
         break;
+        case 'edit':
+          if (this.isAdmin) {
+            this.reactiveForm.setValue({
+              defunt: event.data.defunt,
+              ville: event.data.ville,
+              declaration: this.ConvertDate(event.data.declaration) as any as Date,
+
+            });
+            this.id = event.data.id;
+          } else {
+            this.toastService.toastOfEdit('warning');
+          }
+        break;
     }
+  }
+  ConvertDate(date) {
+    if (date !== undefined)
+      return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
   }
   createCertificatFromForm(): CertificatEnterrement {
     const formValues = this.reactiveForm.value;
     const certificat = new CertificatEnterrement();
+    certificat.id = this.id;
     certificat.ville = formValues.ville;
     certificat.declaration = formValues.declaration;
     certificat.defunt = formValues.defunt;
@@ -328,16 +348,28 @@ export class EnterrementComponent implements OnInit {
       console.warn('certificat: ', certificat);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
+      this.id = null;
     } else {
       this.toastService.toastOfSave('validate');
     }
   }
   doSave(certificat) {
+    if ( this.id == null) {
         this.service.create(certificat).subscribe(obj => {
           this.source.push(obj);
           this.source = this.source.map(e => e);
         });
-    this.toastService.toastOfSave('success');
-    this.reactiveForm.reset();
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+        this.service.update(certificat).subscribe(obj => {
+          this.source = this.source.map(e => e);
+          this.init();
+        });
+        this.toastService.toastOfEdit('success');
+        this.reactiveForm.reset();
+      }
+    }
   }
 }

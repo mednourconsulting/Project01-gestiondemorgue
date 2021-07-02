@@ -62,7 +62,7 @@
                                                fullWidth
                                                placeholder="Sexe"
                                                required="true">
-                                        <nb-option *ngFor="let t of sexe"  [value]="t">{{t}}</nb-option>
+                                        <nb-option *ngFor="let t of sexeList"  [value]="t.value">{{t.title}}</nb-option>
                                     </nb-select>
                                   <ngx-validation-message label="Sexe"
                                                           [showRequired]="!getControl('sexe').valid && getControl('sexe').touched">
@@ -119,7 +119,7 @@
                                     <div class="form-group">
                                         <label class="label">Le décès est-il survenu pendant une grossesse ou moins d'un an après sa terminaison ?</label>
                                         <nb-select formControlName="decesGrossesse"class="type-select " nbSelect fullWidth>
-                                            <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                            <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
                                         </nb-select>
                                     </div>
                                 </div>
@@ -131,9 +131,9 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label class="label">le décès de la femme est-il survenu</label>
+                                            <label class="label">le décès de la femme est-il survenu..?</label>
                                             <nb-select formControlName="decesFemme" class="type-select " nbSelect fullWidth>
-                                                <nb-option *ngFor="let t of decesFemmeList" [value]="t">{{t}}</nb-option>
+                                                <nb-option *ngFor="let t of decesFemmeList" [value]="t.value">{{t.title}}</nb-option>
                                             </nb-select>
 
                                         </div>
@@ -142,7 +142,7 @@
                                         <div class="form-group">
                                             <label class="label">La grossesse a-t-elle contribué au decès ?</label>
                                             <nb-select formControlName="contribueGros" class="type-select " nbSelect fullWidth>
-                                                <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                                <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
                                             </nb-select>
 
                                         </div>
@@ -158,9 +158,9 @@
 
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label class="label">Grossesse multiple</label>
+                                                <label class="label">Grossesse multiple?</label>
                                                 <nb-select formControlName="grossesseMultiple" class="type-select " nbSelect fullWidth placeholder="Grossesse multiple">
-                                                    <nb-option *ngFor="let t of GrossesseList" [value]="t">{{t}}</nb-option>
+                                                    <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
                                                 </nb-select>
                                             </div>
                                         </div>
@@ -294,7 +294,7 @@
                                                required="true"
                                                fullWidth
                                                placeholder="Etat Matrimonial">
-                                        <nb-option *ngFor="let t of etat" [value]="t"> {{t}}</nb-option>
+                                        <nb-option *ngFor="let t of etatList" [value]="t.value"> {{t.title}}</nb-option>
                                     </nb-select>
                                   <ngx-validation-message label="Etat Matrimonial"
                                                           [showRequired]="!getControl('etat').valid && getControl('etat').touched"
@@ -352,7 +352,7 @@
                                                required="true"
                                                fullWidth
                                                placeholder="lieu Deces">
-                                        <nb-option *ngFor="let t of LieuD" [value]="t">{{ t}}</nb-option>
+                                        <nb-option *ngFor="let t of lieuDecesList" [value]="t.value">{{t.title}}</nb-option>
                                     </nb-select>
                                   <ngx-validation-message label="Lieu Décès"
                                                           [showRequired]="!getControl('lieuxDeces').valid && getControl('lieuxDeces').touched"
@@ -365,7 +365,7 @@
                                     <label class="label">Préfecture /Province</label>
                                     <nb-select formControlName="provinceD"
                                                class="type-select " nbSelect fullWidth placeholder="Préfecture /Province">
-                                        <nb-option *ngFor="let t of province" [value]="t"> {{t}}</nb-option>
+                                        <nb-option *ngFor="let t of provinceList" [value]="t.value"> {{t.title}}</nb-option>
                                     </nb-select>
                                   <ngx-validation-message label="Préfecture /Province"
                                                           [fr]="getControl('provinceD')?.hasError('pattern')">
@@ -403,7 +403,7 @@
                                                required="true"
                                                fullWidth
                                                placeholder="nature de la mort">
-                                        <nb-option *ngFor="let t of NatureMort" [value]="t">{{t}}</nb-option>
+                                        <nb-option *ngFor="let t of natureMortList" [value]="t.value">{{t.title}}</nb-option>
                                     </nb-select>
                                   <ngx-validation-message label="Nature de la mort"
                                                           [showRequired]="!getControl('natureMort').valid && getControl('natureMort').touched">
@@ -490,7 +490,7 @@
                                                            nbSelect
                                                            fullWidth
                                                            placeholder="Lieu de servenue">
-                                                    <nb-option *ngFor="let t of lieuList" [value]="t">{{t}}</nb-option>
+                                                    <nb-option *ngFor="let t of lieuList" [value]="t.value">{{t.title}}</nb-option>
                                                 </nb-select>
                                               <ngx-validation-message label="Lieu de survenue"
                                                                       [fr]="getControl('lieuServ')?.hasError('pattern')">
@@ -526,7 +526,7 @@
                                 <div class="form-group">
                                     <label class="label">Autopsie</label>
                                     <nb-select formControlName="autopsie" class="type-select " nbSelect fullWidth placeholder="Autopsie">
-                                        <nb-option *ngFor="let t of reponse" [value]="t">{{t}}</nb-option>
+                                        <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
                                     </nb-select>
                                 </div>
                             </div>
@@ -534,7 +534,7 @@
                                 <div class="form-group">
                                     <label class="label">Une operation a-t-elle été effectuées lors des 4 dernières semaines ?</label>
                                     <nb-select formControlName="operation" class="type-select " nbSelect fullWidth placeholder="Operation">
-                                        <nb-option *ngFor="let t of reponse" [value]="t">{{t}}</nb-option>
+                                        <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
                                     </nb-select>
                                 </div>
                             </div>
@@ -548,7 +548,7 @@
                                             <div class="form-group">
                                                 <label class="label">les résultats ont-ils été utilisés dans certification</label>
                                                 <nb-select formControlName="resultatsAutopsie" class="type-select " nbSelect fullWidth placeholder="les resultats ...">
-                                                    <nb-option *ngFor="let t of reponse" [value]="t">{{t}}</nb-option>
+                                                    <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
                                                 </nb-select>
                                             </div>
                                         </div>
@@ -676,7 +676,7 @@
     Liste des décédés
   </div>
   <div class="table table-responsive">
-    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
+    <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
 </div>

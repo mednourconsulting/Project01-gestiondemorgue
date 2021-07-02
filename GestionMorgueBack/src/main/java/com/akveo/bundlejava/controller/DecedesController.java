@@ -30,7 +30,7 @@ public class DecedesController {
 
     @PostMapping({"/create"})
     public ResponseEntity<Decedes> create(@RequestBody Decedes decedes) {
-        return ResponseEntity.ok(this.decedesRepository.save(decedes));
+        return ResponseEntity.ok(decedesRepository.save(decedes));
     }
 
     @PutMapping({"/update"})

@@ -34,7 +34,7 @@
                  id="adresse" placeholder="Adresse de Médecin"required="true">
           <ngx-validation-message label="Adresse de Médecin"
                                   [showRequired]="!getControl('adress').valid && getControl('adress').touched"
-                                  [fr]="getControl('adress')?.hasError('pattern')">
+                                  [addressFr]="getControl('adress')?.hasError('pattern')">
           </ngx-validation-message>
         </div>
       </div>
@@ -69,7 +69,7 @@
                  id="AdresseAR" placeholder="العنوان"required="true">
           <ngx-validation-message label="العنوان"
                                   [showRequired]="!getControl('adressAR').valid && getControl('adressAR').touched"
-                                  [ar]="getControl('adressAR')?.hasError('pattern')">
+                                  [addressAr]="getControl('adressAR')?.hasError('pattern')">
           </ngx-validation-message>
         </div>
       </div>
@@ -102,7 +102,7 @@
     <ng2-smart-table [settings]="settings"
                      [source]="source"
                      (deleteConfirm)="onDeleteConfirm($event)"
-                     (editConfirm)="onEditConfirm($event)">
+                     (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
 </div>

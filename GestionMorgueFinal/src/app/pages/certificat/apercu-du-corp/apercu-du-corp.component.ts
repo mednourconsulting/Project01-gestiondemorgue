@@ -23,6 +23,22 @@ import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators
 })
 export class ApercuDuCorpComponent implements OnInit {
   ApercuCorps: ApercuCorps = new ApercuCorps();
+  isAdmin: boolean;
+  NomMedcin = [];
+  NomDeced = [];
+  DecedeHumain: Decedes;
+  source: Array<ApercuCorps>;
+  MedecinID: number;
+  defauntID: number;
+  today = new Date();
+  jstoday = '';
+  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
+  reactiveForm: FormGroup;
+  e: string;
+  MedecinHumain: Medecins;
+  id = null;
+  private filterMedecin = [];
+  private filterDecede = [];
   settings = {
     add: {
       addButtonContent: '<i class="nb-layout-default"></i>',
@@ -69,19 +85,83 @@ export class ApercuDuCorpComponent implements OnInit {
     columns: {
       defunt: {
         title: 'Défunt',
+        type: 'html',
         valuePrepareFunction: (data) => {
           return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(decede?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(decede).map(u => decede.nom + ' ' + decede.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
+        },
+      },
+      medecin: {
+        title: 'Médecin',
+        type: 'html',
+        valuePrepareFunction: (data) => {
+          return data.nom + ' ' + data.prenom;
+        },
+        filterFunction(medecin?: any, search?: string): boolean {
+          let match = true;
+          Object.keys(medecin).map(u => medecin.nom + ' ' + medecin.prenom).filter(it => {
+            match = it.includes(search);
+          });
+
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [],
+          },
+        },
+        compareFunction: (direction: any, a: any, b: any) => {
+          const first = typeof a.nom === 'string' ? a.nom.toLowerCase() : a.nom;
+          const second = typeof b.nom === 'string' ?  b.nom.toLowerCase() : b.nom;
+
+          if (first < second) {
+            return -1 * direction;
+          }
+          if (first > second) {
+            return direction;
+          }
+          return 0;
         },
       },
       centerMedicoLegal: {
         title: 'Centre médico-Légal',
         type: 'string',
-      },
-      medecin: {
-        title: 'Médecin',
-        valuePrepareFunction: (data) => {
-          return data.nom + ' ' + data.prenom;
-        },
       },
       dateDeclaration: {
         title: 'Date de déclaration',
@@ -92,38 +172,13 @@ export class ApercuDuCorpComponent implements OnInit {
       },
     },
   };
-  isAdmin: boolean;
-  NomMedcin = [];
-  NomDeced = [];
-  DecedeHumain: Decedes;
-  source: Array<ApercuCorps>;
-  MedecinID: number;
-  defauntID: number;
-  today = new Date();
-  jstoday = '';
-  frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
-  reactiveForm: FormGroup;
-  e: string;
-  MedecinHumain: Medecins;
   constructor(private service: ApercuCorpsService,
               private userservice: UsersService,
               private serviceMedcin: MedecinsService,
               private serviceDecede: DecedesService,
               private datePipe: DatePipe,
               private toastService: ToastrService,
-              private fb: FormBuilder) {
-    this.serviceDecede.getAll().subscribe(dataa => {
-      dataa.forEach(obj => {
-        this.NomDeced.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
-      });
-    });
-    this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+0530');
-    this.serviceMedcin.getAll().subscribe(data => {
-      data.forEach(obj => {
-        this.NomMedcin.push({nom: obj.nom + ' ', prenom: obj.prenom, id: obj.id});
-      });
-    });
-  }
+              private fb: FormBuilder) {}
 
   init() {
     this.service.getAll().subscribe(data => {
@@ -134,6 +189,30 @@ export class ApercuDuCorpComponent implements OnInit {
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
+    });
+    this.serviceDecede.getAll().subscribe(dataa => {
+      dataa.forEach(obj => {
+        this.NomDeced.push({nom: obj.nom, prenom: obj.prenom, id: obj.id});
+        this.filterDecede.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        });
+      });
+    });
+    this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+0530');
+    this.serviceMedcin.getAll().subscribe(data => {
+      data.forEach(obj => {
+        this.NomMedcin.push({nom: obj.nom + ' ', prenom: obj.prenom, id: obj.id});
+        this.filterMedecin.push({
+          id: obj.id,
+          value: obj.nom + ' ' + obj.prenom,
+          title: obj.nom + ' ' +  obj.prenom,
+        });
+      });
+      this.settings.columns.medecin.filter.config.list = this.filterMedecin;
+      this.settings.columns.defunt.filter.config.list = this.filterDecede;
+      this.settings = Object.assign({}, this.settings);
     });
     this.init();
     this.reactiveForm = this.fb.group({
@@ -460,15 +539,13 @@ export class ApercuDuCorpComponent implements OnInit {
         break;
       case 'edit':
         if (this.isAdmin) {
-          console.warn('event.data', event.data);
-          let formValues = this.reactiveForm.value;
-          console.warn('formValues', formValues);
-          this.ApercuCorps = event.data;
-          console.warn('certificat', this.ApercuCorps);
-          formValues = event.data;
-          formValues.medecin = event.data.medecin.id;
-          formValues.defunt = event.data.defunt.id;
-          this.ApercuCorps.dateDeclaration = this.ConvertDate(event.data.dateDeclaration) as any as Date;
+          this.reactiveForm.setValue({
+            dateDeclaration: this.ConvertDate(event.data.dateDeclaration) as any as Date,
+            medecin: event.data.medecin.id,
+            defunt: event.data.defunt.id,
+            centerMedicoLegal: event.data.centerMedicoLegal,
+          });
+          this.id = event.data.id;
         } else {
           this.toastService.toastOfEdit('warning');
         }
@@ -478,6 +555,7 @@ export class ApercuDuCorpComponent implements OnInit {
   createCertificatFromForm(): ApercuCorps {
     const formValues = this.reactiveForm.value;
     const certificat = new ApercuCorps();
+    certificat.id = this.id;
     certificat.medecin = formValues.medecin;
     certificat.defunt = formValues.defunt;
     certificat.centerMedicoLegal = formValues.centerMedicoLegal;
@@ -493,12 +571,13 @@ export class ApercuDuCorpComponent implements OnInit {
       console.warn('certificat: ', certificat);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
+      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
     }
   }
   doSave(certificat) {
-    if (this.ApercuCorps.id == null) {
+    if (this.id == null) {
       this.serviceMedcin.getById(certificat.medecin).subscribe(obj1 => {
         certificat.medecin = obj1;
         this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
@@ -513,19 +592,15 @@ export class ApercuDuCorpComponent implements OnInit {
       this.reactiveForm.reset();
     } else {
       if (this.isAdmin) {
-        const formValues = this.reactiveForm.value;
-        this.ApercuCorps.dateDeclaration = formValues.dateDeclaration;
-        this.ApercuCorps.centerMedicoLegal = formValues.centerMedicoLegal;
-        console.warn('formValues from doSave', formValues);
-        console.warn('ApercuCorps from doSave', this.ApercuCorps);
-        this.serviceMedcin.getById(formValues.medecin).subscribe(obj => {
-          this.ApercuCorps.medecin = obj;
-          this.serviceDecede.getById(formValues.defunt).subscribe(objj => {
-            this.ApercuCorps.defunt = objj;
-            this.service.update(this.ApercuCorps).subscribe(data1 => {
+        this.serviceMedcin.getById(certificat.medecin).subscribe(obj => {
+          certificat.medecin = obj;
+          this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
+            certificat.defunt = objj;
+            this.service.update(certificat).subscribe(data1 => {
               this.source = this.source.map(e => e);
-              this.reactiveForm.reset();
+              this.init();
             });
+            this.reactiveForm.reset();
             this.toastService.toastOfEdit('success');
           }); });
       } else {

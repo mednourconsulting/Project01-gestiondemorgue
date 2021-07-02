@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { NB_AUTH_OPTIONS, NbAuthSocialLink, NbAuthService, NbAuthResult } from '@nebular/auth';
 import { getDeepFromObject } from '../../helpers';
 import { EMAIL_PATTERN } from '../constants';
+import {Location} from '@angular/common';
+import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 
 @Component({
   selector: 'ngx-register',
@@ -35,16 +37,19 @@ export class NgxRegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   constructor(protected service: NbAuthService,
+              protected location: Location,
     @Inject(NB_AUTH_OPTIONS) protected options = {},
     protected cd: ChangeDetectorRef,
     private fb: FormBuilder,
-    protected router: Router) { }
+    protected router: Router,
+              private toastService: ToastrService) { }
 
   get fullName() { return this.registerForm.get('fullName'); }
   get email() { return this.registerForm.get('email'); }
   get password() { return this.registerForm.get('password'); }
   get confirmPassword() { return this.registerForm.get('confirmPassword'); }
   get terms() { return this.registerForm.get('terms'); }
+  get role() { return this.registerForm.get('role'); }
 
   ngOnInit(): void {
     const fullNameValidators = [
@@ -68,11 +73,16 @@ export class NgxRegisterComponent implements OnInit {
       password: this.fb.control('', [...passwordValidators]),
       confirmPassword: this.fb.control('', [...passwordValidators]),
       terms: this.fb.control(''),
+      role: this.fb.control('', [Validators.required]),
     });
   }
-
+  back() {
+    this.location.back();
+    return false;
+  }
   register(): void {
     this.user = this.registerForm.value;
+    console.warn(this.user);
     this.errors = this.messages = [];
     this.submitted = true;
 
@@ -80,21 +90,37 @@ export class NgxRegisterComponent implements OnInit {
       this.submitted = false;
       if (result.isSuccess()) {
         this.messages = result.getMessages();
+        this.registerForm.reset();
+        this.toastService.showToast('success', 'Ajout d\'un nouveau utilisateur',
+          'L\'utilisateur ' + this.user.fullName + ' est ajouté avec  succès');
       } else {
         this.errors = result.getErrors();
+        this.toastService.showToast('danger', 'Email déjà utilisé',
+          'Veillez changer l\'email s\'il vous plait !!');
       }
-
-      const redirect = result.getRedirect();
+      /* const redirect = result.getRedirect();
       if (redirect) {
         setTimeout(() => {
           return this.router.navigateByUrl(redirect);
         }, this.redirectDelay);
       }
-      this.cd.detectChanges();
+      this.cd.detectChanges(); */
     });
   }
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.options, key, null);
+  }
+  showPassword = true;
+
+  getInputType() {
+    if (this.showPassword) {
+      return 'password';
+    }
+    return 'text';
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
   }
 }

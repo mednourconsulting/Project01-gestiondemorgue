@@ -48,7 +48,7 @@ export class Decedes {
    resultatsAutopsie: string;
    dateOperation: Date;
    motifOperation: string;
-   numRegister: number;
+   numRegister: string;
   constructor() {
   }
 }

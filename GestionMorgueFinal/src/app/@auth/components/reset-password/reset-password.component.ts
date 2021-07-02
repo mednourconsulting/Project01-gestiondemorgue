@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NB_AUTH_OPTIONS, NbAuthService, NbAuthResult } from '@nebular/auth';
 import { getDeepFromObject } from '../../helpers';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'ngx-reset-password-page',
@@ -30,6 +31,7 @@ export class NgxResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
 
   constructor(protected service: NbAuthService,
+              protected location: Location,
     @Inject(NB_AUTH_OPTIONS) protected options = {},
     protected cd: ChangeDetectorRef,
     protected fb: FormBuilder,
@@ -73,7 +75,10 @@ export class NgxResetPasswordComponent implements OnInit {
       this.cd.detectChanges();
     });
   }
-
+  back() {
+    this.location.back();
+    return false;
+  }
   getConfigValue(key: string): any {
     return getDeepFromObject(this.options, key, null);
   }

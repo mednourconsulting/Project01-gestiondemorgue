@@ -17,6 +17,9 @@ export class MedcinsComponent implements OnInit {
   reactiveForm: FormGroup;
   arPattern = '[\u0621-\u064A0-9 ]*';
   frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
+  adressFrPattern = '[a-zA-Z0-9éàçèêûùï/()\'°, ]*';
+  adressArPattern = '[\u0621-\u064A0-9°,. ]*';
+  id = null;
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -38,8 +41,14 @@ export class MedcinsComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: true,
+      custom: [
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
+        },
+      ],
     },
     columns: {
       nom: {
@@ -95,11 +104,11 @@ export class MedcinsComponent implements OnInit {
     this.reactiveForm = this.fb.group({
       nom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
       prenom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
-      adress: ['', [Validators.required, Validators.pattern(this.frPattern)]],
+      adress: ['', [Validators.required, Validators.pattern(this.adressFrPattern)]],
       cin: ['', [Validators.required, Validators.pattern(this.frPattern)]],
       nomAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
       prenomAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
-      adressAR: ['', [Validators.required, Validators.pattern(this.arPattern)]],
+      adressAR: ['', [Validators.required, Validators.pattern(this.adressArPattern)]],
     });
   }
 
@@ -149,6 +158,7 @@ export class MedcinsComponent implements OnInit {
   createMedecinFromForm(): Medecins {
     const formValues = this.reactiveForm.value;
     const medecin = new Medecins();
+    medecin.id = this.id;
     medecin.nom = formValues.nom;
     medecin.prenom = formValues.prenom;
     medecin.adress = formValues.adress;
@@ -156,7 +166,6 @@ export class MedcinsComponent implements OnInit {
     medecin.prenomAR = formValues.prenomAR;
     medecin.adressAR = formValues.adressAR;
     medecin.cin = formValues.cin;
-
     return medecin;
   }
   getControl(name: string): AbstractControl {
@@ -168,16 +177,51 @@ export class MedcinsComponent implements OnInit {
       console.warn('cause: ', medecin);
       console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(medecin);
+      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
     }
   }
   doSave(medecin) {
-        this.service.create(medecin).subscribe(obj => {
-          this.source.push(obj);
-          this.source = this.source.map(e => e);
-        });
-    this.toastService.toastOfSave('success');
-    this.reactiveForm.reset();
+    if (this.id == null) {
+      this.service.create(medecin).subscribe(obj => {
+        this.source.push(obj);
+        this.source = this.source.map(e => e);
+      });
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+            this.service.update(medecin).subscribe(data1 => {
+              this.source = this.source.map(e => e);
+              this.init();
+              this.reactiveForm.reset();
+            });
+        this.toastService.toastOfEdit('success');
+      } else {
+        this.toastService.toastOfEdit('warning');
+      }
+    }
+  }
+
+  onCustomConfirm(event) {
+    switch (event.action) {
+      case 'edit' :
+        if (this.isAdmin) {
+          this.reactiveForm.setValue({
+            nom: event.data.nom,
+            prenom: event.data.prenom,
+            adress: event.data.adress,
+            nomAR: event.data.nomAR,
+            prenomAR: event.data.prenomAR,
+            adressAR: event.data.adressAR,
+            cin: event.data.cin,
+          });
+          this.id = event.data.id;
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
+        break;
+    }
   }
 }

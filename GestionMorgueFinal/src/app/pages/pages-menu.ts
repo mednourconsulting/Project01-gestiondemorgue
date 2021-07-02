@@ -132,11 +132,11 @@ export class PagesMenu {
          icon: 'lock-outline',*/
         children: [
           {
-            title: 'S\'inscrire',
+            title: 'Ajouter un nouveau utilisateur',
             link: '/auth/register',
           },
           {
-            title: 'réinitialiser le mot de passe',
+            title: 'Réinitialiser le mot de passe',
             link: '/auth/reset-password',
           },
           {

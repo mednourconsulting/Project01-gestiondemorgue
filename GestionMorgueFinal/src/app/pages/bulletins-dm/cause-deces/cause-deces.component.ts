@@ -13,6 +13,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 })
 export class CauseDecesComponent implements OnInit {
   Cause: Cause = new Cause();
+  id = null;
   source: Array<Cause>;
   lise: number;
   isAdmin: boolean;
@@ -68,8 +69,14 @@ export class CauseDecesComponent implements OnInit {
     },
     actions: {
       add: false,
-      edit: true,
+      edit: false,
       delete: true,
+      custom: [
+        {
+          name: 'edit',
+          title: '<i class="fas fa-edit"></i>',
+        },
+      ],
     },
     columns: {
       code: {
@@ -114,16 +121,30 @@ export class CauseDecesComponent implements OnInit {
     }
   }
   save(cause) {
-    this.service.create(cause).subscribe(obj => {
-      this.source.push(obj);
-      this.source = this.source.map(item => item);
-    });
-    this.toastService.toastOfSave('success');
-    this.reactiveForm.reset();
+    if ( cause.id == null) {
+      this.service.create(cause).subscribe(obj => {
+        this.source.push(obj);
+        this.source = this.source.map(item => item);
+      });
+      this.toastService.toastOfSave('success');
+      this.reactiveForm.reset();
+    } else {
+      if (this.isAdmin) {
+      this.service.update(cause).subscribe(obj => {
+        this.source.map(e => e);
+        this.init();
+        this.reactiveForm.reset();
+      });
+      this.toastService.toastOfEdit('success');
+    } else {
+      this.toastService.toastOfEdit('warning');
+    }
+  }
   }
   createCauseFromForm(): Cause {
     const formValues = this.reactiveForm.value;
     const cause = new Cause();
+    cause.id = this.id;
     cause.code = formValues.code;
     cause.description = formValues.description;
     cause.descriptionAR = formValues.descriptionAR;
@@ -138,8 +159,25 @@ export class CauseDecesComponent implements OnInit {
       console.warn('cause: ', cause);
       console.warn('formValues : ', this.reactiveForm.value);
      this.save(cause);
+      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
+    }
+  }
+  onCustomConfirm(event) {
+    switch (event.action) {
+      case 'edit':
+        if (this.isAdmin) {
+          this.reactiveForm.setValue({
+            code: event.data.code,
+            description: event.data.description,
+            descriptionAR: event.data.descriptionAR,
+          });
+          this.id = event.data.id;
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
+        break;
     }
   }
 }

@@ -17,13 +17,6 @@ import { takeWhile } from 'rxjs/operators';
       <nb-layout-column >
         <nb-auth-block>
           <nb-card>
-            <nb-card-header >
-              <nav class="navigation">
-                <a href="#" (click)="back()" class="link back-link" aria-label="Back">
-                  <nb-icon icon="arrow-back"></nb-icon>
-                </a>
-              </nav>
-            </nb-card-header>
             <nb-card-body>
               <nb-auth-block>
                 <router-outlet></router-outlet>
@@ -45,7 +38,8 @@ export class NgxAuthComponent implements OnDestroy {
   token: string = '';
 
   // showcase of how to use the onAuthenticationChange method
-  constructor(protected auth: NbAuthService, protected location: Location) {
+  constructor(protected auth: NbAuthService,
+              protected location: Location) {
 
     this.subscription = auth.onAuthenticationChange()
       .pipe(takeWhile(() => this.alive))
