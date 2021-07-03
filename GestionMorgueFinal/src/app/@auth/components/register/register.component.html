@@ -18,7 +18,6 @@
 </nb-alert>
 
 <nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
-  <p class="alert-title"><b>Hooray!</b></p>
   <ul class="alert-message-list">
     <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
   </ul>
@@ -53,11 +52,10 @@
     <ngx-validation-message label="Email address" [showPattern]="email?.hasError('pattern') && email.touched"
       [showRequired]="email?.errors?.required && email.touched"></ngx-validation-message>
   </div>
-  <label for="input-password">Mot de passse</label>
+  <label for="input-password">Mot de passe</label>
   <div class="form-control-group">
     <div class="row">
-      <input  aria-describedby="basic-addon2"
-              nbInput
+      <input  nbInput
               fieldSize="large"
               id="input-password"
               formControlName="password"
@@ -98,7 +96,7 @@
       [showConfirmPassword]="password.value != confirmPassword.value && confirmPassword.touched"></ngx-validation-message>
   </div>
   <div class="form-control-group">
-    <label for="role" class="form-control-label">Roles:</label>
+    <label for="role" class="form-control-label">Role</label>
     <nb-select fullWidth size="large" placeholder="Role" formControlName="role" id="role">
       <nb-option value="ADMIN">Admin</nb-option>
       <nb-option value="USER">User</nb-option>
@@ -142,7 +140,8 @@
     </ng-container>
   </div>
 </section>-->
-
+<!--
 <section class="another-action" aria-label="Sign in">
   Vous avez déjà un compte? <a class="text-link" routerLink="../login">Log in</a>
 </section>
+-->
