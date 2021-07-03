@@ -62,7 +62,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
   data: any;
   ListNum = [];
   private sourceD: Decedes;
-  reactiveForm: FormGroup;
   frPattern = '[a-zA-Zéàçèêûù()\'0-9 ]*';
   source: Array<Bulletins>;
   numRgtr: number = null;
@@ -328,7 +327,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
     this.MedecinHumain = new Medecins();
     this.DecedeHumain = new Decedes();
     this.init();
-    this.reactiveForm = this.fb.group({
+  }
+   reactiveForm: FormGroup = this.fb.group({
       typeBulletin: ['', Validators.required],
       declaration: ['', Validators.required],
       cercle: ['', [Validators.required, Validators.pattern(this.frPattern)]],
@@ -343,7 +343,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       decede: ['', Validators.required],
       centre: ['', [Validators.required, Validators.pattern(this.frPattern)]],
     });
-  }
   createBulletinFromForm(): Bulletins {
     const formValues = this.reactiveForm.value;
     const bulletin = new Bulletins();

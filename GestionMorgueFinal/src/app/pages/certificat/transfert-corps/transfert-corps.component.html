@@ -99,7 +99,7 @@
           <label  class="label">Destination du corps</label>
           <nb-select  formControlName="destination"  class="type-select "  nbSelect fullWidth
                       placeholder="Destination du corps" required="true">
-            <nb-option *ngFor="let t of destinationCorps" [value]="t" >{{ t }}</nb-option>
+            <nb-option *ngFor="let t of destinationCorpsList" [value]="t.value" >{{ t.title }}</nb-option>
           </nb-select>
           <ngx-validation-message label="Destination du corps"
                                   [showRequired]="!getControl('destination').valid && getControl('destination').touched">
@@ -163,7 +163,7 @@
     Liste des certificats de transfert des corps
   </div>
   <div class="table table-responsive">
-    <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
+    <ng2-smart-table [settings]="settings" [source]="source"  (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
 </div>
