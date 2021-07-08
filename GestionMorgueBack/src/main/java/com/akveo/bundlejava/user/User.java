@@ -21,11 +21,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import javax.validation.constraints.NotEmpty;
-import com.akveo.bundlejava.settings.Settings;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -72,17 +69,6 @@ public class User implements Serializable {
     )
     private Set<Role> role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "settings_id", referencedColumnName = "id")
-    private Settings settings;
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
 
     @Column(name = "address_street")
     private String street;

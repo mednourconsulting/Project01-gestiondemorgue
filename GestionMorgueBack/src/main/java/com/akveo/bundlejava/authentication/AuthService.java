@@ -9,7 +9,6 @@ package com.akveo.bundlejava.authentication;
 import com.akveo.bundlejava.authentication.exception.InvalidTokenHttpException;
 import com.akveo.bundlejava.authentication.exception.UserAlreadyExistsHttpException;
 import com.akveo.bundlejava.authentication.exception.UserNotFoundHttpException;
-import com.akveo.bundlejava.settings.SettingsService;
 import com.akveo.bundlejava.user.User;
 import com.akveo.bundlejava.user.UserService;
 import com.akveo.bundlejava.user.exception.UserAlreadyExistsException;
@@ -29,14 +28,11 @@ public class AuthService {
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private TokenService tokenService;
-    private SettingsService settingsService;
 
     @Autowired
     public AuthService(UserService userService,
-                       SettingsService settingsService,
                        AuthenticationManager authenticationManager,
                        TokenService tokenService) {
-        this.settingsService = settingsService;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
@@ -58,7 +54,6 @@ public class AuthService {
                     (BundleUserDetailsService.BundleUserDetails) authenticationManager
                             .authenticate(authentication).getPrincipal();
             User user = userDetails.getUser();
-            user.setSettings(settingsService.getSettingsByUserId(user.getId()));
             return createToken(user);
         } catch (AuthenticationException exception) {
             throw new UserNotFoundHttpException("Incorrect email or password", HttpStatus.FORBIDDEN);

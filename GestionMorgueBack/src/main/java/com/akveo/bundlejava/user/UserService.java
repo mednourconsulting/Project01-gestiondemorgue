@@ -11,8 +11,6 @@ import com.akveo.bundlejava.authentication.exception.PasswordsDontMatchException
 import com.akveo.bundlejava.authentication.exception.UserNotFoundHttpException;
 import com.akveo.bundlejava.role.RoleRepository;
 import com.akveo.bundlejava.role.RoleService;
-import com.akveo.bundlejava.settings.Settings;
-import com.akveo.bundlejava.settings.SettingsService;
 import com.akveo.bundlejava.user.exception.UserAlreadyExistsException;
 import com.akveo.bundlejava.user.exception.UserNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -33,8 +31,6 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private ModelMapper modelMapper;
     private RoleService roleService;
-
-    private SettingsService settingsService;
     private RoleRepository roleRepository;
 
 
@@ -42,13 +38,11 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        ModelMapper modelMapper,
-                       SettingsService settingsService,
                        RoleService roleService,
                        RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
-        this.settingsService = settingsService;
         this.roleService = roleService;
         this.roleRepository = roleRepository;
     }
@@ -110,7 +104,6 @@ public class UserService {
 
     public UserDTO getCurrentUser() {
         User user = UserContextHolder.getUser();
-        user.setSettings(settingsService.getSettingsByUserId(user.getId()));
 
         return modelMapper.map(user, UserDTO.class);
     }
@@ -158,7 +151,6 @@ public class UserService {
         String encodedPassword = encodePassword(signUpDTO.getPassword());
         user.setPasswordHash(encodedPassword);
         user.setRole(new HashSet<>(Collections.singletonList(this.roleRepository.findByName(role))));
-        user.setSettings(new Settings("default"));
         return user;
     }
 

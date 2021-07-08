@@ -7,7 +7,6 @@
 package com.akveo.bundlejava.user;
 
 import com.akveo.bundlejava.address.AddressDTO;
-import com.akveo.bundlejava.settings.Settings;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -29,22 +28,12 @@ public class UserDTO {
     private AddressDTO address;
     private Set<String> role;
 
-    private Settings settings;
-
     public UserDTO() {
     }
 
     public UserDTO(String userName, String email) {
         this.userName = userName;
         this.email = email;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
     }
 
     public String getFirstName() {

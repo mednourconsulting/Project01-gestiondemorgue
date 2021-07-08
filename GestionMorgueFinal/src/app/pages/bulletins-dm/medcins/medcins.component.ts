@@ -42,8 +42,12 @@ export class MedcinsComponent implements OnInit {
     actions: {
       add: false,
       edit: false,
-      delete: true,
+      delete: false,
       custom: [
+        {
+          name: 'delete',
+          title: '<i class="fa fa-trash"></i>',
+        },
         {
           name: 'edit',
           title: '<i class="fas fa-edit"></i>',
@@ -220,6 +224,26 @@ export class MedcinsComponent implements OnInit {
           this.id = event.data.id;
         } else {
           this.toastService.toastOfEdit('warning');
+        }
+        break;
+      case 'delete':
+        if (this.isAdmin) {
+          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
+            // event.confirm.resolve(event.data);
+            this.service.delete(event.data.id).subscribe(data => {
+              if (data !== null) {
+                this.source = this.source.filter(item => item.id !== data.id);
+                this.toastService.toastOfDelete('success');
+              } else {
+
+                this.toastService.showToast('danger', 'Suppression inachevée',
+                  'Vous ne pouvez pas supprimer cet medecin, puisque il a des certificats');
+              }
+            });
+          }
+        } else {
+          this.toastService.toastOfDelete('warning');
+
         }
         break;
     }

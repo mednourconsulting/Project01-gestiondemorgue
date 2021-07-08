@@ -968,13 +968,17 @@ export class DecedesComponent implements OnInit {
           if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
             // event.confirm.resolve(event.data);
             this.service.delete(event.data.id).subscribe(data => {
-              this.source = this.source.filter(item => item.id !== data.id);
-            });
-            this.toastService.toastOfDelete('success');
+              if (data !== null) {
+                this.source = this.source.filter(item => item.id !== data.id);
+                this.toastService.toastOfDelete('success');
+              } else {
 
+                this.toastService.showToast('danger', 'Suppression inachevée',
+                  'Vous ne pouvez pas supprimer cet décède, puisque il a des certificats');
+              }
+            });
           }
         } else {
-        //  window.alert('Vous n\'avez pas des droits de suppression');
           this.toastService.toastOfDelete('warning');
 
         }

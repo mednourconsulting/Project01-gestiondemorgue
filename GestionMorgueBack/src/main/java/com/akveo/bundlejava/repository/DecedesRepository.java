@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface DecedesRepository extends JpaRepository<Decedes, Long> {
     Decedes getById(Long id);
     Decedes getByNom(String nom);
-    Decedes getBySexeContains(String name);
     Decedes getBySexeEquals(String sexe);
     Decedes getByNumRegister(Long numRegester);
 }

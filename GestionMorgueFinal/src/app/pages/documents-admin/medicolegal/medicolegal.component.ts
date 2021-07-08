@@ -210,8 +210,8 @@ export class MedicolegalComponent implements OnInit {
         id: obj.id,
         value: obj.nom + ' ' + obj.prenom,
         title: obj.nom + ' ' +  obj.prenom,
-      }); });
-      this.settings.columns.defunt.filter.config.list = this.filterDecede;
+      });
+      });
     });
     this.serviceMeddcin.getAll().subscribe( data1 => {
       data1.forEach (  obj => { this.NomMedecin.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id});
@@ -221,6 +221,7 @@ export class MedicolegalComponent implements OnInit {
           title: obj.nom + ' ' +  obj.prenom,
         }); });
       this.settings.columns.medecin.filter.config.list = this.filterMedecin;
+      this.settings.columns.defunt.filter.config.list = this.filterDecede;
       this.settings = Object.assign({}, this.settings);
     });
   }

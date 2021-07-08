@@ -210,8 +210,8 @@ export class ApercuDuCorpComponent implements OnInit {
           title: obj.nom + ' ' +  obj.prenom,
         });
       });
-      this.settings.columns.medecin.filter.config.list = this.filterMedecin;
       this.settings.columns.defunt.filter.config.list = this.filterDecede;
+      this.settings.columns.medecin.filter.config.list = this.filterMedecin;
       this.settings = Object.assign({}, this.settings);
     });
     this.init();
