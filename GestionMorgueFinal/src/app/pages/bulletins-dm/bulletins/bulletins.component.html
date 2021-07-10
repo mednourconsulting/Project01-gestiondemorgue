@@ -252,13 +252,10 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button class="btn mr-1 fa-pull-right "  type="submit" nbButton (click)="onSubmit()" status="info">Enregistrer</button>
-          <button class="btn btn-secondary mr-1 fa-pull-right" (click)="reactiveForm.reset()" nbButton  status="info" outline>Annuler</button>
-
-          <!--
-         <button (click)="generatePdf('open')"class="btn btn-outline-primary fa-pull-right mr-1"<span>Certificat</span></button>
-        <!-button (click)="add()" name="btnn"  class="btn btn-outline-primary fa-pull-right mr-1" >
-          <span>Valider les informations</span></button> -->
+          <div class="float-right">
+            <button  class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
+            <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()"  nbButton  status="info" outline>Annuler</button>
+          </div>
         </div>
       </div>
       </form>

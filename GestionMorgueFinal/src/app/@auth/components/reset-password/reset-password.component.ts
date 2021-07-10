@@ -82,4 +82,16 @@ export class NgxResetPasswordComponent implements OnInit {
   getConfigValue(key: string): any {
     return getDeepFromObject(this.options, key, null);
   }
+  showPassword = true;
+
+  getInputType() {
+    if (this.showPassword) {
+      return 'password';
+    }
+    return 'text';
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
 }

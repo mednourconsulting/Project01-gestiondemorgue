@@ -665,8 +665,8 @@
         </nb-tabset>
       <form  [formGroup]="reactiveForm">
         <div class="float-right">
-            <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="info">Enregistrer</button>
-            <!--<button class="btn btn-secondary mr-1" (click)="generatePdf('open')" type="submit" nbButton  status="info" outline>Certificat</button>-->
+          <button  class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
+          <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()"  nbButton  status="info" outline>Annuler</button>
         </div>
       </form>
     </nb-card-body>
