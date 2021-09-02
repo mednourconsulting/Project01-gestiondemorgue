@@ -240,7 +240,6 @@
                         placeholder="registration number"
                         required="true"
                         (change)="onChange($event.target.value)">
-
               <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
               <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
             </nb-select>
