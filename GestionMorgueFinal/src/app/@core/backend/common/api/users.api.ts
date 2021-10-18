@@ -57,6 +57,10 @@ export class UsersApi {
     return this.api.post(this.apiController, item);
   }
 
+  addUser(item: any): Observable<any> {
+    return this.api.post(this.apiController + '/addUser', item);
+  }
+
   updateCurrent(item: any): Observable<any> {
     return this.api.put(`${this.apiController}/current`, item);
   }

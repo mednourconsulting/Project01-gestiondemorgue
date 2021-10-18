@@ -11,6 +11,7 @@ import { getDeepFromObject } from '../../helpers';
 import { EMAIL_PATTERN } from '../constants';
 import {Location} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
+import {UsersService} from '../../../@core/backend/common/services/users.service';
 
 @Component({
   selector: 'ngx-register',
@@ -38,6 +39,7 @@ export class NgxRegisterComponent implements OnInit {
   registerForm: FormGroup;
   constructor(protected service: NbAuthService,
               protected location: Location,
+    protected userService: UsersService,
     @Inject(NB_AUTH_OPTIONS) protected options = {},
     protected cd: ChangeDetectorRef,
     private fb: FormBuilder,
@@ -106,6 +108,23 @@ export class NgxRegisterComponent implements OnInit {
       }
       this.cd.detectChanges(); */
     });
+  }
+  createUser(): void {
+    this.user = this.registerForm.value;
+    console.warn(this.user);
+    this.errors = this.messages = [];
+    this.submitted = true;
+
+    this.userService.addUser(this.user).subscribe((result) => {
+      this.submitted = false;
+      this.registerForm.reset();
+      this.toastService.showToast('success', 'Ajout d\'un nouveau utilisateur',
+        'L\'utilisateur ' + this.user.fullName + ' est ajouté avec  succès');
+    }, error => {
+
+        this.toastService.showToast('danger', 'Email déjà utilisé',
+          'Veillez changer l\'email s\'il vous plait !!');
+      });
   }
 
   getConfigValue(key: string): any {
