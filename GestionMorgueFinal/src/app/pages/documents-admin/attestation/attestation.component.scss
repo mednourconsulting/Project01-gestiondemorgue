@@ -1,0 +1,47 @@
+//to change the table scrollbar
+/* width */
+:host ::ng-deep nb-card-body::-webkit-scrollbar {
+  height: 0.8em!important;
+  width: 0.6em!important;
+}
+/* Handle on hover */
+:host ::ng-deep nb-card-body::-webkit-scrollbar-thumb:hover {
+  background: #468847;
+
+}
+
+/* Track */
+:host ::ng-deep nb-card-body::-webkit-scrollbar-track {
+  // background: #cacaca;
+}
+//---------------------------------------
+
+nb-card-header {
+  background-color: #468847;
+  font-size: 20px;
+  font-weight: bold;
+  color: #103510;
+
+}
+.card-header {
+  background-color: #468847;
+  font-size: 20px;
+  font-weight: bold;
+  color: #103510;
+
+}
+
+:host ::ng-deep ng2-st-tbody-edit-delete { display: flex !important; height: 0 !important; }:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom{ display: inline-block;  margin-top: 50%; text-align: center; font-size: 0em; }:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover { color: #5DCFE3; }
+
+:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-file-pdf:before {
+  color: #1a4109;
+  font-size: 20px;
+}
+
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
+}

@@ -1,0 +1,80 @@
+/*!
+ * Copyright (c) Akveo 2019. All Rights Reserved.
+ * Licensed under the Single Application / Multi Application License.
+ * See LICENSE_SINGLE_APP / LICENSE_MULTI_APP in the 'docs' folder for license information on type of purchased license.
+ */
+
+@import '../@theme/styles/themes';
+
+@include nb-install-component() {
+  ::ng-deep router-outlet + * {
+    display: block;
+    animation: fade 1s;
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #ff0400; /* red */
+}
+
+//to change the table scrollbar
+/* width */
+:host ::ng-deep .table::-webkit-scrollbar {
+  height: 0.8em!important;
+}
+/* Handle on hover */
+:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
+  background: #005C68;
+}
+
+/* Track */
+:host ::ng-deep .table::-webkit-scrollbar-track {
+  // background: #cacaca;
+}
+//---------------------------------------
+:host ::ng-deep {
+  nb-layout div.scrollable-container div.scrollable::-webkit-scrollbar,
+  nb-layout div.scrollable-container::-webkit-scrollbar {
+    width: 0.7rem !important;
+    height: 0.8em!important;
+  }
+
+  /* thumb */
+  nb-layout div.scrollable-container div.scrollable::-webkit-scrollbar-thumb,
+  nb-layout div.scrollable-container::-webkit-scrollbar-thumb
+  {
+    background: #d7caca !important;
+  }
+
+  /* Track */
+  nb-layout div.scrollable-container div.scrollable::-webkit-scrollbar-track,
+  nb-layout div.scrollable-container::-webkit-scrollbar-track
+  {
+    background: #ffffff!important;
+  }
+
+
+  nb-layout .layout .layout-container nb-sidebar.fixed,
+  nb-layout .layout .layout-container nb-sidebar .main-container-fixed {
+    top: 0.75rem!important;
+    margin-top: 94px!important;
+  }
+
+  nb-sidebar .main-container {
+    height: 70vh!important;
+    width: 16rem!important;
+  }
+}

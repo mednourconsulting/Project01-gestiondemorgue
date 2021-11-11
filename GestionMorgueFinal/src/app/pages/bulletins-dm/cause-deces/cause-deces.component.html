@@ -1,0 +1,74 @@
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-12">Ajouter une cause de décès</div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form autocomplete="off"  [formGroup]="reactiveForm">
+    <div class="row">
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Code</label>
+          <input formControlName="code" class="form-control"type="string" nbInput fullWidth
+                 id="code" required="true" placeholder="code">
+          <ngx-validation-message label="code"
+                                  [showRequired]="!getControl('code').valid && getControl('code').touched"
+                                  [fr]="getControl('code')?.hasError('pattern')"></ngx-validation-message>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">Description</label>
+          <textarea  formControlName="description" required="true" class="form-control"  type="string"  fullWidth
+                  placeholder="Description" >
+          </textarea>
+          <ngx-validation-message label="description"
+                                  [showRequired]="!getControl('description').valid && getControl('description').touched"
+                                  [fr]="getControl('description')?.hasError('pattern')"></ngx-validation-message>
+        </div>
+      </div>
+
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label  class="label">الوصف</label>
+          <textarea  formControlName="descriptionAR" required="true" class="form-control"  type="string"  fullWidth
+                     placeholder="الوصف" >
+          </textarea>
+          <ngx-validation-message label="الوصف"
+                                  [showRequired]="getControl('descriptionAR').touched && !getControl('descriptionAR').valid"
+          [ar]="getControl('descriptionAR')?.hasError('pattern')"></ngx-validation-message>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="float-right">
+      <button class="btn mr-1 "  type="submit" nbButton (click)="onSubmit()" status="info">Enregistrer</button>
+      <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()" nbButton  status="info" outline>Annuler</button>
+    </div>
+    </form>
+</nb-card-body>
+</nb-card>
+
+
+
+<div class="card">
+  <div class="card-header">
+    Liste des Bulletins
+  </div>
+  <div class="table table-responsive">
+
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (deleteConfirm)="onDeleteConfirm($event)"
+      (custom)="onCustomConfirm($event)">
+    </ng2-smart-table>
+  </div>
+</div>
+
+

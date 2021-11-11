@@ -1,0 +1,364 @@
+Index: src/main/java/com/akveo/bundlejava/model/CertificatEnterrement.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/CertificatEnterrement.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/model/CertificatEnterrement.java	(date 1582642236313)
+@@ -9,8 +9,7 @@
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     public long id;
+-    @OneToOne
+-    public Decedes defunt;
++    public String defunt;
+     public String ville;
+     public Date declaration;
+ 
+@@ -25,11 +24,11 @@
+         this.id = id;
+     }
+ 
+-    public Decedes getDefunt() {
++    public String getDefunt() {
+         return defunt;
+     }
+ 
+-    public void setDefunt(Decedes defunt) {
++    public void setDefunt(String defunt) {
+         this.defunt = defunt;
+     }
+ 
+Index: src/main/java/com/akveo/bundlejava/model/Bulletins.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/Bulletins.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/model/Bulletins.java	(date 1582113199242)
+@@ -19,11 +19,20 @@
+     public String residece;
+     public String cimetiere;
+     public long NumTombe;
++    public String centre;
+     public String remarque;
+ 
+     public Bulletins() {
+     }
+ 
++    public String getCentre() {
++        return centre;
++    }
++
++    public void setCentre(String centre) {
++        this.centre = centre;
++    }
++
+     public long getId() {
+         return id;
+     }
+Index: src/main/java/com/akveo/bundlejava/model/Decedes.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/Decedes.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/model/Decedes.java	(date 1582639204202)
+@@ -9,7 +9,7 @@
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     public long id;
+     public String CIN;
+-    public String numRegister;
++    public String heure;
+     public String prenom;
+     public String nom ;
+     public String sexe;
+@@ -29,11 +29,18 @@
+     public String lieuxDeces;
+     public String Etat;
+     public boolean obstacle;
+-    public String typeCertifica;
+ 
+     public Decedes() {
+     }
+ 
++    public String getHeure() {
++        return heure;
++    }
++
++    public void setHeure(String heure) {
++        this.heure = heure;
++    }
++
+     public long getId() {
+         return id;
+     }
+@@ -50,14 +57,6 @@
+         this.CIN = CIN;
+     }
+ 
+-    public String getNumRegister() {
+-        return numRegister;
+-    }
+-
+-    public void setNumRegister(String numRegister) {
+-        this.numRegister = numRegister;
+-    }
+-
+     public String getPrenom() {
+         return prenom;
+     }
+Index: src/main/java/com/akveo/bundlejava/repository/CauseRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/CauseRepository.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/repository/CauseRepository.java	(date 1582644271840)
+@@ -1,9 +1,13 @@
+ package com.akveo.bundlejava.repository;
+ 
+ import com.akveo.bundlejava.model.Cause;
++import com.akveo.bundlejava.model.Decedes;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+ 
++import java.util.List;
++
+ @Repository
+ public interface CauseRepository extends JpaRepository<Cause , Long> {
++    public Cause getByDescription(String desc);
+ }
+Index: src/main/java/com/akveo/bundlejava/repository/ApercuCorpsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/ApercuCorpsRepository.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/repository/ApercuCorpsRepository.java	(date 1582562344194)
+@@ -8,5 +8,6 @@
+ import java.util.List;
+ @Repository
+ public interface ApercuCorpsRepository extends JpaRepository<ApercuCorps, Long> {
++    public ApercuCorps getById(Long id);
+ 
+ }
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- src/main/resources/application.properties	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/resources/application.properties	(date 1582037477264)
+@@ -9,11 +9,11 @@
+ # Set here configurations for the database connection
+ 
+ # Connection url for the database "netgloo_blog"
+-spring.datasource.url = jdbc:mysql://localhost:3307/morgue?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
++spring.datasource.url = jdbc:mysql://localhost:3306/morgue?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+ spring.main.allow-bean-definition-overriding=true
+ # Username and password
+-spring.datasource.username = root
+-spring.datasource.password =
++spring.datasource.username = user1
++spring.datasource.password = user1
+ spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+ spring.jpa.database=mysql
+ # Keep the connection alive if idle for a long time (needed in production)
+Index: src/main/java/com/akveo/bundlejava/repository/DecedesRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/DecedesRepository.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/repository/DecedesRepository.java	(date 1582646737989)
+@@ -1,9 +1,13 @@
+ package com.akveo.bundlejava.repository;
+ 
+ import com.akveo.bundlejava.model.Decedes;
++import com.akveo.bundlejava.model.Medecins;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+ 
+ @Repository
+ public interface DecedesRepository extends JpaRepository<Decedes, Long> {
++    public Decedes getById(Long id);
++
++    public Decedes getByNom(String nom);
+ }
+Index: src/main/java/com/akveo/bundlejava/repository/MedecinsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/MedecinsRepository.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/repository/MedecinsRepository.java	(date 1582646139785)
+@@ -1,10 +1,12 @@
+ package com.akveo.bundlejava.repository;
+ 
++import com.akveo.bundlejava.model.ApercuCorps;
+ import com.akveo.bundlejava.model.Medecins;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+ 
+ @Repository
+ public interface MedecinsRepository extends JpaRepository<Medecins , Long> {
+-
++   public  Medecins getById(Long id);
++   public  Medecins getByNom(String nom);
+ }
+Index: src/main/java/com/akveo/bundlejava/controller/CauseController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/CauseController.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/controller/CauseController.java	(date 1582644336105)
+@@ -2,6 +2,7 @@
+ 
+ import com.akveo.bundlejava.model.Cause;
+ 
++import com.akveo.bundlejava.model.Medecins;
+ import com.akveo.bundlejava.repository.CauseRepository;
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -20,6 +21,8 @@
+     public CauseController() {
+     }
+ 
++
++
+     @PostMapping({"/create"})
+     public ResponseEntity<Cause> create(@RequestBody Cause cause) {
+         return ResponseEntity.ok(this.causeRepository.save(cause));
+@@ -30,6 +33,11 @@
+         return ResponseEntity.ok(this.causeRepository.save(cause));
+     }
+ 
++    @GetMapping({"/getByCode/{id}"})
++    public ResponseEntity<Cause> getByDescription(String code) {
++        return ResponseEntity.ok(this.causeRepository.getByDescription(code));
++    }
++
+     @GetMapping({"/getAll"})
+     public ResponseEntity<List<Cause>> getAll() {
+         return ResponseEntity.ok(this.causeRepository.findAll());
+Index: src/main/java/com/akveo/bundlejava/controller/ApercuCorpsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/ApercuCorpsController.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/controller/ApercuCorpsController.java	(date 1582562344048)
+@@ -32,6 +32,10 @@
+     public ResponseEntity<List<ApercuCorps>> getAll() {
+         return ResponseEntity.ok(this.apercuCorpsRepository.findAll());
+     }
++    @GetMapping({"/getById/{id}"})
++    public ResponseEntity<ApercuCorps> getById(Long id) {
++        return ResponseEntity.ok(this.apercuCorpsRepository.getById(id));
++    }
+ 
+     @DeleteMapping({"/delete/{id}"})
+     public ResponseEntity<ApercuCorps> delete (@PathVariable("id") Long id){
+Index: src/main/java/com/akveo/bundlejava/controller/BulletinsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/BulletinsController.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/controller/BulletinsController.java	(date 1582126837316)
+@@ -12,7 +12,7 @@
+ 
+ @RestController
+ @CrossOrigin({"*"})
+-@RequestMapping({"/bulletins"})
++@RequestMapping({"/Bulletins"})
+ public class BulletinsController {
+     @Autowired
+     private BulletinsRepository bulletinsRepository;
+Index: src/main/java/com/akveo/bundlejava/controller/DecedesController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/DecedesController.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/controller/DecedesController.java	(date 1582646737855)
+@@ -2,6 +2,7 @@
+ 
+ 
+ import com.akveo.bundlejava.model.Decedes;
++import com.akveo.bundlejava.model.Medecins;
+ import com.akveo.bundlejava.repository.DecedesRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.ResponseEntity;
+@@ -28,6 +29,15 @@
+     public ResponseEntity<Decedes> update(@RequestBody Decedes decedes) {
+         return ResponseEntity.ok(this.decedesRepository.save(decedes));
+     }
++    @GetMapping({"/getByNom/{id}"})
++    public ResponseEntity<Decedes> getByNom(String Nom) {
++        return ResponseEntity.ok(this.decedesRepository.getByNom(Nom));
++    }
++
++    @GetMapping({"/getById/{id}"})
++    public ResponseEntity<Decedes> getById(Long id) {
++        return ResponseEntity.ok(this.decedesRepository.getById(id));
++    }
+ 
+     @GetMapping({"/getAll"})
+     public ResponseEntity<List<Decedes>> getAll() {
+Index: src/main/java/com/akveo/bundlejava/controller/MedecinsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/MedecinsController.java	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ src/main/java/com/akveo/bundlejava/controller/MedecinsController.java	(date 1582646140028)
+@@ -1,5 +1,6 @@
+ package com.akveo.bundlejava.controller;
+ 
++import com.akveo.bundlejava.model.ApercuCorps;
+ import com.akveo.bundlejava.model.Medecins;
+ import com.akveo.bundlejava.repository.MedecinsRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -28,6 +29,15 @@
+     public ResponseEntity<Medecins> update(@RequestBody Medecins medecins) {
+         return ResponseEntity.ok(this.medecinsRepository.save(medecins));
+     }
++    @GetMapping({"/getById/{id}"})
++    public ResponseEntity<Medecins> getById(Long id) {
++        return ResponseEntity.ok(this.medecinsRepository.getById(id));
++    }
++
++    @GetMapping({"/getByNom/{id}"})
++    public ResponseEntity<Medecins> getByNom(String Nom) {
++        return ResponseEntity.ok(this.medecinsRepository.getByNom(Nom));
++    }
+ 
+     @GetMapping({"/getAll"})
+     public ResponseEntity<List<Medecins>> getAll() {
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(revision 16ca519e55aef88c5ae3108342e2dc12fc2bb0fa)
++++ pom.xml	(date 1582558445152)
+@@ -17,12 +17,15 @@
+ 	<properties>
+ 		<java.version>1.8</java.version>
+ 	</properties>
+-
+ 	<dependencies>
+ 		<dependency>
+ 			<groupId>org.springframework.boot</groupId>
+ 			<artifactId>spring-boot-starter</artifactId>
+ 		</dependency>
++		<dependency>
++			<groupId>org.hibernate</groupId>
++			<artifactId>hibernate-core</artifactId>
++		</dependency>
+ 
+ 		<dependency>
+ 			<groupId>org.springframework.boot</groupId>

@@ -1,0 +1,74 @@
+<div class="text-center"><img style="width: 199.5px ; height: 141.3px ; margin-bottom:10px" src="assets/images/LogovilleTANGER.png"></div>
+<div class="padding">
+  <div class="text-center loginTitle"
+       [ngStyle]="{'color': '#e35e06', 'font-size': '26px',
+       'font-weight': 'bold',  'margin-bottom': '15px'}">Commune Urbaine Tanger</div>
+  <div class="text-center "
+           [ngStyle]="{'color': '#e35e06', 'font-size': '24px',
+           'font-weight': 'bold'}">Centre Medico-Légal</div>
+</div>
+
+  <div class="text-center text-muted mb-4">
+    <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
+      <p class="alert-title"><b>ERREUR!</b></p>
+      <ul class="alert-message-list">
+        <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+      </ul>
+    </nb-alert>
+    <nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
+      <p class="alert-title"><b>AVEC SUCCÈS</b></p>
+      <ul class="alert-message-list">
+        <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+      </ul>
+    </nb-alert>
+  </div>
+  <form role="form" [formGroup]="loginForm" aria-labelledby="title">
+    <div class="form-group mb-1">
+      <div class="input-group input-group-alternative">
+        <label for="input-email">Email</label>
+        <input  nbInput
+                fullWidth
+                id="input-email"
+                formControlName="email"
+                [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+                [attr.aria-invalid]="email.invalid && email.touched ? true : null"
+                placeholder="Email address">
+        <ngx-validation-message label="Email" [showPattern]="email?.hasError('pattern') && email.touched"
+                                [showRequired]="email?.errors?.required && email.touched"></ngx-validation-message>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group input-group-alternative">
+        <label  for="input-password">Mot de passe</label>
+        <input  nbInput
+                fullWidth
+                id="input-password"
+                formControlName="password"
+                type="password"
+                [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+                placeholder="Password">
+        <ngx-validation-message label="Mot de passe" [showMinLength]="password?.hasError('minlength') && password.touched"
+                                [showMaxLength]="password?.hasError('maxlength') && password.touched"
+                                [showRequired]="password?.errors?.required && password.touched"
+                                [minLength]="minLength"
+                                [maxLength]="maxLength"></ngx-validation-message>
+      </div>
+    </div>
+    <div class="custom-control custom-control-alternative custom-checkbox">
+      <div class="form-control-group accept-group">
+        <nb-checkbox name="rememberMe" *ngIf="rememberMe">Se souvenir de moi</nb-checkbox>
+      </div>
+    </div>
+    <div class="text-center">
+      <button nbButton fullWidth size="medium" status="primary"  type="submit" class="btn btn-primary"
+              (click)="login()" [disabled]="submitted || !loginForm.valid"
+              [class.btn-pulse]="submitted">
+        Sign in
+      </button>
+    </div>
+  </form>
+
+
+
+
+

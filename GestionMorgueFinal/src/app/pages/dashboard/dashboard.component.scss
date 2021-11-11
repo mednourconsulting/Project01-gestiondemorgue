@@ -1,0 +1,35 @@
+/*!
+ * Copyright (c) Akveo 2019. All Rights Reserved.
+ * Licensed under the Single Application / Multi Application License.
+ * See LICENSE_SINGLE_APP / LICENSE_MULTI_APP in the 'docs' folder for license information on type of purchased license.
+ */
+
+
+  nb-card-header {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #2d8ac7;
+  }
+.card-header {
+    color: white;
+  font-size: 20px;
+  font-weight: bold;
+    background-color: #2d8ac7;
+  }
+
+//to change the table scrollbar
+/* width */
+:host ::ng-deep .table::-webkit-scrollbar {
+  height: 0.8em!important;
+}
+/* Handle on hover */
+:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
+  background: #0a5ab7;
+}
+
+/* Track */
+:host ::ng-deep .table::-webkit-scrollbar-track {
+  // background: #cacaca;
+}
+//---------------------------------------

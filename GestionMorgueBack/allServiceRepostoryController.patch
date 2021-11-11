@@ -1,0 +1,1478 @@
+Index: src/main/java/com/akveo/bundlejava/repository/CertificatTransfertCorpsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/CertificatTransfertCorpsRepository.java	(date 1581971214313)
++++ src/main/java/com/akveo/bundlejava/repository/CertificatTransfertCorpsRepository.java	(date 1581971214313)
+@@ -0,0 +1,10 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.CertificatTransfertCorps;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface CertificatTransfertCorpsRepository extends JpaRepository<CertificatTransfertCorps, Long> {
++
++}
+Index: src/main/java/com/akveo/bundlejava/model/Decedes.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/Decedes.java	(date 1581971214293)
++++ src/main/java/com/akveo/bundlejava/model/Decedes.java	(date 1581971214293)
+@@ -0,0 +1,197 @@
++package com.akveo.bundlejava.model;
++
++import javax.persistence.*;
++import java.io.Serializable;
++import java.util.Date;
++@Entity
++public class Decedes implements Serializable {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    public long id;
++    public String CIN;
++    public String numRegister;
++    public String prenom;
++    public String nom ;
++    public String sexe;
++    public Date dateNaissance ;
++    public String adresse;
++    public String nationalite;
++    public String fils;
++    public Boolean mortNe;
++    public String profession ;
++    public Date dateDeces;
++    public String natureMort;
++    public String causeMort ;
++    @OneToOne
++    public Cause causeInitial;
++    @OneToOne
++    public Cause causeImmdiate;
++    public String lieuxDeces;
++    public String Etat;
++    public boolean obstacle;
++    public String typeCertifica;
++
++    public Decedes() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public String getCIN() {
++        return CIN;
++    }
++
++    public void setCIN(String CIN) {
++        this.CIN = CIN;
++    }
++
++    public String getNumRegister() {
++        return numRegister;
++    }
++
++    public void setNumRegister(String numRegister) {
++        this.numRegister = numRegister;
++    }
++
++    public String getPrenom() {
++        return prenom;
++    }
++
++    public void setPrenom(String prenom) {
++        this.prenom = prenom;
++    }
++
++    public String getNom() {
++        return nom;
++    }
++
++    public void setNom(String nom) {
++        this.nom = nom;
++    }
++
++    public String getSexe() {
++        return sexe;
++    }
++
++    public void setSexe(String sexe) {
++        this.sexe = sexe;
++    }
++
++    public Date getDateNaissance() {
++        return dateNaissance;
++    }
++
++    public void setDateNaissance(Date dateNaissance) {
++        this.dateNaissance = dateNaissance;
++    }
++
++    public String getAdresse() {
++        return adresse;
++    }
++
++    public void setAdresse(String adresse) {
++        this.adresse = adresse;
++    }
++
++    public String getNationalite() {
++        return nationalite;
++    }
++
++    public void setNationalite(String nationalite) {
++        this.nationalite = nationalite;
++    }
++
++    public String getFils() {
++        return fils;
++    }
++
++    public void setFils(String fils) {
++        this.fils = fils;
++    }
++
++    public Boolean getMortNe() {
++        return mortNe;
++    }
++
++    public void setMortNe(Boolean mortNe) {
++        this.mortNe = mortNe;
++    }
++
++    public String getProfession() {
++        return profession;
++    }
++
++    public void setProfession(String profession) {
++        this.profession = profession;
++    }
++
++    public Date getDateDeces() {
++        return dateDeces;
++    }
++
++    public void setDateDeces(Date dateDeces) {
++        this.dateDeces = dateDeces;
++    }
++
++    public String getNatureMort() {
++        return natureMort;
++    }
++
++    public void setNatureMort(String natureMort) {
++        this.natureMort = natureMort;
++    }
++
++    public String getCauseMort() {
++        return causeMort;
++    }
++
++    public void setCauseMort(String causeMort) {
++        this.causeMort = causeMort;
++    }
++
++    public Cause getCauseInitial() {
++        return causeInitial;
++    }
++
++    public void setCauseInitial(Cause causeInitial) {
++        this.causeInitial = causeInitial;
++    }
++
++    public Cause getCauseImmdiate() {
++        return causeImmdiate;
++    }
++
++    public void setCauseImmdiate(Cause causeImmdiate) {
++        this.causeImmdiate = causeImmdiate;
++    }
++
++    public String getLieuxDeces() {
++        return lieuxDeces;
++    }
++
++    public void setLieuxDeces(String lieuxDeces) {
++        this.lieuxDeces = lieuxDeces;
++    }
++
++    public String getEtat() {
++        return Etat;
++    }
++
++    public void setEtat(String etat) {
++        Etat = etat;
++    }
++
++    public boolean isObstacle() {
++        return obstacle;
++    }
++
++    public void setObstacle(boolean obstacle) {
++        this.obstacle = obstacle;
++    }
++}
++
+Index: src/main/java/com/akveo/bundlejava/model/Cause.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/Cause.java	(date 1581971214301)
++++ src/main/java/com/akveo/bundlejava/model/Cause.java	(date 1581971214301)
+@@ -0,0 +1,43 @@
++package com.akveo.bundlejava.model;
++
++import javax.persistence.Entity;
++import javax.persistence.GeneratedValue;
++import javax.persistence.GenerationType;
++import javax.persistence.Id;
++import java.io.Serializable;
++
++@Entity
++public class Cause implements Serializable {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    public  long id;
++    public String code;
++    public String description;
++
++    public Cause() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public String getCode() {
++        return code;
++    }
++
++    public void setCode(String code) {
++        this.code = code;
++    }
++
++    public String getDescription() {
++        return description;
++    }
++
++    public void setDescription(String description) {
++        this.description = description;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/model/Bulletins.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/Bulletins.java	(date 1581971214273)
++++ src/main/java/com/akveo/bundlejava/model/Bulletins.java	(date 1581971214273)
+@@ -0,0 +1,115 @@
++package com.akveo.bundlejava.model;
++
++import com.sun.javafx.beans.IDProperty;
++
++import javax.persistence.*;
++import java.io.Serializable;
++import java.util.Date;
++
++@Entity
++public class Bulletins implements Serializable {
++     @Id
++     @GeneratedValue(strategy = GenerationType.IDENTITY)
++     public long id;
++    public String typeBulletin;
++    public Date declaration = new Date();
++    public String cercle;
++    public String diagnostique;
++    public String LieuEntrement;
++    public String province;
++    public String residece;
++    public String cimetiere;
++    public long NumTombe;
++    public String remarque;
++
++    public Bulletins() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public String getTypeBulletin() {
++        return typeBulletin;
++    }
++
++    public void setTypeBulletin(String typeBulletin) {
++        this.typeBulletin = typeBulletin;
++    }
++
++    public Date getDeclaration() {
++        return declaration;
++    }
++
++    public void setDeclaration(Date declaration) {
++        this.declaration = declaration;
++    }
++
++    public String getCercle() {
++        return cercle;
++    }
++
++    public void setCercle(String cercle) {
++        this.cercle = cercle;
++    }
++
++    public String getDiagnostique() {
++        return diagnostique;
++    }
++
++    public void setDiagnostique(String diagnostique) {
++        this.diagnostique = diagnostique;
++    }
++
++    public String getLieuEntrement() {
++        return LieuEntrement;
++    }
++
++    public void setLieuEntrement(String lieuEntrement) {
++        LieuEntrement = lieuEntrement;
++    }
++
++    public String getProvince() {
++        return province;
++    }
++
++    public void setProvince(String province) {
++        this.province = province;
++    }
++
++    public String getResidece() {
++        return residece;
++    }
++
++    public void setResidece(String residece) {
++        this.residece = residece;
++    }
++
++    public String getCimetiere() {
++        return cimetiere;
++    }
++
++    public void setCimetiere(String cimetiere) {
++        this.cimetiere = cimetiere;
++    }
++
++    public long getNumTombe() {
++        return NumTombe;
++    }
++
++    public void setNumTombe(long numTombe) {
++        NumTombe = numTombe;
++    }
++
++    public String getRemarque() {
++        return remarque;
++    }
++
++    public void setRemarque(String remarque) {
++        this.remarque = remarque;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/model/Medecins.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/Medecins.java	(date 1581971214285)
++++ src/main/java/com/akveo/bundlejava/model/Medecins.java	(date 1581971214285)
+@@ -0,0 +1,61 @@
++package com.akveo.bundlejava.model;
++
++import javax.persistence.Entity;
++import javax.persistence.GeneratedValue;
++import javax.persistence.GenerationType;
++import javax.persistence.Id;
++import java.io.Serializable;
++
++@Entity
++public class Medecins implements Serializable {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    public long id ;
++    public String nom ;
++    public String prenom ;
++    public String Adress;
++    public String CIN ;
++
++    public Medecins() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public String getNom() {
++        return nom;
++    }
++
++    public void setNom(String nom) {
++        this.nom = nom;
++    }
++
++    public String getPrenom() {
++        return prenom;
++    }
++
++    public void setPrenom(String prenom) {
++        this.prenom = prenom;
++    }
++
++    public String getAdress() {
++        return Adress;
++    }
++
++    public void setAdress(String adress) {
++        Adress = adress;
++    }
++
++    public String getCIN() {
++        return CIN;
++    }
++
++    public void setCIN(String CIN) {
++        this.CIN = CIN;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/model/CertificatEnterrement.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/CertificatEnterrement.java	(date 1581971214257)
++++ src/main/java/com/akveo/bundlejava/model/CertificatEnterrement.java	(date 1581971214257)
+@@ -0,0 +1,51 @@
++package com.akveo.bundlejava.model;
++
++import javax.persistence.*;
++import java.io.Serializable;
++import java.util.Date;
++
++@Entity
++public class CertificatEnterrement implements Serializable {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    public long id;
++    @OneToOne
++    public Decedes defunt;
++    public String ville;
++    public Date declaration;
++
++    public CertificatEnterrement() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public Decedes getDefunt() {
++        return defunt;
++    }
++
++    public void setDefunt(Decedes defunt) {
++        this.defunt = defunt;
++    }
++
++    public String getVille() {
++        return ville;
++    }
++
++    public void setVille(String ville) {
++        this.ville = ville;
++    }
++
++    public Date getDeclaration() {
++        return declaration;
++    }
++
++    public void setDeclaration(Date declaration) {
++        this.declaration = declaration;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/model/ApercuCorps.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/ApercuCorps.java	(date 1581971214265)
++++ src/main/java/com/akveo/bundlejava/model/ApercuCorps.java	(date 1581971214265)
+@@ -0,0 +1,60 @@
++package com.akveo.bundlejava.model;
++
++import javax.persistence.*;
++import java.io.Serializable;
++import java.util.Date;
++
++@Entity
++public class ApercuCorps implements Serializable {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    public long id;
++    public String defunt;
++    public String CenterMedicoLegal;
++    @OneToOne
++    public Medecins Medecin;
++    public Date dateDeclaration;
++
++    public ApercuCorps() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public String getDefunt() {
++        return defunt;
++    }
++
++    public void setDefunt(String defunt) {
++        this.defunt = defunt;
++    }
++
++    public String getCenterMedicoLegal() {
++        return CenterMedicoLegal;
++    }
++
++    public void setCenterMedicoLegal(String centerMedicoLegal) {
++        CenterMedicoLegal = centerMedicoLegal;
++    }
++
++    public Medecins getMedecin() {
++        return Medecin;
++    }
++
++    public void setMedecin(Medecins medecin) {
++        Medecin = medecin;
++    }
++
++    public Date getDateDeclaration() {
++        return dateDeclaration;
++    }
++
++    public void setDateDeclaration(Date dateDeclaration) {
++        this.dateDeclaration = dateDeclaration;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/model/CertificatTransfertCorps.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/CertificatTransfertCorps.java	(date 1581971214237)
++++ src/main/java/com/akveo/bundlejava/model/CertificatTransfertCorps.java	(date 1581971214237)
+@@ -0,0 +1,123 @@
++package com.akveo.bundlejava.model;
++
++import javax.persistence.*;
++import java.util.Date;
++
++@Entity
++public class CertificatTransfertCorps {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    public long id;
++    @OneToOne
++    public Medecins medecins;
++    public String cercueilType;
++    public Date declaration;
++    public String remarque ;
++    @OneToOne
++    public Decedes defunt ;
++    public String Declarant;
++    public long tel;
++    public String Destination ;
++    public String mortuaire;
++    public String inhumationSociete;
++    public String CIN;
++
++    public CertificatTransfertCorps() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public Medecins getMedecins() {
++        return medecins;
++    }
++
++    public void setMedecins(Medecins medecins) {
++        this.medecins = medecins;
++    }
++
++    public String getCercueilType() {
++        return cercueilType;
++    }
++
++    public void setCercueilType(String cercueilType) {
++        this.cercueilType = cercueilType;
++    }
++
++    public Date getDeclaration() {
++        return declaration;
++    }
++
++    public void setDeclaration(Date declaration) {
++        this.declaration = declaration;
++    }
++
++    public String getRemarque() {
++        return remarque;
++    }
++
++    public void setRemarque(String remarque) {
++        this.remarque = remarque;
++    }
++
++    public Decedes getDefunt() {
++        return defunt;
++    }
++
++    public void setDefunt(Decedes defunt) {
++        this.defunt = defunt;
++    }
++
++    public String getDeclarant() {
++        return Declarant;
++    }
++
++    public void setDeclarant(String declarant) {
++        Declarant = declarant;
++    }
++
++    public long getTel() {
++        return tel;
++    }
++
++    public void setTel(long tel) {
++        this.tel = tel;
++    }
++
++    public String getDestination() {
++        return Destination;
++    }
++
++    public void setDestination(String destination) {
++        Destination = destination;
++    }
++
++    public String getMortuaire() {
++        return mortuaire;
++    }
++
++    public void setMortuaire(String mortuaire) {
++        this.mortuaire = mortuaire;
++    }
++
++    public String getInhumationSociete() {
++        return inhumationSociete;
++    }
++
++    public void setInhumationSociete(String inhumationSociete) {
++        this.inhumationSociete = inhumationSociete;
++    }
++
++    public String getCIN() {
++        return CIN;
++    }
++
++    public void setCIN(String CIN) {
++        this.CIN = CIN;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/model/CertificatMedicoLegal.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/model/CertificatMedicoLegal.java	(date 1581971214249)
++++ src/main/java/com/akveo/bundlejava/model/CertificatMedicoLegal.java	(date 1581971214249)
+@@ -0,0 +1,80 @@
++
++package com.akveo.bundlejava.model;
++
++import javax.persistence.*;
++import java.io.Serializable;
++import java.util.Date;
++
++@Entity
++public class CertificatMedicoLegal implements Serializable {
++    @Id
++    @GeneratedValue (strategy = GenerationType.IDENTITY)
++    public long id;
++    @OneToOne
++    public Medecins medecin;
++    public String declarant;
++    public String address;
++    public String CIN;
++    public Date declaration;
++    @OneToOne
++    public Decedes defunt;
++
++    public CertificatMedicoLegal() {
++    }
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public Medecins getMedecin() {
++        return medecin;
++    }
++
++    public void setMedecin(Medecins medecin) {
++        this.medecin = medecin;
++    }
++
++    public String getDeclarant() {
++        return declarant;
++    }
++
++    public void setDeclarant(String declarant) {
++        this.declarant = declarant;
++    }
++
++    public String getAddress() {
++        return address;
++    }
++
++    public void setAddress(String address) {
++        this.address = address;
++    }
++
++    public String getCIN() {
++        return CIN;
++    }
++
++    public void setCIN(String CIN) {
++        this.CIN = CIN;
++    }
++
++    public Date getDeclaration() {
++        return declaration;
++    }
++
++    public void setDeclaration(Date declaration) {
++        this.declaration = declaration;
++    }
++
++    public Decedes getDefunt() {
++        return defunt;
++    }
++
++    public void setDefunt(Decedes defunt) {
++        this.defunt = defunt;
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/service/CauseService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/CauseService.java	(date 1581971214489)
++++ src/main/java/com/akveo/bundlejava/service/CauseService.java	(date 1581971214489)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class CauseService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/MedecinsService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/MedecinsService.java	(date 1581971214477)
++++ src/main/java/com/akveo/bundlejava/service/MedecinsService.java	(date 1581971214477)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class MedecinsService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/DecedesService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/DecedesService.java	(date 1581971214481)
++++ src/main/java/com/akveo/bundlejava/service/DecedesService.java	(date 1581971214481)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class DecedesService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/ApercuCorpService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/ApercuCorpService.java	(date 1581971214465)
++++ src/main/java/com/akveo/bundlejava/service/ApercuCorpService.java	(date 1581971214465)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class ApercuCorpService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/BulletinsService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/BulletinsService.java	(date 1581971214469)
++++ src/main/java/com/akveo/bundlejava/service/BulletinsService.java	(date 1581971214469)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class BulletinsService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/CertificatMedicoLegalService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/CertificatMedicoLegalService.java	(date 1581971214457)
++++ src/main/java/com/akveo/bundlejava/service/CertificatMedicoLegalService.java	(date 1581971214457)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class CertificatMedicoLegalService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/CertificatEnterrementService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/CertificatEnterrementService.java	(date 1581971214461)
++++ src/main/java/com/akveo/bundlejava/service/CertificatEnterrementService.java	(date 1581971214461)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class CertificatEnterrementService {
++}
+Index: src/main/java/com/akveo/bundlejava/service/CertificatTransfertCorpsService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/service/CertificatTransfertCorpsService.java	(date 1581971214449)
++++ src/main/java/com/akveo/bundlejava/service/CertificatTransfertCorpsService.java	(date 1581971214449)
+@@ -0,0 +1,4 @@
++package com.akveo.bundlejava.service;
++
++public class CertificatTransfertCorpsService {
++}
+Index: src/main/java/com/akveo/bundlejava/controller/DecedesController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/DecedesController.java	(date 1581971214433)
++++ src/main/java/com/akveo/bundlejava/controller/DecedesController.java	(date 1581971214433)
+@@ -0,0 +1,47 @@
++package com.akveo.bundlejava.controller;
++
++
++import com.akveo.bundlejava.model.Decedes;
++import com.akveo.bundlejava.repository.DecedesRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/decedes"})
++public class DecedesController {
++    @Autowired
++    private DecedesRepository decedesRepository;
++
++    public DecedesController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<Decedes> create(@RequestBody Decedes decedes) {
++        return ResponseEntity.ok(this.decedesRepository.save(decedes));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<Decedes> update(@RequestBody Decedes decedes) {
++        return ResponseEntity.ok(this.decedesRepository.save(decedes));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<Decedes>> getAll() {
++        return ResponseEntity.ok(this.decedesRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<Decedes> delete (@PathVariable("id") Long id){
++        Decedes Decedes1 = decedesRepository.findById(id).get();
++        if (Decedes1 == null){
++            ResponseEntity.notFound();
++        }
++        decedesRepository.deleteById(id);
++        return ResponseEntity.ok(Decedes1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/controller/CauseController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/CauseController.java	(date 1581971214437)
++++ src/main/java/com/akveo/bundlejava/controller/CauseController.java	(date 1581971214437)
+@@ -0,0 +1,48 @@
++package com.akveo.bundlejava.controller;
++
++import com.akveo.bundlejava.model.Cause;
++
++import com.akveo.bundlejava.repository.CauseRepository;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/cause"})
++public class CauseController {
++    @Autowired
++    private CauseRepository causeRepository;
++
++    public CauseController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<Cause> create(@RequestBody Cause cause) {
++        return ResponseEntity.ok(this.causeRepository.save(cause));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<Cause> update(@RequestBody Cause cause) {
++        return ResponseEntity.ok(this.causeRepository.save(cause));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<Cause>> getAll() {
++        return ResponseEntity.ok(this.causeRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<Cause> delete (@PathVariable("id") Long id){
++        Cause Cause1 = causeRepository.findById(id).get();
++        if (Cause1 == null){
++            ResponseEntity.notFound();
++        }
++        causeRepository.deleteById(id);
++        return ResponseEntity.ok(Cause1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/controller/BulletinsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/BulletinsController.java	(date 1581971214417)
++++ src/main/java/com/akveo/bundlejava/controller/BulletinsController.java	(date 1581971214417)
+@@ -0,0 +1,48 @@
++package com.akveo.bundlejava.controller;
++
++import com.akveo.bundlejava.model.Bulletins;
++
++import com.akveo.bundlejava.repository.BulletinsRepository;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/bulletins"})
++public class BulletinsController {
++    @Autowired
++    private BulletinsRepository bulletinsRepository;
++
++    public BulletinsController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<Bulletins> create(@RequestBody Bulletins bulletins) {
++        return ResponseEntity.ok(this.bulletinsRepository.save(bulletins));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<Bulletins> update(@RequestBody Bulletins bulletins) {
++        return ResponseEntity.ok(this.bulletinsRepository.save(bulletins));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<Bulletins>> getAll() {
++        return ResponseEntity.ok(this.bulletinsRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<Bulletins> delete (@PathVariable("id") Long id){
++        Bulletins Bulletins1 = bulletinsRepository.findById(id).get();
++        if (Bulletins1 == null){
++            ResponseEntity.notFound();
++        }
++        bulletinsRepository.deleteById(id);
++        return ResponseEntity.ok(Bulletins1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/controller/MedecinsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/MedecinsController.java	(date 1581971214425)
++++ src/main/java/com/akveo/bundlejava/controller/MedecinsController.java	(date 1581971214425)
+@@ -0,0 +1,48 @@
++package com.akveo.bundlejava.controller;
++
++import com.akveo.bundlejava.model.Medecins;
++import com.akveo.bundlejava.repository.MedecinsRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/medicins"})
++public class MedecinsController {
++
++    @Autowired
++    private MedecinsRepository medecinsRepository;
++
++    public MedecinsController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<Medecins> create(@RequestBody Medecins medecins) {
++        return ResponseEntity.ok(this.medecinsRepository.save(medecins));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<Medecins> update(@RequestBody Medecins medecins) {
++        return ResponseEntity.ok(this.medecinsRepository.save(medecins));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<Medecins>> getAll() {
++        return ResponseEntity.ok(this.medecinsRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<Medecins> delete (@PathVariable("id") Long id){
++        Medecins medecins1 = medecinsRepository.findById(id).get();
++        if (medecins1 == null){
++            ResponseEntity.notFound();
++        }
++        medecinsRepository.deleteById(id);
++        return ResponseEntity.ok(medecins1);
++
++    }
++}
++
+Index: src/main/java/com/akveo/bundlejava/controller/CertificatEnterrementController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/CertificatEnterrementController.java	(date 1581971214401)
++++ src/main/java/com/akveo/bundlejava/controller/CertificatEnterrementController.java	(date 1581971214401)
+@@ -0,0 +1,47 @@
++package com.akveo.bundlejava.controller;
++
++
++import com.akveo.bundlejava.model.CertificatEnterrement;
++import com.akveo.bundlejava.repository.CertificatEnterrementRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/certificatEnterrement"})
++public class CertificatEnterrementController {
++    @Autowired
++    private CertificatEnterrementRepository certificatEnterrementRepository;
++
++    public CertificatEnterrementController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<CertificatEnterrement> create(@RequestBody CertificatEnterrement certificatEnterrement) {
++        return ResponseEntity.ok(this.certificatEnterrementRepository.save(certificatEnterrement));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<CertificatEnterrement> update(@RequestBody CertificatEnterrement certificatEnterrement) {
++        return ResponseEntity.ok(this.certificatEnterrementRepository.save(certificatEnterrement));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<CertificatEnterrement>> getAll() {
++        return ResponseEntity.ok(this.certificatEnterrementRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<CertificatEnterrement> delete (@PathVariable("id") Long id){
++        CertificatEnterrement CertificatEnterrement1 = certificatEnterrementRepository.findById(id).get();
++        if (CertificatEnterrement1 == null){
++            ResponseEntity.notFound();
++        }
++        certificatEnterrementRepository.deleteById(id);
++        return ResponseEntity.ok(CertificatEnterrement1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/controller/ApercuCorpsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/ApercuCorpsController.java	(date 1581971214409)
++++ src/main/java/com/akveo/bundlejava/controller/ApercuCorpsController.java	(date 1581971214409)
+@@ -0,0 +1,46 @@
++package com.akveo.bundlejava.controller;
++
++import com.akveo.bundlejava.model.ApercuCorps;
++import com.akveo.bundlejava.repository.ApercuCorpsRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/apercuCorps"})
++public class ApercuCorpsController {
++    @Autowired
++    private ApercuCorpsRepository apercuCorpsRepository;
++
++    public ApercuCorpsController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<ApercuCorps> create(@RequestBody ApercuCorps apercuCorps) {
++        return ResponseEntity.ok(this.apercuCorpsRepository.save(apercuCorps));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<ApercuCorps> update(@RequestBody ApercuCorps apercuCorps) {
++        return ResponseEntity.ok(this.apercuCorpsRepository.save(apercuCorps));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<ApercuCorps>> getAll() {
++        return ResponseEntity.ok(this.apercuCorpsRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<ApercuCorps> delete (@PathVariable("id") Long id){
++        ApercuCorps ApercuCorps1 = apercuCorpsRepository.findById(id).get();
++        if (ApercuCorps1 == null){
++            ResponseEntity.notFound();
++        }
++        apercuCorpsRepository.deleteById(id);
++        return ResponseEntity.ok(ApercuCorps1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/controller/CertificatTransfertCorpsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/CertificatTransfertCorpsController.java	(date 1581971214385)
++++ src/main/java/com/akveo/bundlejava/controller/CertificatTransfertCorpsController.java	(date 1581971214385)
+@@ -0,0 +1,48 @@
++package com.akveo.bundlejava.controller;
++
++import com.akveo.bundlejava.model.CertificatTransfertCorps;
++import com.akveo.bundlejava.model.Decedes;
++import com.akveo.bundlejava.repository.CertificatTransfertCorpsRepository;
++import com.akveo.bundlejava.repository.DecedesRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/certificatTransfertCorps"})
++public class CertificatTransfertCorpsController {
++    @Autowired
++    private CertificatTransfertCorpsRepository certificatTransfertCorpsRepository;
++
++    public CertificatTransfertCorpsController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<CertificatTransfertCorps> create(@RequestBody CertificatTransfertCorps certificatTransfertCorps) {
++        return ResponseEntity.ok(this.certificatTransfertCorpsRepository.save(certificatTransfertCorps));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<CertificatTransfertCorps> update(@RequestBody CertificatTransfertCorps certificatTransfertCorps) {
++        return ResponseEntity.ok(this.certificatTransfertCorpsRepository.save(certificatTransfertCorps));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<CertificatTransfertCorps>> getAll() {
++        return ResponseEntity.ok(this.certificatTransfertCorpsRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<CertificatTransfertCorps> delete (@PathVariable("id") Long id){
++        CertificatTransfertCorps CertificatTransfertCorps1 = certificatTransfertCorpsRepository.findById(id).get();
++        if (CertificatTransfertCorps1 == null){
++            ResponseEntity.notFound();
++        }
++        certificatTransfertCorpsRepository.deleteById(id);
++        return ResponseEntity.ok(CertificatTransfertCorps1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/controller/CertificatMedicoLegalController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/controller/CertificatMedicoLegalController.java	(date 1581971214393)
++++ src/main/java/com/akveo/bundlejava/controller/CertificatMedicoLegalController.java	(date 1581971214393)
+@@ -0,0 +1,46 @@
++package com.akveo.bundlejava.controller;
++
++import com.akveo.bundlejava.model.CertificatMedicoLegal;
++import com.akveo.bundlejava.repository.CertificatMedicoLegalRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import java.util.List;
++
++@RestController
++@CrossOrigin({"*"})
++@RequestMapping({"/certificatMedicoLegal"})
++public class CertificatMedicoLegalController {
++    @Autowired
++    private CertificatMedicoLegalRepository certificatMedicoLegalRepository;
++
++    public CertificatMedicoLegalController() {
++    }
++
++    @PostMapping({"/create"})
++    public ResponseEntity<CertificatMedicoLegal> create(@RequestBody CertificatMedicoLegal certificatMedicoLegal) {
++        return ResponseEntity.ok(this.certificatMedicoLegalRepository.save(certificatMedicoLegal));
++    }
++
++    @PutMapping({"/update"})
++    public ResponseEntity<CertificatMedicoLegal> update(@RequestBody CertificatMedicoLegal certificatMedicoLegal) {
++        return ResponseEntity.ok(this.certificatMedicoLegalRepository.save(certificatMedicoLegal));
++    }
++
++    @GetMapping({"/getAll"})
++    public ResponseEntity<List<CertificatMedicoLegal>> getAll() {
++        return ResponseEntity.ok(this.certificatMedicoLegalRepository.findAll());
++    }
++
++    @DeleteMapping({"/delete/{id}"})
++    public ResponseEntity<CertificatMedicoLegal> delete (@PathVariable("id") Long id){
++        CertificatMedicoLegal certificatMedicoLegal1 = certificatMedicoLegalRepository.findById(id).get();
++        if (certificatMedicoLegal1 == null){
++            ResponseEntity.notFound();
++        }
++        certificatMedicoLegalRepository.deleteById(id);
++        return ResponseEntity.ok(certificatMedicoLegal1);
++
++    }
++}
+Index: src/main/java/com/akveo/bundlejava/repository/CauseRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/CauseRepository.java	(date 1581971214365)
++++ src/main/java/com/akveo/bundlejava/repository/CauseRepository.java	(date 1581971214365)
+@@ -0,0 +1,9 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.Cause;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface CauseRepository extends JpaRepository<Cause , Long> {
++}
+Index: src/main/java/com/akveo/bundlejava/repository/MedecinsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/MedecinsRepository.java	(date 1581971214349)
++++ src/main/java/com/akveo/bundlejava/repository/MedecinsRepository.java	(date 1581971214349)
+@@ -0,0 +1,10 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.Medecins;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface MedecinsRepository extends JpaRepository<Medecins , Long> {
++
++}
+Index: src/main/java/com/akveo/bundlejava/repository/DecedesRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/DecedesRepository.java	(date 1581971214357)
++++ src/main/java/com/akveo/bundlejava/repository/DecedesRepository.java	(date 1581971214357)
+@@ -0,0 +1,9 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.Decedes;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface DecedesRepository extends JpaRepository<Decedes, Long> {
++}
+Index: src/main/java/com/akveo/bundlejava/repository/ApercuCorpsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/ApercuCorpsRepository.java	(date 1581971214333)
++++ src/main/java/com/akveo/bundlejava/repository/ApercuCorpsRepository.java	(date 1581971214333)
+@@ -0,0 +1,12 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.ApercuCorps;
++import com.akveo.bundlejava.model.Medecins;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++import java.util.List;
++@Repository
++public interface ApercuCorpsRepository extends JpaRepository<ApercuCorps, Long> {
++    public List<ApercuCorps> findAllByMedecin(Medecins medecins);
++}
+Index: src/main/java/com/akveo/bundlejava/repository/BulletinsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/BulletinsRepository.java	(date 1581971214341)
++++ src/main/java/com/akveo/bundlejava/repository/BulletinsRepository.java	(date 1581971214341)
+@@ -0,0 +1,9 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.Bulletins;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface BulletinsRepository extends JpaRepository<Bulletins , Long> {
++}
+Index: src/main/java/com/akveo/bundlejava/repository/CertificatMedicoLegalRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/CertificatMedicoLegalRepository.java	(date 1581971214317)
++++ src/main/java/com/akveo/bundlejava/repository/CertificatMedicoLegalRepository.java	(date 1581971214317)
+@@ -0,0 +1,10 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.CertificatMedicoLegal;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface CertificatMedicoLegalRepository extends JpaRepository<CertificatMedicoLegal,Long> {
++
++}
+Index: src/main/java/com/akveo/bundlejava/repository/CertificatEnterrementRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/akveo/bundlejava/repository/CertificatEnterrementRepository.java	(date 1581971214325)
++++ src/main/java/com/akveo/bundlejava/repository/CertificatEnterrementRepository.java	(date 1581971214325)
+@@ -0,0 +1,13 @@
++package com.akveo.bundlejava.repository;
++
++import com.akveo.bundlejava.model.CertificatEnterrement;
++import com.akveo.bundlejava.model.Decedes;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.stereotype.Repository;
++
++import java.util.List;
++
++@Repository
++public interface CertificatEnterrementRepository extends JpaRepository<CertificatEnterrement, Long> {
++    public List<CertificatEnterrement> findAllByDefunt (Decedes decedes);
++}

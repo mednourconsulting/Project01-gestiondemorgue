@@ -1,0 +1,49 @@
+<!--
+
+  <div class="row">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-10">
+      <nb-card align="center">
+  <nb-card-header>Les statistiques sur la mortinalité des nouveaux nés</nb-card-header>
+  <nb-card-body>
+    <ngx-mycharts></ngx-mycharts>
+  </nb-card-body>
+      </nb-card>
+  </div>
+  </div>
+
+-->
+<!--<div class="row">
+  <div class="col-lg-1">
+  </div>
+  <div class="col-lg-10">
+    <nb-card align="center">
+      <nb-card-header>
+        Les statistiques selon la nature du décès
+      </nb-card-header>
+      <nb-card-body>
+        <div class="form-group">
+          <input [(ngModel)]="annee" class="form-control" ng-required="expression" type="string" nbInput fullWidth
+                 id="annee" placeholder="Choisir une année">
+        </div>
+        <button style="margin-left: 0px; width: 70px;" (click)="get()" class="btn btn-primary float-right">
+          <i class="fa fa-chart-bar"></i>
+        </button>
+
+        <div style="display: block">
+          <canvas mdbChart
+                  [chartType]="chartType"
+                  [datasets]="chartDatasets"
+                  [labels]="chartLabels"
+                  [colors]="chartColors"
+                  [options]="chartOptions"
+                  [legend]="true"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>-->
