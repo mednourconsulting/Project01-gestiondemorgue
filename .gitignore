@@ -1,2 +1,3 @@
 /GestionMorgueFinal/node_modules/
-GestionMorgueBack/target
+/GestionMorgueBack/target
+/GestionMorgueBack/src/main/resources/static
