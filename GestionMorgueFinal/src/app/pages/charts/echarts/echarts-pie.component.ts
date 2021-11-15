@@ -20,7 +20,6 @@ h: number;
 
   sear() {
     for (let j = 0; j < this.List.length; j++) {
-      console.log(this.List[j]);
       switch (this.List[j]) {
         case 'homme': {
           this.h++;
@@ -28,7 +27,6 @@ h: number;
         }
       }
     }
-    console.log(this.h);
   }
 
     ngAfterViewInit() {

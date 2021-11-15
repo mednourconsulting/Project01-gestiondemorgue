@@ -178,8 +178,6 @@ export class MedcinsComponent implements OnInit {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const medecin: Medecins = this.createMedecinFromForm();
-      console.warn('cause: ', medecin);
-      console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(medecin);
       this.id = null ;
     } else {

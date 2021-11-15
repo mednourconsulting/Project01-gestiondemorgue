@@ -16,7 +16,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {Router} from '@angular/router';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 
 @Component({
   selector: 'ngx-bulletins',
@@ -370,8 +370,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const bulletin: Bulletins = this.createBulletinFromForm();
-      console.warn('bulletin: ', bulletin);
-      console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(bulletin);
       this.id = null ;
     } else {

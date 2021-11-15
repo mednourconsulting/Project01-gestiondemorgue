@@ -13,7 +13,7 @@ import jsPDF from 'jspdf';
 import {base64Str} from '../base64';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -787,8 +787,6 @@ export class TransfertCorpsComponent implements OnInit {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const certificat: CertificatTransfertCorps = this.createCertificatFromForm();
-      console.warn('certificat: ', certificat);
-      console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
       this.id = null;
     } else {

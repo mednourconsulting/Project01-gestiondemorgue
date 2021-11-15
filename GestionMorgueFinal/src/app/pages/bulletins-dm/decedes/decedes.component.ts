@@ -9,7 +9,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -364,7 +364,6 @@ export class DecedesComponent implements OnInit {
     this.service.getAll().subscribe(data => {
       this.source = data;
     });
-    console.warn(this.causesList);
   }
   save() {
         this.service.create(this.decede).subscribe(data => {
@@ -1067,8 +1066,6 @@ export class DecedesComponent implements OnInit {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const decede: Decedes = this.createDecedeFromForm();
-      console.warn('decede: ', decede);
-      console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(decede);
       this.id = null ;
     } else {

@@ -84,7 +84,6 @@ export class NgxRegisterComponent implements OnInit {
   }
   register(): void {
     this.user = this.registerForm.value;
-    console.warn(this.user);
     this.errors = this.messages = [];
     this.submitted = true;
 
@@ -111,7 +110,6 @@ export class NgxRegisterComponent implements OnInit {
   }
   createUser(): void {
     this.user = this.registerForm.value;
-    console.warn(this.user);
     this.errors = this.messages = [];
     this.submitted = true;
 

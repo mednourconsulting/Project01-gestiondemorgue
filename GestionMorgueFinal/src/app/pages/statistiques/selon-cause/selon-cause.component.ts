@@ -56,7 +56,6 @@ export class SelonCauseComponent implements OnInit {
           this.List.push({dt: obj.dateDeces, cause: obj.causeMort});
         }
       });
-      console.warn('List', this.List);
     this.condestions (this.List);
       this.chartDatasets = [this.TA, this.M, this.T, this.F, this.L, this.A, this.C, this.O, this.ML , this.others];
     });
@@ -73,7 +72,6 @@ export class SelonCauseComponent implements OnInit {
   chartColors: any;
   chartOptions: any;
   condestions (list: any[]) {
-    console.warn(list);
     this.initialise();
     list.forEach( data => {
       if ( data.cause === 'accident') {

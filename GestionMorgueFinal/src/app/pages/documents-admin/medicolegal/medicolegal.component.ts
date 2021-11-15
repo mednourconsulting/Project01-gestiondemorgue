@@ -14,7 +14,7 @@ import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {Router} from '@angular/router';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -642,8 +642,6 @@ export class MedicolegalComponent implements OnInit {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const certificat: CertificatMedicoLegal = this.createCertificatFromForm();
-      console.warn('certificat: ', certificat);
-      console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
       this.id = null ;
     } else {

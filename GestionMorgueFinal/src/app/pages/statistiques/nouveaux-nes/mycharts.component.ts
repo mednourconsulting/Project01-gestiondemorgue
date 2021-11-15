@@ -65,8 +65,6 @@ export class MychartsComponent  implements AfterViewInit, OnDestroy {
           }
         }
       }
-      console.log(this.List);
-      console.log(this.m2);
       this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
         const colors: any = config.variables;
@@ -158,7 +156,8 @@ export class MychartsComponent  implements AfterViewInit, OnDestroy {
               name: this.mydate.getFullYear(),
               type: 'line',
               smooth: true,
-              data: [this.m1, this.m2, this.m3, this.m4, this.m5, this.m6, this.m7, this.m8, this.m9, this.m10, this.m11, this.m12],
+              data: [this.m1, this.m2, this.m3, this.m4, this.m5, this.m6, this.m7,
+                this.m8, this.m9, this.m10, this.m11, this.m12],
             },
           ],
         };
