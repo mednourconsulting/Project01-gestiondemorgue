@@ -104,14 +104,7 @@
     <ngx-validation-message label="Role"
                             [showRequired]="role?.hasError('required') && role.touched"></ngx-validation-message>
   </div>
-
-  <div class="form-control-group accept-group" *ngIf="getConfigValue('forms.register.terms')">
-    <nb-checkbox formControlName="terms" [required]="getConfigValue('forms.register.terms')">
-      Accepter <a href="#" target="_blank"><strong>Terms & Conditions</strong></a>
-    </nb-checkbox>
-  </div>
-
-  <button nbButton fullWidth status="primary" size="large" [disabled]="submitted || !registerForm.valid || !terms?.value"
+  <button nbButton fullWidth status="primary" size="large" style="margin-bottom: 2rem" [disabled]="submitted || !registerForm.valid || !terms?.value"
     [class.btn-pulse]="submitted" (click)="createUser()">
     S'inscrire
   </button>
