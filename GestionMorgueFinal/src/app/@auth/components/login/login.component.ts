@@ -42,7 +42,9 @@ export class NgxLoginComponent implements OnInit {
   submitted: boolean = false;
   loginForm: FormGroup;
   alive: boolean = true;
-
+  checked: boolean = true;
+  isType: boolean;
+  type: string = 'password';
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
 
@@ -72,7 +74,11 @@ export class NgxLoginComponent implements OnInit {
       rememberMe: this.fb.control(''),
     });
   }
+  fieldTextType: boolean;
 
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
   login(): void {
     this.user = this.loginForm.value;
     this.errors = [];
@@ -97,8 +103,16 @@ export class NgxLoginComponent implements OnInit {
       this.cd.detectChanges();
     });
   }
-
   getConfigValue(key: string): any {
     return getDeepFromObject(this.options, key, null);
   }
+  toggleButton(event) {
+    if (event.checked) {
+      this.type = 'password';
+    } else {
+      this.type = 'text';
+    }
+  }
 }
+
+

@@ -11,6 +11,7 @@
 
   nb-card {
     margin: 0;
+    box-shadow: 0 0.5rem 1rem 0 rgb(192, 208, 255) !important;
     height: calc(100vh - 2 * #{$auth-layout-padding});
   }
 
@@ -35,6 +36,7 @@
 
   nb-auth-block {
     margin: auto;
+    height: 100%;
   }
 
   @include media-breakpoint-down(sm) {
@@ -47,7 +49,7 @@
   ::ng-deep {
     nb-layout .layout .layout-container .content .columns nb-layout-column {
       padding: $auth-layout-padding;
-      background-color: #d09c1e;
+      background-color: #FFFFFF;
 
       @include media-breakpoint-down(sm) {
         padding: 0;
@@ -55,6 +57,6 @@
     }
   }
 }
-.nb-layout{
+.nb-layout {
   background-color: #b94a48;
 }

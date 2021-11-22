@@ -68,7 +68,6 @@ export class RegionComponent implements OnInit {
     this.serviceD.getAll().subscribe(data1 => {
       data1.forEach(obj => {
         if (obj.dateDeces.toString().substring(0, 4) === annee) {
-          console.warn(this.List);
           this.List.push({ date : obj.dateDeces, province : obj.provinceD});
           this.message = 'Les statistiques selon les régions pour l\'année';
           this.messageAnnee = annee;

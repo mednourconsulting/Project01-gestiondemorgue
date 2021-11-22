@@ -156,8 +156,6 @@ export class CauseDecesComponent implements OnInit {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const cause: Cause = this.createCauseFromForm();
-      console.warn('cause: ', cause);
-      console.warn('formValues : ', this.reactiveForm.value);
      this.save(cause);
       this.id = null ;
     } else {

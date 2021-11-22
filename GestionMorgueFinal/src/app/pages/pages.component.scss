@@ -63,18 +63,18 @@
   nb-layout div.scrollable-container div.scrollable::-webkit-scrollbar-track,
   nb-layout div.scrollable-container::-webkit-scrollbar-track
   {
-    background: #ffffff!important;
+    background: #f7f9fc!important;
   }
 
 
   nb-layout .layout .layout-container nb-sidebar.fixed,
   nb-layout .layout .layout-container nb-sidebar .main-container-fixed {
     top: 0.75rem!important;
-    margin-top: 94px!important;
+   // margin-top: 94px!important;
   }
 
   nb-sidebar .main-container {
-    height: 70vh!important;
+    height: 90vh!important;
     width: 16rem!important;
   }
 }

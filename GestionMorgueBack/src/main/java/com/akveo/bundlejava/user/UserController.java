@@ -6,6 +6,8 @@
 
 package com.akveo.bundlejava.user;
 
+import com.akveo.bundlejava.authentication.SignUpDTO;
+import com.akveo.bundlejava.user.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +28,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * Controller for managing users
  */
 @Controller
-@RequestMapping("/users")
+@RequestMapping("api/users")
 public class UserController {
 
     private UserService userService;
@@ -99,6 +101,16 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity createUser(@Valid @RequestBody UserDTO userDTO) {
         return ok(userService.createUser(userDTO));
+    }
+    /**
+     * Create user. Allowed only for Admin
+     * @param userDTO new user data
+     * @return created user
+     */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/addUser")
+    public ResponseEntity addUser(@Valid @RequestBody SignUpDTO userDTO) throws UserAlreadyExistsException {
+        return ok(userService.register(userDTO));
     }
 
 }

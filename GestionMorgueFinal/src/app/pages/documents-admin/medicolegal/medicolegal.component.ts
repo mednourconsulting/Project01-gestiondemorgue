@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CertificatMedicoLegalService} from '../../../@core/backend/common/services/CertificatMedicoLegal.service';
 import {CertificatMedicoLegal} from '../../../@core/backend/common/model/CertificatMedicoLegal';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
@@ -15,6 +15,8 @@ import {Router} from '@angular/router';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {Observable, of} from "rxjs";
+import {map} from "rxjs/operators";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -30,6 +32,19 @@ export class MedicolegalComponent implements OnInit {
   Medicolegal: CertificatMedicoLegal = new CertificatMedicoLegal();
   NomMedecin = [];
   NomDecede = [];
+  i = 0;
+  DecedeHumain: Decedes;
+  MedecinHumain: Medecins;
+  dd = '';
+  e: string;
+  isAdmin: boolean;
+
+  @ViewChild('autoMedcin', {static: false})
+  public input;
+  @ViewChild('autoDecede', {static: false})
+  public input1;
+  filteredListDecede$: Observable<string[]>;
+  filteredListMedcin$: Observable<string[]>;
   settings = {
    add: {
          addButtonContent: '<i class="nb-plus"></i>',
@@ -176,8 +191,10 @@ export class MedicolegalComponent implements OnInit {
   defunt: number;
   MedNom: number;
   id: null;
-  private filterMedecin = [];
-  private filterDecede = [];
+  filterMedecin = [];
+  filterDecede = [];
+  listDecede = [];
+  listMedcin = [];
   constructor(private service: CertificatMedicoLegalService,
               private userservice: UsersService,
               private router: Router,
@@ -207,7 +224,8 @@ export class MedicolegalComponent implements OnInit {
     });
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-Us', '+1');
     this.serviceDecede.getAll().subscribe( dataa => {
-      dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id});
+      dataa.forEach (  obj => { this.NomDecede.push({nom: obj.nom + ' ' + obj.prenom , id: obj.id});
+        this.listDecede.push(obj.nom + ' ' + obj.prenom);
       this.filterDecede.push({
         id: obj.id,
         value: obj.nom + ' ' + obj.prenom,
@@ -216,23 +234,23 @@ export class MedicolegalComponent implements OnInit {
       });
     });
     this.serviceMeddcin.getAll().subscribe( data1 => {
-      data1.forEach (  obj => { this.NomMedecin.push({nom: obj.nom + ' ' , prenom: obj.prenom , id: obj.id});
+      data1.forEach (  obj => { this.NomMedecin.push({nom: obj.nom + ' ' + obj.prenom , id: obj.id});
+        this.listMedcin.push(obj.nom + ' ' + obj.prenom);
         this.filterMedecin.push({
           id: obj.id,
           value: obj.nom + ' ' + obj.prenom,
           title: obj.nom + ' ' +  obj.prenom,
         }); });
+      this.filteredListMedcin$ = of(this.listMedcin);
+      this.filteredListDecede$ = of(this.listDecede);
+
       this.settings.columns.medecin.filter.config.list = this.filterMedecin;
       this.settings.columns.defunt.filter.config.list = this.filterDecede;
       this.settings = Object.assign({}, this.settings);
     });
   }
-  i = 0;
-  DecedeHumain: Decedes;
-  MedecinHumain: Medecins;
-  dd = '';
-  e: string;
-  isAdmin: boolean;
+
+
   generatePdf(action) {
     this.actualise();
     switch (action) {
@@ -572,12 +590,24 @@ export class MedicolegalComponent implements OnInit {
     if (this.isAdmin) {
       this.id = data.id;
       this.reactiveForm.setValue({
-        medecin: data.medecin.id,
+         medecin: data.medecin.id,
         declarant: data.declarant,
         address: data.address,
         cin:  data.cin,
         declaration: this.ConvertDate(data.declaration) as any as Date,
         defunt: data.defunt.id,
+      });
+      this.NomDecede.forEach(value => {
+        if (value.id === data.defunt.id) {
+          console.log(value.nom);
+          this.reactiveForm.controls['defunt'].setValue(value.nom);
+        }
+      });
+      this.NomMedecin.forEach(value => {
+        if (value.id === data.medecin.id) {
+          console.log(value.nom);
+          this.reactiveForm.controls['medecin'].setValue(value.nom);
+        }
       });
     } else {
       this.toastService.toastOfEdit('warning');
@@ -652,30 +682,22 @@ export class MedicolegalComponent implements OnInit {
   }
   doSave(certificat) {
     if (this.id == null) {
-      this.serviceMeddcin.getById(certificat.medecin).subscribe(medecin => {
-        certificat.medecin = medecin;
-        this.serviceDecede.getById(certificat.defunt).subscribe(defunt => {
-          certificat.defunt = defunt;
+         certificat.medecin = this.MedecinHumain;
+          certificat.defunt = this.DecedeHumain;
           this.service.create(certificat).subscribe(obj => {
             this.source.push(obj);
             this.source = this.source.map(e => e);
           });
-        });
-      });
       this.toastService.toastOfSave('success');
       this.reactiveForm.reset();
     } else {
       if (this.isAdmin) {
-        this.serviceMeddcin.getById(certificat.medecin).subscribe(medecin => {
-          certificat.medecin = medecin;
-          this.serviceDecede.getById(certificat.defunt).subscribe(defunt => {
-            certificat.defunt = defunt;
+        certificat.medecin = this.MedecinHumain;
+        certificat.defunt = this.DecedeHumain;
             this.service.update(certificat).subscribe(data1 => {
               this.source = this.source.map(e => e);
               this.init();
               this.reactiveForm.reset();
-            });
-          });
         });
         this.toastService.toastOfEdit('success');
       } else {
@@ -686,5 +708,54 @@ export class MedicolegalComponent implements OnInit {
   reset() {
     this.reactiveForm.reset();
     this.Medicolegal = new CertificatMedicoLegal();
+  }
+
+  onChange() {
+    this.NomDecede.forEach(value => {
+      if (value.nom === this.reactiveForm.get('defunt').value) {
+        this.serviceDecede.getById(value.id).subscribe(decede => {
+          this.DecedeHumain = decede;
+        });
+      }
+    });
+    this.NomMedecin.forEach(value => {
+      if (value.nom === this.reactiveForm.get('medecin').value) {
+        this.serviceMeddcin.getById(value.id).subscribe(medecin => {
+          this.MedecinHumain = medecin;
+        });
+      }
+    });
+  }
+
+
+  private filter(value: string, list: any[]): string[] {
+    const filterValue = value.toLowerCase();
+    return list.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
+  }
+
+  getFilteredOptions(value: string, list: any[]): Observable<string[]> {
+    return of(value).pipe(
+      map(filterString => this.filter(filterString, list)),
+    );
+  }
+
+
+  onChangeMedcin() {
+    this.filteredListMedcin$ = this.getFilteredOptions(this.reactiveForm.controls['medecin'].value, this.listMedcin);
+
+  }
+
+  onChangeDecede() {
+    this.filteredListDecede$ = this.getFilteredOptions(this.reactiveForm.controls['defunt'].value, this.listDecede);
+  }
+
+
+  onSelectionChangeMedcin($event) {
+    this.filteredListMedcin$ = this.getFilteredOptions($event, this.listMedcin);
+    this.onChange();
+  }
+  onSelectionChangeDecede($event) {
+    this.filteredListDecede$ = this.getFilteredOptions($event, this.listDecede);
+    this.onChange();
   }
 }

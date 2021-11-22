@@ -12,7 +12,7 @@ import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 
 
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -577,8 +577,6 @@ export class ApercuDuCorpComponent implements OnInit {
   onSubmit() {
     if (this.reactiveForm.valid) {
       const certificat: ApercuCorps = this.createCertificatFromForm();
-      console.warn('certificat: ', certificat);
-      console.warn('formValues : ', this.reactiveForm.value);
       this.doSave(certificat);
       this.id = null ;
     } else {

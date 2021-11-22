@@ -17,15 +17,13 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="label">Nom décédé</label>
+                                    <label class="label">Nom du décédé</label>
                                     <input
                                           formControlName="nom"
                                            class="form-control"
                                            type="string"
                                            nbInput
                                            fullWidth
-                                           name="name"
-                                           id="Nom"
                                            required="true"
                                            placeholder="Nom décédé">
                                   <ngx-validation-message label="Nom décédé"
@@ -36,17 +34,14 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="label">Prénom décédé</label>
+                                    <label class="label">Prénom du décédé</label>
                                     <input formControlName="prenom"
-                                           name= "prenom"
                                            required="true"
                                            class="form-control"
-                                           type="string"
                                            nbInput
                                            fullWidth
-                                           id="prénom"
-                                           placeholder="Prénom décédé"
-                                           >
+                                           required="true"
+                                           placeholder="Prénom décédé">
                                   <ngx-validation-message label="Prenom décédé"
                                                           [showRequired]="!getControl('prenom').valid && getControl('prenom').touched"
                                                           [fr]="getControl('prenom')?.hasError('pattern')">
@@ -73,7 +68,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="label">Date décès</label>
+                                    <label class="label">Date de décès</label>
                                     <input class="form-control"
                                            formControlName="dateDeces"
                                            type="Date"
@@ -335,7 +330,7 @@
                                            name= "heure"
                                            required="true"
                                            id="heure"
-                                           placeholder="exemple 05:10 PM ">
+                                           placeholder="exemple 05:10">
                                   <ngx-validation-message label="Heure de décès"
                                                           [showRequired]="!getControl('heure').valid && getControl('heure').touched"
                                                           [heurePattern]="getControl('heure')?.hasError('pattern')">

@@ -22,8 +22,8 @@ export class SexeDecesComponent implements OnInit {
   currentDate = (new Date).getFullYear().toString();
   message: string = '';
   messageAnnee: string = '';
-  private reactiveForm: FormGroup;
-  private statistics = [];
+   reactiveForm: FormGroup;
+   statistics = [];
   constructor (private service: DecedesService,
                private datePipe: DatePipe,
                private fb: FormBuilder) {
@@ -63,7 +63,7 @@ export class SexeDecesComponent implements OnInit {
     this.list.forEach(obj => {
       if (obj.dateDeces.substring(0, 4) === annee) {
         this.statistics.push(obj);
-        this.message = 'Les statistiques selon le sexe de décès pour l\'année';
+        this.message = 'Les statistiques selon le sexe du décédé pour l\'année';
         this.messageAnnee = annee;
         if (obj.sexe === 'Homme') {
           this.h = this.h + 1;

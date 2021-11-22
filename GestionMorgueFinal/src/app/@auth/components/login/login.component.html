@@ -1,29 +1,20 @@
-<div class="text-center"><img style="width: 199.5px ; height: 141.3px ; margin-bottom:10px" src="assets/images/LogovilleTANGER.png"></div>
-<div class="padding">
-  <div class="text-center loginTitle"
-       [ngStyle]="{'color': '#e35e06', 'font-size': '26px',
-       'font-weight': 'bold',  'margin-bottom': '15px'}">Commune Urbaine Tanger</div>
-  <div class="text-center "
-           [ngStyle]="{'color': '#e35e06', 'font-size': '24px',
-           'font-weight': 'bold'}">Centre Medico-Légal</div>
+<div class="login-page">
+<div class="text-center login-img">
+  <img src="assets/images/LogovilleTANGER.png">
 </div>
 
-  <div class="text-center text-muted mb-4">
-    <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
-      <p class="alert-title"><b>ERREUR!</b></p>
-      <ul class="alert-message-list">
-        <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
-      </ul>
-    </nb-alert>
-    <nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
-      <p class="alert-title"><b>AVEC SUCCÈS</b></p>
-      <ul class="alert-message-list">
-        <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
-      </ul>
-    </nb-alert>
+<div class="padding login-title-container">
+  <div class="text-center login-title-firstChild">
+    Commune Urbaine Tanger
   </div>
-  <form role="form" [formGroup]="loginForm" aria-labelledby="title">
-    <div class="form-group mb-1">
+  <div class="text-center login-title-lastChild">
+    Centre Medico-Légal
+  </div>
+</div>
+
+
+  <form role="form" [formGroup]="loginForm" aria-labelledby="title" class="login-form">
+    <div class="form-group ">
       <div class="input-group input-group-alternative">
         <label for="input-email">Email</label>
         <input  nbInput
@@ -54,21 +45,17 @@
                                 [maxLength]="maxLength"></ngx-validation-message>
       </div>
     </div>
-    <div class="custom-control custom-control-alternative custom-checkbox">
-      <div class="form-control-group accept-group">
-        <nb-checkbox name="rememberMe" *ngIf="rememberMe">Se souvenir de moi</nb-checkbox>
-      </div>
-    </div>
-    <div class="text-center">
-      <button nbButton fullWidth size="medium" status="primary"  type="submit" class="btn btn-primary"
-              (click)="login()" [disabled]="submitted || !loginForm.valid"
+    <div class="text-center login-actions">
+      <p style="font-weight: bold; font-size: 14px; color: red"   *ngIf="showMessages.error && errors?.length && !submitted">Email ou mot de passe incorrect</p>
+      <p style="font-weight: bold; font-size: 14px; color: green"   *ngIf="showMessages.success && messages?.length && !submitted">Authentifier avec succès</p>
+      <button nbButton fullWidth size="medium" status="primary"  type="submit" class="btn btn-primary login-button"
+              (click)="login()"
               [class.btn-pulse]="submitted">
-        Sign in
+        Connexion
       </button>
     </div>
   </form>
-
-
+</div>
 
 
 
