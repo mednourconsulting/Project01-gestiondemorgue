@@ -13,24 +13,25 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
     template: `
       <div class="erreurs-container">
              <p class="caption status-danger"
-                *ngIf="showMinLength"> La taille minimum  du champs "{{ label }}" est {{ minLength }} caractères </p>
+                *ngIf="showMinLength"> La taille minimum  du champ "{{ label }}" est {{ minLength }} caractères </p>
              <p class="caption status-danger"
-                *ngIf="showMaxLength"> La taille maximum du champs  "{{ label }}" est {{ maxLength }} caractères </p>
+                *ngIf="showMaxLength"> La taille maximum du champ  "{{ label }}" est {{ maxLength }} caractères </p>
              <p class="caption status-danger"  *ngIf="number">
-               Le champs "{{ label }}" n'accepte que les nombres </p>
+               Le champ "{{ label }}" n'accepte que les nombres </p>
              <p class="caption status-danger" *ngIf="showPattern"> Incorrect "{{ label }}" </p>
-             <p class="caption status-danger" *ngIf="showRequired"> Le champs "{{ label }}" est obligatoire</p>
+             <p class="caption status-danger" *ngIf="showRequired"> Le champ "{{ label }}" est obligatoire</p>
              <p class="caption status-danger" *ngIf="ar">Le champs "{{ label }}" n'accepte que les lettre en arabe, les espaces et les nombres</p>
-             <p class="caption status-danger" *ngIf="addressAr">Le champs "{{ label }}" n'accepte que les lettre en arabe,
+             <p class="caption status-danger" *ngIf="addressAr">Le champ "{{ label }}" n'accepte que les lettre en arabe,
                  les espaces et les nombres, et les caractères suivantes ° et ,</p>
-             <p class="caption status-danger" *ngIf="fr">Le champs "{{ label }}" n'accepte que les lettre en français, les espaces et
+             <p class="caption status-danger" *ngIf="fr">Le champ "{{ label }}" n'accepte que les lettre en français, les espaces et
                les nombres</p>
-             <p class="caption status-danger" *ngIf="addressFr">Le champs "{{ label }}" n'accepte que les lettre en français, les espaces et
+             <p class="caption status-danger" *ngIf="addressFr">Le champ "{{ label }}" n'accepte que les lettre en français, les espaces et
                les nombres, et les caractères suivantes ° et ,</p>
-             <p class="caption status-danger" *ngIf="showMin">La valeur minimale qu'accepte  ce champs est {{ min }}</p>
-             <p class="caption status-danger" *ngIf="showMax">La valeur maximum  qu'accepte  ce champs est {{ max }}</p>
+             <p class="caption status-danger" *ngIf="showMin">La valeur minimale qu'accepte  ce champ est {{ min }}</p>
+             <p class="caption status-danger" *ngIf="showMax">La valeur maximum  qu'accepte  ce champ est {{ max }}</p>
              <p class="caption status-danger" *ngIf="heurePattern">Merci de respecter la forme de l'heure (HH:mm PM/AM)</p>
              <p class="caption status-danger" *ngIf="showConfirmPassword">Les mots de passe que vous avez entrés ne sont pas identiques.</p>
+             <p class="caption status-danger" *ngIf="showInvalid">Le {{label}} que vous avez saisi n'existe pas.</p>
       </div>
   `,
     providers: [
@@ -95,5 +96,8 @@ export class NgxValidationMessageComponent {
 
     @Input()
     showConfirmPassword: boolean;
+
+    @Input()
+    showInvalid: boolean;
 
 }

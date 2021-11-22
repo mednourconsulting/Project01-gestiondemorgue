@@ -14,12 +14,10 @@
                     <label class="label">Médecin</label>
 
                   <input #autoMedcin
-                         nbInput
                          type="text"
-                         formControlName="medecin" class="type-select "
-                         fullWidth
+                         formControlName="medecin" class="form-control "
                          (input)="onChangeMedcin()"
-                         placeholder="Enter value"
+                         placeholder="Médecin"
                          [nbAutocomplete]="auto" />
                   <nb-autocomplete #auto (selectedChange)="onSelectionChangeMedcin($event)">
                     <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
@@ -56,13 +54,11 @@
                       <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
                     </nb-select-->
                   <input #autoDecede
-                         nbInput
                          type="text"
                          formControlName="defunt"
-                         class="type-select "
-                         fullWidth
+                         class="form-control "
                          (input)="onChangeDecede()"
-                         placeholder="Enter value"
+                         placeholder="Défunt"
                          [nbAutocomplete]="autoM" />
 
                   <nb-autocomplete #autoM (selectedChange)="onSelectionChangeDecede($event)">
@@ -83,9 +79,7 @@
                     <label class="label">Déclarant</label><br>
                     <input formControlName="declarant"
                            class="form-control"
-                           type="string"
-                           nbInput
-                           fullWidth
+                           type="text"
                            id="dec"
                            placeholder="Déclarant"
                            required="true">
@@ -105,13 +99,10 @@
                     <input formControlName="cin"
                            [ngModel]="this.Medicolegal.cin"
                            class="form-control"
-                           ng-required="expression"
-                           type="string"
-                           nbInput
-                           fullWidth
+                           type="text"
                            id="cin"
                            placeholder="CIN Déclarant"
-                           status="success">
+                    >
                   <ngx-validation-message label="CIN Déclarant"
                                           [fr]="getControl('cin')?.hasError('pattern')">
                   </ngx-validation-message>
@@ -122,9 +113,7 @@
                     <label class="label">Adresse Déclarant</label><br>
                     <input formControlName="address"
                            class="form-control"
-                           type="string"
-                           nbInput
-                           fullWidth
+                           type="text"
                            id="adresse"
                            placeholder="Adresse Déclarant"
                            required="true">
@@ -140,11 +129,9 @@
                     <input formControlName="declaration"
                            class="form-control"
                            type="Date"
-                           nbInput
-                           fullWidth
                            id="datedec"
                            placeholder="Date déclaration"
-                           status="success">
+                    >
 
                 </div>
             </div>

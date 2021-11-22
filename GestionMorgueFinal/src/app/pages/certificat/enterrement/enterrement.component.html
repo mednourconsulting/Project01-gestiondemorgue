@@ -10,7 +10,7 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Défunt</label>
-          <nb-select  formControlName="defunt" class="type-select "  nbSelect fullWidth
+          <nb-select  formControlName="defunt" class="type-select " fullWidth
                       placeholder="Choisir Défunt..." required="true">
             <nb-option *ngFor="let t of NomDecede" [value]="t.nom + ' ' + t.prenom" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
@@ -22,7 +22,7 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Ville</label>
-          <input formControlName="ville" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="ville" class="form-control" type="text"
                  id="centre" placeholder="Ville"required="true">
           <ngx-validation-message label="ville"
                                   [showRequired]="!getControl('ville').valid && getControl('ville').touched"
@@ -35,8 +35,8 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Date declaration</label>
-          <input formControlName="declaration" class="form-control" type="Date" nbInput fullWidth
-                 id="dateDec" placeholder="Declarant" status="danger" required="true">
+          <input formControlName="declaration" class="form-control" type="Date"
+                 id="dateDec" placeholder="Declarant"  required="true">
           <ngx-validation-message label="Date de déclaration"
                                   [showRequired]="!getControl('declaration').valid && getControl('declaration').touched">
           </ngx-validation-message>

@@ -113,4 +113,8 @@ nb-card-header {
 
 }
 
+:host ::ng-deep nb-select {
+  background-color: #ffffff!important;
+}
+
 

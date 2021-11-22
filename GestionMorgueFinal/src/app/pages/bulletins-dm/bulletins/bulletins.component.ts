@@ -1204,7 +1204,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
     if (date !== undefined)
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
   }
-  onChangeData(data){
+  onChangeData(data) {
 
 }
   onChange() {
@@ -1215,6 +1215,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
           this.Bulletins.decede = decede;
           this.DecedeHumain = decede;
         });
+      } else {
+
       }
     });
     this.NomDMedcin.forEach(value => {

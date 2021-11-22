@@ -10,7 +10,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Nom du Medecin</label>
-          <input formControlName="nom" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="nom" class="form-control" type="text"
                  id="nom" placeholder="Nom Médecin" required="true">
           <ngx-validation-message label="Nom Medecin"
                                   [showRequired]="!getControl('nom').valid && getControl('nom').touched"
@@ -20,7 +20,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Prénom du Médecin</label>
-          <input formControlName="prenom" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="prenom" class="form-control" type="text"
                  id="prenom" placeholder="Prenom Médecin" required="true">
           <ngx-validation-message label="Prenom Médecin"
                                   [showRequired]="!getControl('prenom').valid && getControl('prenom').touched"
@@ -30,7 +30,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Adresse du Médecin</label>
-          <input formControlName="adress" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="adress" class="form-control" type="text"
                  id="adresse" placeholder="Adresse de Médecin"required="true">
           <ngx-validation-message label="Adresse de Médecin"
                                   [showRequired]="!getControl('adress').valid && getControl('adress').touched"
@@ -43,7 +43,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">الإسم العائلي</label>
-          <input formControlName="nomAR" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="nomAR" class="form-control" type="text"
                  id="nomAR" placeholder="الإسم العائلي"required="true">
           <ngx-validation-message label="الإسم العائلي"
                                   [showRequired]="!getControl('nomAR').valid && getControl('nomAR').touched"
@@ -54,7 +54,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">الإسم الشخصي</label>
-          <input formControlName="prenomAR" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="prenomAR" class="form-control" type="text"
                  id="prenomAR" placeholder="الإسم الشخصي"required="true">
           <ngx-validation-message label="الإسم الشخصي"
                                   [showRequired]="!getControl('prenomAR').valid && getControl('prenomAR').touched"
@@ -65,7 +65,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">العنوان</label>
-          <input formControlName="adressAR" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="adressAR" class="form-control" type="text"
                  id="AdresseAR" placeholder="العنوان"required="true">
           <ngx-validation-message label="العنوان"
                                   [showRequired]="!getControl('adressAR').valid && getControl('adressAR').touched"
@@ -78,7 +78,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">CIN d'encadrant</label>
-          <input formControlName="cin" class="form-control" type="string" nbInput fullWidth
+          <input formControlName="cin" class="form-control" type="text"
                  id="cin" placeholder="CIN d'encadrant" required="true">
           <ngx-validation-message label="CIN d'encadrant"
                                   [showRequired]="!getControl('cin').valid && getControl('cin').touched"
