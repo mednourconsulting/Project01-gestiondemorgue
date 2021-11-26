@@ -1,7 +1,7 @@
 
 
 <nb-card>
-    <nb-card-header>
+    <nb-card-header class="card-header">
         <div class="row">
             <div class="col-sm-12">Ajouter un certificat médico-légal</div>
         </div>
@@ -138,24 +138,24 @@
 
         </div>
         <div class="float-right">
-            <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="success">Enregistrer</button>
-            <button class="btn mr-1 " (click)="reset()" nbButton status="success" outline>Annuler</button>
+            <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="info">Enregistrer</button>
+            <button class="btn mr-1 " (click)="reset()" nbButton status="info" outline>Annuler</button>
         </div>
       </form>
     </nb-card-body>
 
 </nb-card>
-
-
-<div class="card">
-  <div class="card-header">
-    Liste des certificats médico-légal
-  </div>
+<nb-card>
+  <nb-card-header class="card-header">
+    <div class="row">
+      <div class="col-sm-12">Liste des certificats médico-légal</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
-
-    <ng2-smart-table [settings]="settings"
-                     [source]="source"
-                     (custom)="onCustomConfirm($event)">
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>

@@ -11,8 +11,7 @@
 
   nb-card {
     margin: 0;
-    box-shadow: 0 0.5rem 1rem 0 rgb(192, 208, 255) !important;
-    height: calc(100vh - 2 * #{$auth-layout-padding});
+   // height: calc(100vh - 2 * #{$auth-layout-padding});
   }
 
   .navigation .link {
@@ -32,31 +31,33 @@
   nb-card-body {
     display: flex;
     width: 100%;
+    padding: 0!important;
   }
 
   nb-auth-block {
     margin: auto;
-    height: 100%;
+    max-width: 100%!important;
+   // overflow: hidden;
+    min-height: 40vh;
+
   }
 
   @include media-breakpoint-down(sm) {
     nb-card {
       border-radius: 0;
-      height: 100vh;
+      //min-height: 80vh;
     }
   }
 
   ::ng-deep {
     nb-layout .layout .layout-container .content .columns nb-layout-column {
+     // background-color:#fff;
       padding: $auth-layout-padding;
-      background-color: #FFFFFF;
+    // padding: 0 0 $auth-layout-padding 0;
 
       @include media-breakpoint-down(sm) {
         padding: 0;
       }
     }
   }
-}
-.nb-layout {
-  background-color: #b94a48;
 }

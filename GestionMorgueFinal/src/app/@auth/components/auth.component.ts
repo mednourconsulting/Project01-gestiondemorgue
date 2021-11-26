@@ -14,16 +14,14 @@ import { takeWhile } from 'rxjs/operators';
   styleUrls: ['./auth.component.scss'],
   template: `
     <nb-layout>
-      <nb-layout-column >
-        <nb-auth-block>
-          <nb-card>
-            <nb-card-body>
-              <nb-auth-block>
-                <router-outlet></router-outlet>
-              </nb-auth-block>
-            </nb-card-body>
-          </nb-card>
-        </nb-auth-block>
+      <nb-layout-column>
+        <nb-card>
+          <nb-card-body>
+            <nb-auth-block>
+              <router-outlet></router-outlet>
+            </nb-auth-block>
+          </nb-card-body>
+        </nb-card>
       </nb-layout-column>
     </nb-layout>
   `,

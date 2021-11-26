@@ -1,6 +1,6 @@
 
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-sm-12">Ajouter une cause de décès</div>
     </div>
@@ -53,15 +53,13 @@
     </form>
 </nb-card-body>
 </nb-card>
-
-
-
-<div class="card">
-  <div class="card-header">
-    Liste des Bulletins
-  </div>
+<nb-card>
+  <nb-card-header class="card-header">
+    <div class="row">
+      <div class="col-sm-12"> Liste des Bulletins</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
-
     <ng2-smart-table
       [settings]="settings"
       [source]="source"
@@ -69,6 +67,6 @@
       (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>
 
 

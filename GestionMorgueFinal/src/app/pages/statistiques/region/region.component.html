@@ -1,71 +1,28 @@
-<!--
-<div class="row">
-<div class="col-lg-1">
-</div>
-<div class="col-lg-10">
-  <nb-card align="center">
-  <nb-card-header>
-        Les statistiques selon les régions
-  </nb-card-header>
-  <nb-card-body>
-    <ngx-regionchart></ngx-regionchart>
-  </nb-card-body>
-</nb-card>
-</div>
-</div>
--->
 
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header">
     Les statistiques selon les régions
   </nb-card-header>
   <nb-card-body>
     <div class="row">
+
       <div class="col-md-3">
-        <div class="input-group-prepend">
-          <!--  <span class="input-group-text" id="basic-addon1" *ngIf="name.valid" (click)="get(annee)">
-              <i class="fa fa-chart-bar" ></i></span> -->
-          <input type="text"
-                 name="name" class="form-control"
-                 required minlength="4" appForbiddenName="bob"
-                 [(ngModel)]="annee" #name="ngModel"
-                 (ngModelChange)="get(annee)">
-        </div>
+        <form  autocomplete="off" [formGroup]="reactiveForm" (ngSubmit)="OnSubmit()">
+          <input type="number" min="1900" max="2099" step="1"
+                 class="form-control"
+                 formControlName="annee">
+          <ngx-validation-message label="filtre"
+                                  [showMin]="getControl('annee')?.hasError('min')"
+                                  [showMax]="getControl('annee')?.hasError('max')"
+                                  [min]="1900"
+                                  [max]="2099"
+                                  [showRequired]="!getControl('annee').valid && getControl('annee').touched">
+          </ngx-validation-message>
+        </form>
       </div>
-      <!--
-       <div class="col-8">
-       </div>
-       <div class="col-2">
-       <div class="input-group mb-3">
-         <div class="input-group-prepend">
-       <span class="input-group-text" id="basic-addon1" *ngIf="name.valid" (click)="get(annee)">
-         <i class="fa fa-chart-bar" ></i></span>
-           <input type="text"
-                  id="name" name="name" class="form-control"
-                  required minlength="4" appForbiddenName="bob"
-                  [(ngModel)]="annee" #name="ngModel">
-         </div>
-         <div *ngIf="name.invalid && (name.dirty || name.touched)"
-              class="alert">
-
-           <div *ngIf="name.errors?.required">
-             année est nécessaire.
-           </div>
-           <div *ngIf="name.errors?.minlength">
-             les années doivent comporter au moins 4 caractères         </div>
-         </div>
-
-
-       </div>
-     </div>
-       <div class="col-2">
-       </div>
-       -->
     </div>
     <div class="row">
-      <div class="col-md-1">
-      </div>
-      <div class="col-md-10">
+      <div class="col-md-12">
 
     <div style="display: block">
       <canvas mdbChart
@@ -80,8 +37,6 @@
       </canvas>
     </div>
       </div>
-        <div class="col-md-1">
-        </div>
     </div>
     <div class="row">
       <div class="col-12">

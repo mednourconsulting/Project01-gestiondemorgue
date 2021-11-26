@@ -62,7 +62,7 @@ export class PagesMenu {
             link: '/pages/documents-admin/medicolegal',
           },
           {
-            title: 'Certificat de constation',
+            title: 'Certificat de constatation',
             link: '/pages/documents-admin/constation',
           },
           {

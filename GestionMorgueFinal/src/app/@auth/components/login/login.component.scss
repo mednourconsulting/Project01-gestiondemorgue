@@ -1,5 +1,8 @@
+@import '../../../@theme/styles/myStyle';
 .login-page {
-  padding: 5px 20px;
+  padding: 3rem;
+  margin: auto;
+  width: 60%;
 }
 .login-img img {
   width: 199.5px;
@@ -23,12 +26,22 @@
 }
 
 .login-button {
-  width: 250px!important;
-  border-radius:30px !important;
+ // width: 250px!important;
+ // border-radius:30px !important;
   padding:1rem!important;
   font-size: 18px !important;
   margin-bottom: 2rem;
 }
 .login-actions {
   margin-top: 4rem;
+}
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.left-column {
+  padding: 2rem;
+  background-color: $color_blue;
 }

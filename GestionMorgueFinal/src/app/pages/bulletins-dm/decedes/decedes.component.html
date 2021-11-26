@@ -1,12 +1,10 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <nb-card>
-    <nb-card-header class="hostt">
+    <nb-card-header class="card-header">
         <div class="row">
             <div class="col-sm-12">Ajouter Les Informations D'un Décédé</div>
         </div>
     </nb-card-header>
-    <nb-card-body class="host">
+    <nb-card-body>
 
         <nb-tabset>
 
@@ -88,8 +86,6 @@
                                     <input  class="form-control"
                                             formControlName="dateNaissance"
                                            type="Date"
-
-
                                            name= "dateNaissance"
                                            required
                                            id="DateNai"
@@ -340,11 +336,10 @@
                                     <label class="label">Lieu Décès</label>
                                     <nb-select formControlName="lieuxDeces"
                                                class="type-select "
-
                                                name= "lieuxDeces"
                                                required
                                                fullWidth
-                                               placeholder="lieu Deces">
+                                               placeholder="Lieu Deces">
                                         <nb-option *ngFor="let t of lieuDecesList" [value]="t.value">{{t.title}}</nb-option>
                                     </nb-select>
                                   <ngx-validation-message label="Lieu Décès"
@@ -391,7 +386,6 @@
                                     <label class="label">Nature de la mort</label>
                                     <nb-select formControlName="natureMort"
                                                class="type-select "
-
                                                name= "natureMort"
                                                required
                                                fullWidth
@@ -570,7 +564,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </ng-template>
                             </div>
                         </div>
@@ -657,12 +650,14 @@
       </form>
     </nb-card-body>
 </nb-card>
-<div class="card">
-  <div class="card-header">
-    Liste des décédés
-  </div>
+<nb-card>
+  <nb-card-header class="card-header">
+    <div class="row">
+      <div class="col-sm-12"> Liste des décédés</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
     <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>

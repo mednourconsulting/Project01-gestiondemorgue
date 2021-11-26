@@ -5,7 +5,7 @@
  */
 
 @import '../@theme/styles/themes';
-
+@import '../@theme/styles/myStyle';
 @include nb-install-component() {
   ::ng-deep router-outlet + * {
     display: block;
@@ -22,28 +22,8 @@
     }
   }
 }
-.ng-valid[required], .ng-valid.required {
-  border-left: 5px solid #42A948; /* green */
-}
-
-.ng-invalid:not(form) {
-  border-left: 5px solid #ff0400; /* red */
-}
-
-//to change the table scrollbar
+//to change the page's scrollbar
 /* width */
-:host ::ng-deep .table::-webkit-scrollbar {
-  height: 0.8em!important;
-}
-/* Handle on hover */
-:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
-  background: #005C68;
-}
-
-/* Track */
-:host ::ng-deep .table::-webkit-scrollbar-track {
-  // background: #cacaca;
-}
 //---------------------------------------
 :host ::ng-deep {
   nb-layout div.scrollable-container div.scrollable::-webkit-scrollbar,
@@ -76,5 +56,8 @@
   nb-sidebar .main-container {
     height: 90vh!important;
     width: 16rem!important;
+  }
+   nb-auth-block {
+    max-width: 60rem!important;
   }
 }

@@ -1,0 +1,49 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+$font_tajawal : 'Tajawal', sans-serif;
+$bold_font : 700;
+$color_blue : #5c7aea;
+$color_lightGray : #dfe2e2;
+$color_darkGray : #738598;
+$color_white : #ffffff;
+$color_darkBlue : #0d1b40;
+$color_darkRed : #ff003b;
+$color_red : #ff0400;
+$color_lightGreen : #42a948;
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+$font_tajawal : 'Tajawal', Helvetica, Arial, sans-serif;
+$bold_font : 700;
+$color_blue : #5c7aea;
+$color_lightGray : #dfe2e2;
+$color_darkGray : #738598;
+$color_white : #ffffff;
+$color_darkBlue : #0d1b40;
+$color_red : #ff0400;
+$color_lightGreen : #42a948;
+
+%my-label {
+  font-size: 14px!important;
+  font-weight: 400!important;
+}
+%my-card-header {
+  background-color:$color_blue;
+  color: $color_white;
+  font-family: $font_tajawal;
+  font-weight: $bold_font;
+  font-size: 20px;
+  text-transform: capitalize;
+}
+%my-nb-card {
+  font-family: $font_tajawal;
+}
+@mixin my-background ($color) {
+  background-color: $color;
+}
+@mixin my-fa-icon ($color) {
+  color: $color;
+  font-size: 20px;
+}
+@mixin my-ng-validation ($color) {
+  border-left: 5px solid $color;
+}

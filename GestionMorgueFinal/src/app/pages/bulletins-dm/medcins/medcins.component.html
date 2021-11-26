@@ -1,5 +1,5 @@
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-sm-12">Ajouter un Médecin</div>
     </div>
@@ -11,7 +11,7 @@
         <div class="form-group">
           <label  class="label">Nom du Medecin</label>
           <input formControlName="nom" class="form-control" type="text"
-                 id="nom" placeholder="Nom Médecin" required="true">
+                 id="nom" placeholder="Nom Médecin" required>
           <ngx-validation-message label="Nom Medecin"
                                   [showRequired]="!getControl('nom').valid && getControl('nom').touched"
                                   [fr]="getControl('nom')?.hasError('pattern')"></ngx-validation-message>
@@ -21,7 +21,7 @@
         <div class="form-group">
           <label  class="label">Prénom du Médecin</label>
           <input formControlName="prenom" class="form-control" type="text"
-                 id="prenom" placeholder="Prenom Médecin" required="true">
+                 id="prenom" placeholder="Prenom Médecin" required>
           <ngx-validation-message label="Prenom Médecin"
                                   [showRequired]="!getControl('prenom').valid && getControl('prenom').touched"
                                   [fr]="getControl('prenom')?.hasError('pattern')"></ngx-validation-message>
@@ -31,7 +31,7 @@
         <div class="form-group">
           <label  class="label">Adresse du Médecin</label>
           <input formControlName="adress" class="form-control" type="text"
-                 id="adresse" placeholder="Adresse de Médecin"required="true">
+                 id="adresse" placeholder="Adresse de Médecin"required>
           <ngx-validation-message label="Adresse de Médecin"
                                   [showRequired]="!getControl('adress').valid && getControl('adress').touched"
                                   [addressFr]="getControl('adress')?.hasError('pattern')">
@@ -44,7 +44,7 @@
         <div class="form-group">
           <label  class="label">الإسم العائلي</label>
           <input formControlName="nomAR" class="form-control" type="text"
-                 id="nomAR" placeholder="الإسم العائلي"required="true">
+                 id="nomAR" placeholder="الإسم العائلي"required>
           <ngx-validation-message label="الإسم العائلي"
                                   [showRequired]="!getControl('nomAR').valid && getControl('nomAR').touched"
                                   [ar]="getControl('nomAR')?.hasError('pattern')">
@@ -55,7 +55,7 @@
         <div class="form-group">
           <label  class="label">الإسم الشخصي</label>
           <input formControlName="prenomAR" class="form-control" type="text"
-                 id="prenomAR" placeholder="الإسم الشخصي"required="true">
+                 id="prenomAR" placeholder="الإسم الشخصي"required>
           <ngx-validation-message label="الإسم الشخصي"
                                   [showRequired]="!getControl('prenomAR').valid && getControl('prenomAR').touched"
                                   [ar]="getControl('prenomAR')?.hasError('pattern')">
@@ -66,7 +66,7 @@
         <div class="form-group">
           <label  class="label">العنوان</label>
           <input formControlName="adressAR" class="form-control" type="text"
-                 id="AdresseAR" placeholder="العنوان"required="true">
+                 id="AdresseAR" placeholder="العنوان"required>
           <ngx-validation-message label="العنوان"
                                   [showRequired]="!getControl('adressAR').valid && getControl('adressAR').touched"
                                   [addressAr]="getControl('adressAR')?.hasError('pattern')">
@@ -79,7 +79,7 @@
         <div class="form-group">
           <label  class="label">CIN d'encadrant</label>
           <input formControlName="cin" class="form-control" type="text"
-                 id="cin" placeholder="CIN d'encadrant" required="true">
+                 id="cin" placeholder="CIN d'encadrant" required>
           <ngx-validation-message label="CIN d'encadrant"
                                   [showRequired]="!getControl('cin').valid && getControl('cin').touched"
                                   [fr]="getControl('cin')?.hasError('pattern')">
@@ -94,10 +94,12 @@
     </form>
   </nb-card-body>
 </nb-card>
-<div class="card">
-  <div class="card-header">
-    Liste des Médecins
-  </div>
+<nb-card>
+  <nb-card-header class="card-header">
+    <div class="row">
+      <div class="col-sm-12">Liste des Médecins</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
     <ng2-smart-table [settings]="settings"
                      [source]="source"
@@ -105,7 +107,7 @@
                      (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>
 
 
 

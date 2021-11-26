@@ -1,6 +1,6 @@
 
   <nb-card >
-    <nb-card-header>
+    <nb-card-header class="card-header">
       <div class="row">
         <div class="col-sm-12">Ajouter un Bulletin</div>
       </div>
@@ -13,7 +13,7 @@
             <label  class="label">Type de bulletin</label>
             <nb-select  formControlName="typeBulletin"
                         class="type-select "
-                        nbSelect fullWidth
+                         fullWidth
                         placeholder="Type de bulletin"
                         required>
               <nb-option *ngFor="let t of typeBulletinList" [value]="t.value" >{{ t.title }}</nb-option>
@@ -28,9 +28,9 @@
             <label  class="label">Province ou préfecture</label><br>
             <nb-select  formControlName="province"
                         class="type-select "
-                        nbSelect fullWidth
+                         fullWidth
                         placeholder="Province ou préfecture"
-                        required="true">
+                        required>
               <nb-option *ngFor="let t of provinceList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Province ou préfecture"
@@ -43,11 +43,11 @@
             <label  class="label">Date de déclaration</label>
             <input
               type="date"
-              fullWidth
+
               name= "declaration"
               class="form-control"
               placeholder="Date de déclaration"
-              required="true"
+              required
               formControlName="declaration"
               (ngModelChange)="Bulletins.declaration = $event"
               />
@@ -66,7 +66,7 @@
             <input formControlName="cercle"
                    class="form-control"
                    type="text"
-                   fullWidth
+
                    name= "cercle"
                    required
                    id="cercle"
@@ -83,9 +83,9 @@
             <input formControlName="centre"
                    class="form-control"
                    type="text"
-                   fullWidth
+
                    name= "centre"
-                   required="true"
+                   required
                    id="municipalite"
                    placeholder="Municipalité/Centre/Commune"
             >
@@ -100,9 +100,8 @@
             <label  class="label">Attestation de diagnostic</label>
             <nb-select  formControlName="diagnostique"
                         class="type-select "
-                        nbSelect
                         fullWidth
-                        required="true"
+                        required
                         placeholder="Diagnostique Attestation"
             >
               <nb-option *ngFor="let t of diagnostiqueList" [value]="t.value" >{{ t.title }}</nb-option>
@@ -120,11 +119,8 @@
             <label  class="label">Lieu de résidence</label>
             <nb-select  formControlName="residece"
                         class="type-select"
-                        nbSelect
-                        fullWidth
-                        name= "residece"
-                        required="true"
-                        placeholder="lieu de résidence"
+                        fullWidth required
+                        placeholder="Lieu de résidence"
                         >
               <nb-option *ngFor="let t of milieuList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -136,14 +132,11 @@
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <label  class="label">lieu d'enterrement
+            <label  class="label">Lieu d'enterrement
             </label>
             <nb-select  formControlName="lieuEntrement"
                         class="type-select "
-                        nbSelect
-                        fullWidth
-                        name= "lieuEntrement"
-                        required="true"
+                        fullWidth required
                         placeholder="Lieu Enterrement"
                         >
               <nb-option *ngFor="let t of lieuList" [value]="t.value" >{{ t.title }}</nb-option>
@@ -158,10 +151,9 @@
           <div class="form-group">
             <label  class="label">Cimetière</label>
             <nb-select  formControlName="cimetiere"
-                        lass="type-select "
-                        nbSelect
+                        class="type-select "
                         fullWidth
-                        required="true"
+                        required
                         placeholder="Cimetière"
             >
               <nb-option *ngFor="let t of cimetiereList" [value]="t.value" >{{ t.title }}</nb-option>
@@ -182,8 +174,8 @@
                    type="number"
                    min="1"
                    name= "numTombe"
-                   required="true"
-                   fullWidth
+                   required
+
                    placeholder="Numéro de tombe"
             >
             <ngx-validation-message label="Numéro de tombe"
@@ -197,11 +189,9 @@
             <input formControlName="compostage"
                    class="form-control"
                    type="text"
-
-                   fullWidth
                    id="Compostage"
                    placeholder="Compostage"
-                   status="info">
+                  >
             <ngx-validation-message label="Compostage"
                                     [fr]="getControl('compostage')?.hasError('pattern')">
             </ngx-validation-message>
@@ -213,9 +203,9 @@
             <!--nb-select  formControlName="decede"
                         class="type-select "
                         nbSelect
-                        fullWidth
+
                         placeholder="registration number"
-                        required="true">
+                        required>
               <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
 
               <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
@@ -225,7 +215,7 @@
                    type="text"
                    formControlName="decede"
                    class="form-control"
-                   required="true"
+                   required
 
                    (input)="onChangeDecede()"
                    placeholder="Décédé"
@@ -253,9 +243,9 @@
             <label  class="label">Médecin</label><br>
             <!--nb-select  formControlName="medecin" class="type-select "
                         nbSelect
-                        fullWidth
+
                         placeholder="registration number"
-                        required="true"
+                        required
                         (change)="onChange($event.target.value)">
               <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
               <nb-option *ngFor="let t of NomDMedcin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
@@ -265,7 +255,7 @@
                    class="form-control"
                    type="text"
                    formControlName="medecin"
-                   required="true"
+                   required
                    (input)="onChangeMedcin()"
                    placeholder="Médecin"
                    [nbAutocomplete]="auto" />
@@ -283,10 +273,6 @@
           </div>
         </div>
       </div>
-
-
-
-
       <div class="row">
         <div class="col-md-12">
           <div class="float-right">
@@ -299,22 +285,21 @@
       </form>
     </nb-card-body>
   </nb-card>
-<div class="card">
-  <div class="card-header">
-    Liste des Bulletins
-  </div>
-  <div class="table table-responsive">
+ <nb-card class="table-card">
+   <nb-card-header class="card-header">
+     <div class="row">
+       <div class="col-sm-12">Liste des Bulletins</div>
+     </div>
+   </nb-card-header>
 
-    <ng2-smart-table [settings]="settings"
-                     [source]="source"
-                     (custom)="onCustomConfirm($event)"
-                     >
-    </ng2-smart-table>
-  </div>
-</div>
+     <div class="table table-responsive">
 
+       <ng2-smart-table [settings]="settings"
+                        [source]="source"
+                        (custom)="onCustomConfirm($event)">
+       </ng2-smart-table>
+     </div>
 
-
-
+  </nb-card>
 
 

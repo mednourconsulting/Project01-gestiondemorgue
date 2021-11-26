@@ -1,5 +1,5 @@
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-sm-12">Ajout d'un certificat d'enterrement</div>
     </div>
@@ -44,8 +44,8 @@
       </div>
     </div>
     <div class="float-right">
-      <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="danger">Enregistrer</button>
-      <button class="btn mr-1 "  (click)="reactiveForm.reset()" type="submit" nbButton  status="danger" outline>Annuler</button>
+      <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
+      <button class="btn mr-1 "  (click)="reactiveForm.reset()" type="submit" nbButton  status="info" outline>Annuler</button>
       <!--
       <button class="btn btn-secondary" (click)="generatePdf('open')" type="submit" nbButton  status="danger" outline>Certificat</button>
       -->
@@ -53,16 +53,20 @@
     </form>
   </nb-card-body>
 </nb-card>
-<div class="card">
-  <div class="card-header">
-    Liste des certificats d'enterrement
-  </div>
+<nb-card class="table-card">
+  <nb-card-header class="card-header">
+    <div class="row">
+      <div class="col-sm-12">Liste des certificats d'enterrement</div>
+    </div>
+  </nb-card-header>
+
   <div class="table table-responsive">
+
     <ng2-smart-table [settings]="settings" [source]="source" (editConfirm)="onEditConfirm($event)" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
 
+</nb-card>
 
 
 

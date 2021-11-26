@@ -1,16 +1,16 @@
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header">
     <div class="row">
       <div class="col-sm-12">Liste des Certificats de constatation des décès </div>
     </div>
   </nb-card-header>
-  <nb-card-body>
-    <ng2-smart-table class="table "
+    <div class="table table-responsive">
+    <ng2-smart-table
       [settings]="settings"
       [source]="source"
       (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
-  </nb-card-body>
+    </div>
 </nb-card>
 
 
