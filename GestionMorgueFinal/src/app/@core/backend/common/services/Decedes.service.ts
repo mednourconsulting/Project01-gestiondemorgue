@@ -40,6 +40,13 @@ export class DecedesService {
         catchError(this.errorHandl),
       );
   }
+  public defineRegisterNumber(data: Decedes): Observable<Decedes> {
+    return this.http.put(this.baseurl + '/defineRegisterNumber', data, this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl),
+      );
+  }
 
 
 

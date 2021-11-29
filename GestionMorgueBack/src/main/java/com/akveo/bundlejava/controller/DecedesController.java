@@ -62,4 +62,9 @@ public class DecedesController {
        return this.decedesService.delete(id);
 
     }
+
+    @PutMapping("/defineRegisterNumber")
+    public ResponseEntity<Decedes> defineRegisterNumber(@RequestBody Decedes decede) {
+        return ResponseEntity.ok(this.decedesService.defineRegisterNumber(decede));
+    }
 }

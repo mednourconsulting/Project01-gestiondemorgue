@@ -105,9 +105,9 @@ export class DecedesComponent implements OnInit {
       ],
     },
     columns: {
-      id: {
-        title: 'numéro de registre',
-        type: 'number',
+      numRegister: {
+        title: 'Numéro de registre',
+        type: 'string',
         editable: false,
       },
       nom: {
@@ -375,7 +375,7 @@ export class DecedesComponent implements OnInit {
   private reset() {
     this.decede = new Decedes();
   }
-  private checkIfNullOrUndefind(attribute) {
+  private static checkIfNullOrUndefind(attribute) {
     if (attribute === null || attribute === undefined  ) {
       return ' ';
     } else {
@@ -483,21 +483,24 @@ export class DecedesComponent implements OnInit {
                   fontSize: 11,
                   lineHeight: 1.3,
                   // margin: [0, 10, 0, 10],
-                  text: 'Décès survenu le:  ' + this.checkIfNullOrUndefind(this.ConvertDate(list.dateDeces)) + '  à '
-                    + this.checkIfNullOrUndefind(list.heure) +
-                    ' \tS\'agit-il d\'un mort-né ?  ' + this.checkIfNullOrUndefind(this.getTexte(list.mortNe)) +
+                  text: 'Décès survenu le:  ' +
+                    DecedesComponent.checkIfNullOrUndefind(this.ConvertDate(list.dateDeces)) + '  à '
+                    + DecedesComponent.checkIfNullOrUndefind(list.heure) +
+                    ' \tS\'agit-il d\'un mort-né ?  '
+                    + DecedesComponent.checkIfNullOrUndefind(this.getTexte(list.mortNe)) +
                     '\n'
-                    + 'lieu décès  :  ' + this.checkIfNullOrUndefind(list.lieuxDeces) + '\n'
-                    + 'Nom:  ' + this.checkIfNullOrUndefind(list.nom) + '\t\t\t Prénom: ' +
-                    list.prenom + '\t\t\t CIN: ' + this.checkIfNullOrUndefind(list.cin) + '\n'
-                    + 'Sexe:  ' + this.checkIfNullOrUndefind(list.sexe) + '\t\t Nationalité: ' +
-                    this.checkIfNullOrUndefind(list.nationalite)
-                    + '\nDate de naissance:  ' + this.checkIfNullOrUndefind(this.ConvertDate(list.dateNaissance)) +
-                    '\t\t Lieu de naissance: ' + this.checkIfNullOrUndefind(list.lieuNaiss)
-                    + '\nAdresse du domicile habituel :  ' + this.checkIfNullOrUndefind(list.adresse)
+                    + 'lieu décès  :  ' + DecedesComponent.checkIfNullOrUndefind(list.lieuxDeces) + '\n'
+                    + 'Nom:  ' + DecedesComponent.checkIfNullOrUndefind(list.nom) + '\t\t\t Prénom: ' +
+                    list.prenom + '\t\t\t CIN: ' + DecedesComponent.checkIfNullOrUndefind(list.cin) + '\n'
+                    + 'Sexe:  ' + DecedesComponent.checkIfNullOrUndefind(list.sexe) + '\t\t Nationalité: ' +
+                    DecedesComponent.checkIfNullOrUndefind(list.nationalite)
+                    + '\nDate de naissance:  '
+                    + DecedesComponent.checkIfNullOrUndefind(this.ConvertDate(list.dateNaissance)) +
+                    '\t\t Lieu de naissance: ' + DecedesComponent.checkIfNullOrUndefind(list.lieuNaiss)
+                    + '\nAdresse du domicile habituel :  ' + DecedesComponent.checkIfNullOrUndefind(list.adresse)
                     + '\nY\'a-t-il un obstacle médico-légal?  ' +
-                    this.checkIfNullOrUndefind(this.getTexte(list.obstacle))
-                    + '\n N° de l\'acte au registre des décès :  ' + this.checkIfNullOrUndefind(list.id),
+                    DecedesComponent.checkIfNullOrUndefind(this.getTexte(list.obstacle))
+                    + '\n N° de l\'acte au registre des décès :  ' + DecedesComponent.checkIfNullOrUndefind(list.id),
                 },
                 {
                   border: [true, false, true, true],
@@ -530,7 +533,7 @@ export class DecedesComponent implements OnInit {
               ],
               [
                 {
-                  text: 'N° de l\'acte au registre des décès : ' + this.checkIfNullOrUndefind(list.id) ,
+                  text: 'N° de l\'acte au registre des décès : ' + DecedesComponent.checkIfNullOrUndefind(list.id) ,
                   border: [true, false, true, false],
                   fontSize: 10,
                   colSpan: 2,
@@ -608,11 +611,12 @@ export class DecedesComponent implements OnInit {
                 {
                   border: [true, true, true, false],
                   margin: [0, 5, 0, 0],
-                  text: 'S\'agit-il d\'un mort-né?  ' + this.checkIfNullOrUndefind(this.getTexte(list.mortNe) ) +
-                    '\t \t Lieu de décès : ' + this.checkIfNullOrUndefind(list.lieuxDeces)
-                    + '\n Sexe : ' + this.checkIfNullOrUndefind(list.sexe) + ' \t\t\t Date de décès : '
-                    + this.checkIfNullOrUndefind(this.ConvertDate(list.dateDeces))  + '\t\t\t Nationalité : ' +
-                    list.nationalite + '\nEtat matrimonial : ' + this.checkIfNullOrUndefind(list.etat) +
+                  text: 'S\'agit-il d\'un mort-né?  '
+                    + DecedesComponent.checkIfNullOrUndefind(this.getTexte(list.mortNe) ) +
+                    '\t \t Lieu de décès : ' + DecedesComponent.checkIfNullOrUndefind(list.lieuxDeces)
+                    + '\n Sexe : ' + DecedesComponent.checkIfNullOrUndefind(list.sexe) + ' \t\t\t Date de décès : '
+                    + DecedesComponent.checkIfNullOrUndefind(this.ConvertDate(list.dateDeces))  + '\t\t\t Nationalité : ' +
+                    list.nationalite + '\nEtat matrimonial : ' + DecedesComponent.checkIfNullOrUndefind(list.etat) +
                     '\t\t\t\tDate de naissance : ' + this.ConvertDate(list.dateNaissance),
                 },
               ],
@@ -747,7 +751,7 @@ export class DecedesComponent implements OnInit {
               [
                 {
                   border: [true, true, true, false],
-                  text: 'Circonstances du décès : \t' + this.checkIfNullOrUndefind(list.causeMort) ,
+                  text: 'Circonstances du décès : \t' + DecedesComponent.checkIfNullOrUndefind(list.causeMort) ,
                   fontSize: 10,
                   colSpan: 2,
                   bold: true,
@@ -773,18 +777,19 @@ export class DecedesComponent implements OnInit {
               [
                 {
                   border: [true, false, true, true],
-                  text: 'Date de survenue : ' + this.checkIfNullOrUndefind(this.ConvertDate(list.dateServ)) +
-                    '\n\n Lieu de survenue : ' + this.checkIfNullOrUndefind(list.lieuServ) + '\n\n Circonstances de survenue : ' +
-                    this.checkIfNullOrUndefind(list.circonServ) ,
+                  text: 'Date de survenue : '
+                    + DecedesComponent.checkIfNullOrUndefind(this.ConvertDate(list.dateServ)) +
+                    '\n\n Lieu de survenue : ' + DecedesComponent.checkIfNullOrUndefind(list.lieuServ) + '\n\n Circonstances de survenue : ' +
+                    DecedesComponent.checkIfNullOrUndefind(list.circonServ) ,
                   rowSpan: 3,
                   fontSize: 12,
                 },
                 {
                   border: [true, false, true, true],
                   lineHeight: 1.3,
-                  text: 'Une autopsie a-t-elle été demandé ? ' + this.checkIfNullOrUndefind(list.autopsie) +
+                  text: 'Une autopsie a-t-elle été demandé ? ' + DecedesComponent.checkIfNullOrUndefind(list.autopsie) +
                     '\n Si oui les résultats ont-ils été utilisés dans certification ? ' +
-                    this.checkIfNullOrUndefind(list.resultatsAutopsie) ,
+                    DecedesComponent.checkIfNullOrUndefind(list.resultatsAutopsie) ,
                   fontSize: 12,
                 },
               ],
@@ -803,10 +808,11 @@ export class DecedesComponent implements OnInit {
                 {
                   lineHeight: 1.3,
                   text: 'Intervention chirurgicale récente: \n Une operation a-t-elle ' +
-                    'été effectuées lors des 4 dernières semaines ? ' + this.checkIfNullOrUndefind(list.operation)  +
+                    'été effectuées lors des 4 dernières semaines ? '
+                    + DecedesComponent.checkIfNullOrUndefind(list.operation)  +
                     '\n Si oui, Date de l\'opération: ' +
-                    this.checkIfNullOrUndefind(this.ConvertDate(list.dateOperation)) +
-                    ' \n motif de l\'operation:  ' + this.checkIfNullOrUndefind(list.motifOperation) ,
+                    DecedesComponent.checkIfNullOrUndefind(this.ConvertDate(list.dateOperation)) +
+                    ' \n motif de l\'operation:  ' + DecedesComponent.checkIfNullOrUndefind(list.motifOperation) ,
                   fontSize: 12,
                   border: [false, false, true, false],
                 },
@@ -831,10 +837,12 @@ export class DecedesComponent implements OnInit {
                 {
                   lineHeight: 1.3,
                   text: 'Le décès est-il survenu pendant une grosesse ou moins d\'un an après sa terminaison ?' +
-                    this.checkIfNullOrUndefind(list.decesGrossesse)
+                    DecedesComponent.checkIfNullOrUndefind(list.decesGrossesse)
                    +
-                    '\nSi oui, le décès de la femme est-il survenu : ' + this.checkIfNullOrUndefind(list.decesFemme)  +
-                    '\nLa grossesse a-t-elle contribué au decès ? ' + this.checkIfNullOrUndefind(list.contribueGros),
+                    '\nSi oui, le décès de la femme est-il survenu : '
+                    + DecedesComponent.checkIfNullOrUndefind(list.decesFemme)  +
+                    '\nLa grossesse a-t-elle contribué au decès ? '
+                    + DecedesComponent.checkIfNullOrUndefind(list.contribueGros),
                   fontSize: 12,
                   border: [true, false, true, true],
                 },
@@ -842,12 +850,13 @@ export class DecedesComponent implements OnInit {
                   fontSize: 12,
                   border: [true, false, true, true],
                   lineHeight: 1.3,
-                  text: '-Grossesse multiple ? ' + this.checkIfNullOrUndefind(list.grossesseMultiple)  + '\n' +
-                    '-Age gestationnel: ' + this.checkIfNullOrUndefind(list.ageGestationnel)  + '\n' +
-                    '-Poids à la naissance (en grammes): ' + this.checkIfNullOrUndefind(list.poidsNaissance) + '\n' +
-                    '-Age de la mère en années: ' + this.checkIfNullOrUndefind(list.ageMere) + '\n' +
+                  text: '-Grossesse multiple ? ' + DecedesComponent.checkIfNullOrUndefind(list.grossesseMultiple)  + '\n' +
+                    '-Age gestationnel: ' + DecedesComponent.checkIfNullOrUndefind(list.ageGestationnel)  + '\n' +
+                    '-Poids à la naissance (en grammes): '
+                    + DecedesComponent.checkIfNullOrUndefind(list.poidsNaissance) + '\n' +
+                    '-Age de la mère en années: ' + DecedesComponent.checkIfNullOrUndefind(list.ageMere) + '\n' +
                     '-Maladie ou affection maternelle ayant affecté le fœtus ou le nouveau-né: ' +
-                    this.checkIfNullOrUndefind(list.maladie) },
+                    DecedesComponent.checkIfNullOrUndefind(list.maladie) },
               ],
               [
                 {
@@ -1038,18 +1047,21 @@ export class DecedesComponent implements OnInit {
       decede.circonServ = formValues.circonServ ;
       decede.dateOperation = formValues.dateOperation;
       decede.motifOperation = formValues.motifOperation ;
-      decede.numRegister = formValues.numRegister;
+      // decede.numRegister = formValues.numRegister;
     return decede;
   }
   doSave(decede) {
     if ( this.id == null) {
       this.service.create(decede).subscribe(obj => {
-        // decede.numRegister = 'DC00' + decede.id;
-        this.source.push(obj);
-        this.source = this.source.map(e => e);
+        console.warn('the obj', obj);
+        this.service.defineRegisterNumber(obj).subscribe(data => {
+          console.warn('the data', data);
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+          this.toastService.toastOfSave('success');
+          this.reactiveForm.reset();
+        });
       });
-      this.toastService.toastOfSave('success');
-      this.reactiveForm.reset();
     } else {
       if (this.isAdmin) {
       this.service.update(decede).subscribe(data1 => {
