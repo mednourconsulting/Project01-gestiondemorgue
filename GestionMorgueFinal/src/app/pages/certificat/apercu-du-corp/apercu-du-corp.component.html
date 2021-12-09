@@ -5,15 +5,19 @@
 
   </nb-card-header>
   <nb-card-body>
-    <form autocomplete="off"  [formGroup]="reactiveForm">
+    <form autocomplete="off"  [formGroup]="dataService.reactiveForm">
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Décédé</label>
-          <nb-select formControlName="defunt" class="type-select "   fullWidth
-                      placeholder="choisir décédé..." required>
-            <nb-option *ngFor="let t of NomDeced" [value]="t.id" >{{ t.nom }} {{ t.prenom }}</nb-option>
-          </nb-select>
+          <ngx-select formControlName="defunt"
+                      class="form-control"
+                      [items]="listDeced"
+                      (select)="doSelectD($event)"
+                      (remove)="doRemoveD($event)"
+                      placeholder="choisir décédé..."
+                      required>
+          </ngx-select>
           <ngx-validation-message label="Décédé"
                                   [showRequired]="!getControl('defunt').valid && getControl('defunt').touched">
           </ngx-validation-message>
@@ -36,10 +40,15 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Médecin/ Assistant de santé</label>
-          <nb-select formControlName="medecin"  class="type-select "  fullWidth
-                     placeholder="choisir médecin..." required>
-            <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.nom}} {{t.prenom}}</nb-option>
-          </nb-select>
+          <ngx-select formControlName="medecin"
+                      class="form-control"
+                      [items]="listMedcin"
+                      (select)="doSelectM($event)"
+                      (remove)="doRemoveM($event)"
+                      placeholder="choisir médecin..."
+                      required>
+
+          </ngx-select>
           <ngx-validation-message label="Médecin/ Assistant de santé"
                                   [showRequired]="!getControl('medecin').valid && getControl('medecin').touched">
           </ngx-validation-message>
@@ -59,7 +68,7 @@
 
     <div class="float-right">
       <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
-      <button class="btn mr-1 " (click)="reactiveForm.reset()" nbButton status="info" outline>Annuler</button>
+      <button class="btn mr-1 " (click)="dataService.reactiveForm.reset()" nbButton status="info" outline>Annuler</button>
       <!--
       <button  class="btn btn-secondary mr-1" (click)="generatePdf('francais')" type="submit" nbButton  status="danger" outline>Certificat</button>
       <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton  status="danger" outline>شهادة</button>
@@ -76,7 +85,7 @@
   </nb-card-header>
   <div class="table table-responsive">
     <ng2-smart-table
-      [settings]="settings"
+      [settings]="dataService.settings"
       [source]="source"
       (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
