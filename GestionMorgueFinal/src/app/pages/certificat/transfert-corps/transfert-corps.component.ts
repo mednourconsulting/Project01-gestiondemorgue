@@ -4,18 +4,12 @@ import {CertificatTransfertCorpsService} from '../../../@core/backend/common/ser
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
-import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl} from '@angular/forms';
 import {DataService} from './data.service';
 import {PdfService} from './pdf.service';
-import Data = google.maps.Data;
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'ngx-transfert-corps',
@@ -36,8 +30,8 @@ export class TransfertCorpsComponent implements OnInit {
   private filterMedecin = [];
   private filterDecede = [];
   source: Array<CertificatTransfertCorps>;
-  private MedecinHumain: null;
-  private DecedeHumain: any;
+  MedecinHumain: null;
+  DecedeHumain: any;
   constructor(private service: CertificatTransfertCorpsService,
               private serviceM: MedecinsService,
               private userservice: UsersService,

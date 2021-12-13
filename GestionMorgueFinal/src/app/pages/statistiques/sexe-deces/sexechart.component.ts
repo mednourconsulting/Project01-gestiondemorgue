@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {NbThemeService} from '@nebular/theme';
 

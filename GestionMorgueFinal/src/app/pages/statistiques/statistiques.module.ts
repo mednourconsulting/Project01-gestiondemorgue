@@ -20,7 +20,7 @@ import { EnchatschartComponent } from './deces-enfants/enchatschart.component';
 import { RegionchartComponent } from './region/regionchart.component';
 import {BadgeModule, ChartsModule, IconsModule} from 'angular-bootstrap-md';
 import {ChartModule} from 'angular2-chartjs';
-import {ComponentsModule} from "../../@components/components.module";
+import {ComponentsModule} from '../../@components/components.module';
 
 
 

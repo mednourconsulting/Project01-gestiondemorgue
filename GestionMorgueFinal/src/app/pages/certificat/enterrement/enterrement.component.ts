@@ -147,9 +147,6 @@ export class EnterrementComponent implements OnInit {
   }
 
   private getDocumentDefinition() {
-
-    // sessionStorage.setItem('resume', JSON.stringify());
-
     return {
       content: [
         {
@@ -220,9 +217,6 @@ export class EnterrementComponent implements OnInit {
     };
   }
   private getDocumentDefinition1(list) {
-
-    // sessionStorage.setItem('resume', JSON.stringify());
-
     return {
       content: [
         {
