@@ -120,6 +120,10 @@ export class NgxLoginComponent implements OnInit {
       this.type = 'text';
     }
   }
+
+  motDePasseOublie() {
+    this.router.navigateByUrl('/auth/request-password');
+  }
 }
 
 

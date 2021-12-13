@@ -62,8 +62,11 @@ export class NgxResetPasswordComponent implements OnInit {
       this.submitted = false;
       if (result.isSuccess()) {
         this.messages = result.getMessages();
+        console.warn('here success' + this.messages[0]);
       } else {
         this.errors = result.getErrors();
+        console.warn('here error' + this.errors[0]);
+
       }
 
       const redirect = result.getRedirect();
