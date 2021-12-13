@@ -6,6 +6,7 @@ import {MedecinsService} from '../../../@core/backend/common/services/Medecins.s
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'ngx-medcins',
@@ -46,11 +47,11 @@ export class MedcinsComponent implements OnInit {
       custom: [
         {
           name: 'delete',
-          title: '<i class="fa fa-trash"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Supprimer définitivement" aria-hidden="true"></i>'),
         },
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-edit"   data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -93,7 +94,8 @@ export class MedcinsComponent implements OnInit {
   constructor(private service: MedecinsService,
               private userservice: UsersService,
               private toastService: ToastrService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer) { }
 
   init() {
     this.service.getAll().subscribe(data => {

@@ -11,7 +11,7 @@ import {
   NbAutocompleteModule,
   NbButtonModule,
   NbCardModule,
-  NbCheckboxModule,
+  NbCheckboxModule, NbDialogModule,
   NbInputModule,
   NbSelectModule,
   NbTabsetModule,
@@ -20,10 +20,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {ComponentsModule} from '../../@components/components.module';
 
-
 @NgModule({
   declarations: [BulletinsDMComponent,
-    BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent],
+    BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent,
+  ],
   imports: [
     CommonModule,
     BulletinsDMRoutingModule,

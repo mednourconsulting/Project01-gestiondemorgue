@@ -14,9 +14,9 @@ import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {Router} from '@angular/router';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
-import {Observable, of} from "rxjs";
-import {map} from "rxjs/operators";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -71,19 +71,19 @@ export class MedicolegalComponent implements OnInit {
       custom: [
         {
           name: 'pdfFrancais',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: '<i class="fas fa-file-pdf"  data-toggle="tooltip" data-placement="top" title="Certificat" aria-hidden="true"></i>',
         },
         {
           name: 'pdfArabe',
-          title: '<i class="far fa-file-pdf"></i>',
+          title: '<i class="far fa-file-pdf"  data-toggle="tooltip" data-placement="top" title="الشهادة" aria-hidden="true"></i>',
         },
         {
           name: 'delete',
-          title: '<i class="fas fa-trash"></i>',
+          title: '<i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Supprimer" aria-hidden="true"></i>',
         },
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: '<i class="fas fa-edit"data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>',
         },
       ],
     },
@@ -599,13 +599,11 @@ export class MedicolegalComponent implements OnInit {
       });
       this.NomDecede.forEach(value => {
         if (value.id === data.defunt.id) {
-          console.log(value.nom);
           this.reactiveForm.controls['defunt'].setValue(value.nom);
         }
       });
       this.NomMedecin.forEach(value => {
         if (value.id === data.medecin.id) {
-          console.log(value.nom);
           this.reactiveForm.controls['medecin'].setValue(value.nom);
         }
       });

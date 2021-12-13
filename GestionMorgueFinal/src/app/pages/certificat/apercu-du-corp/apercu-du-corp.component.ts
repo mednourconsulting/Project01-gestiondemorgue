@@ -13,6 +13,7 @@ import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -67,19 +68,19 @@ export class ApercuDuCorpComponent implements OnInit {
       custom: [
         {
           name: 'pdfFrancais',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf"  data-toggle="tooltip" data-placement="top" title="Certificat" aria-hidden="true"></i>'),
         },
         {
           name: 'pdfArabe',
-          title: '<i class="far fa-file-pdf"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="far fa-file-pdf"  data-toggle="tooltip" data-placement="top" title="الشهادة" aria-hidden="true"></i>'),
         },
         {
           name: 'delete',
-          title: '<i class="fas fa-trash"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Supprimer" aria-hidden="true"></i>'),
         },
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -180,7 +181,9 @@ export class ApercuDuCorpComponent implements OnInit {
               private logoBase64: LogoBase64Service,
               private datePipe: DatePipe,
               private toastService: ToastrService,
-              private fb: FormBuilder) {}
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer,
+  ) {}
 
   init() {
     this.service.getAll().subscribe(data => {

@@ -573,19 +573,19 @@
                       <form [formGroup]="reactiveForm">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">الإسم العائلي</label>
+                                    <div class="form-group arabe">
+                                        <label class="label float-right">الإسم العائلي</label>
                                         <input formControlName="nomAR" class="form-control" type="text"   id="NomAR" required placeholder="الإسم العائلي">
-                                      <ngx-validation-message label="الإسم العائلي"
+                                      <ngx-validation-message  label="الإسم العائلي"
                                                               [showRequired]="!getControl('nomAR').valid && getControl('nomAR').touched"
                                                               [ar]="getControl('nomAR')?.hasError('pattern')">
                                       </ngx-validation-message>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">الإسم الشخصي</label>
-                                        <input formControlName="prenomAR" class="form-control" type="text"   id="prenomAR" required placeholder="لإسم الشخصي">
+                                    <div class="form-group arabe">
+                                        <label class="label float-right">الإسم الشخصي</label>
+                                        <input formControlName="prenomAR" class="form-control" type="text"   id="prenomAR" required placeholder="الإسم الشخصي">
                                       <ngx-validation-message label="الإسم الشخصي"
                                                               [showRequired]="!getControl('prenomAR').valid && getControl('prenomAR').touched"
                                                               [ar]="getControl('prenomAR')?.hasError('pattern')">
@@ -594,8 +594,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">الجنسية</label>
+                                    <div class="form-group arabe">
+                                        <label class="label float-right">الجنسية</label>
                                         <input formControlName="nationaliteAR" class="form-control" type="text"   id="nationaliteAR" required placeholder="الجنسية">
                                       <ngx-validation-message label="الجنسية"
                                                               [showRequired]="!getControl('nationaliteAR').valid && getControl('nationaliteAR').touched"
@@ -606,8 +606,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">مكان الوفاة</label>
+                                    <div class="form-group arabe">
+                                        <label class="label float-right">مكان الوفاة</label>
                                         <input formControlName="lieuDecesAR" class="form-control" required type="text"   id="LieuDecesAr" placeholder="مكان الوفاة">
                                       <ngx-validation-message label="مكان الوفاة"
                                                               [showRequired]="!getControl('lieuDecesAR').valid && getControl('lieuDecesAR').touched"
@@ -616,8 +616,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">العنوان</label>
+                                    <div class="form-group arabe">
+                                        <label class="label float-right">العنوان</label>
                                         <input formControlName="adresseAR" class="form-control" required  type="text"   id="adresseAR" placeholder="العنوان">
                                       <ngx-validation-message label="العنوان"
                                                               [showRequired]="!getControl('adresseAR').valid && getControl('adresseAR').touched"
@@ -626,8 +626,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">إسم الأب أو الأم</label>
+                                    <div class="form-group arabe ">
+                                        <label class="label float-right">إسم الأب أو الأم</label>
                                         <input formControlName="filsAR"
                                                class="form-control" required
                                                type="text"   id="FilsAR" placeholder="إسم الأب أو الأم">

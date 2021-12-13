@@ -11,8 +11,7 @@ $color_red : #ff0400;
 $color_lightGreen : #42a948;
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
-$font_tajawal : 'Tajawal', Helvetica, Arial, sans-serif;
+$my_font:Helvetica, Arial, sans-serif;
 $bold_font : 700;
 $color_blue : #5c7aea;
 $color_lightGray : #dfe2e2;
@@ -23,19 +22,20 @@ $color_red : #ff0400;
 $color_lightGreen : #42a948;
 
 %my-label {
+  text-transform: capitalize;
   font-size: 14px!important;
   font-weight: 400!important;
 }
 %my-card-header {
   background-color:$color_blue;
   color: $color_white;
-  font-family: $font_tajawal;
+  font-family: $my_font;
   font-weight: $bold_font;
   font-size: 20px;
   text-transform: capitalize;
 }
 %my-nb-card {
-  font-family: $font_tajawal;
+  font-family: $my_font;
 }
 @mixin my-background ($color) {
   background-color: $color;
