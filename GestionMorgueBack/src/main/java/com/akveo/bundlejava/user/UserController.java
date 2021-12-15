@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -82,6 +84,15 @@ public class UserController {
     }
 
     /**
+     * Get all users
+     * @return all users data
+     */
+    @GetMapping("/")
+    public ResponseEntity<List<User>> findAll() {
+        return ok(userService.findAll());
+    }
+
+    /**
      * Update current user
      * @param userDTO updated user data
      * @return updated user data
@@ -112,5 +123,7 @@ public class UserController {
     public ResponseEntity addUser(@Valid @RequestBody SignUpDTO userDTO) throws UserAlreadyExistsException {
         return ok(userService.register(userDTO));
     }
+
+
 
 }

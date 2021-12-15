@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -158,4 +159,7 @@ public class UserService {
         return passwordEncoder.encode(password);
     }
 
+    public List<User> findAll() {
+        return this.userRepository.findAll();
+    }
 }
