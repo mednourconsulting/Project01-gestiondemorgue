@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
 import { map } from 'rxjs/operators';
 import { DataSource } from 'ng2-smart-table/lib/data-source/data-source';
+import {User} from '../../../interfaces/common/users';
 
 @Injectable()
 export class UsersApi {
@@ -67,5 +68,8 @@ export class UsersApi {
 
   update(item: any): Observable<any> {
     return this.api.put(`${this.apiController}/${item.id}`, item);
+  }
+  findAll(): Observable<any> {
+    return this.api.get(`${this.apiController}/`);
   }
 }

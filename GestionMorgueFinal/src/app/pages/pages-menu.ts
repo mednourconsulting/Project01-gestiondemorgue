@@ -27,10 +27,6 @@ export class PagesMenu {
         children: undefined,
       },
       {
-        title: '',
-        group: true,
-      },
-      {
         title: 'Bulletins',
         /*de décès et de mortinalité*/
          icon: 'layout-outline',
@@ -118,6 +114,12 @@ export class PagesMenu {
             link: '/pages/statistiques/region',
           },
         ],
+      },
+      {
+        title: 'Utilisateurs',
+        icon: 'people-outline',
+        link: '/pages/users',
+        children: undefined,
       },
       // {
       //   title: 'Rapport',

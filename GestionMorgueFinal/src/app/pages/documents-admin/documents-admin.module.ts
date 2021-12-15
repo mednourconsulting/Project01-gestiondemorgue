@@ -18,6 +18,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {BulletinsDMModule} from '../bulletins-dm/bulletins-dm.module';
 import {ComponentsModule} from "../../@components/components.module";
+import {NgxSelectModule} from "ngx-select-ex";
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {ComponentsModule} from "../../@components/components.module";
         ReactiveFormsModule,
         ComponentsModule,
         NbAutocompleteModule,
+        NgxSelectModule,
     ],
 })
 export class DocumentsAdminModule { }

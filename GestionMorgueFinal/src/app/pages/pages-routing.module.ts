@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {UsersListComponent} from './users-list/users-list.component';
 
 const routes: Routes = [{
   path: '',
@@ -51,6 +52,10 @@ const routes: Routes = [{
       path: 'miscellaneous',
       loadChildren: () => import('./miscellaneous/miscellaneous.module')
         .then(m => m.MiscellaneousModule),
+    },
+    {
+      path: 'users',
+      component: UsersListComponent,
     },
     {
       path: '',

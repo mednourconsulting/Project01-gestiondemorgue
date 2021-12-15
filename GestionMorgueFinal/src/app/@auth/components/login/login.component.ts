@@ -35,6 +35,8 @@ export class NgxLoginComponent implements OnInit {
   rememberMe = this.getConfigValue('forms.login.rememberMe');
   isEmailRequired: boolean = this.getConfigValue('forms.validation.email.required');
   isPasswordRequired: boolean = this.getConfigValue('forms.validation.password.required');
+  showPassword: boolean = false;
+
 
   errors: string[] = [];
   messages: string[] = [];
@@ -79,6 +81,11 @@ export class NgxLoginComponent implements OnInit {
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
   }
+
+  public togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   login(): void {
     this.user = this.loginForm.value;
     this.errors = [];
@@ -112,6 +119,10 @@ export class NgxLoginComponent implements OnInit {
     } else {
       this.type = 'text';
     }
+  }
+
+  motDePasseOublie() {
+    this.router.navigateByUrl('/auth/request-password');
   }
 }
 

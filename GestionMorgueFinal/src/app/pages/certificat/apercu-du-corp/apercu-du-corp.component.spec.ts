@@ -8,7 +8,7 @@ describe('ApercuDuCorpComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ApercuDuCorpComponent ]
+      declarations: [ ApercuDuCorpComponent ],
     })
     .compileComponents();
   }));

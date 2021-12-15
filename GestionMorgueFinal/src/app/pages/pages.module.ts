@@ -5,7 +5,7 @@
  */
 
 import { NgModule } from '@angular/core';
-
+import {NgxSelectModule} from 'ngx-select-ex';
 import { PagesComponent } from './pages.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
@@ -18,7 +18,9 @@ import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
 import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
 import {CertificatModule} from './certificat/certificat.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {UsersListModule} from './users-list/users-list.module';
 import { ShowDialogComponent } from './show-dialog/show-dialog.component';
+
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -30,8 +32,10 @@ const ENTRY_COMPONENTS = [
 ];
 @NgModule({
   imports: [
+    NgxSelectModule,
     PagesRoutingModule,
     ThemeModule,
+    UsersListModule,
     DashboardModule,
     BulletinsDMModule,
     DocumentsAdminModule,

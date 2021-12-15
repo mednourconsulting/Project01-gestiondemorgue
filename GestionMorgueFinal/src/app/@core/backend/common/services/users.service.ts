@@ -64,4 +64,7 @@ export class UsersService extends UserData {
   addUser(item: any): Observable<any> {
     return this.api.addUser(item);
   }
+  findAll(): Observable<any> {
+    return this.api.findAll();
+  }
 }
