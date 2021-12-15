@@ -13,8 +13,12 @@ import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+
 import {DataService} from './data.service';
 import {PdfService} from './pdf.service';
+
+import {DomSanitizer} from "@angular/platform-browser";
+
 
 
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -39,7 +43,6 @@ export class ApercuDuCorpComponent implements OnInit {
   id = null;
   private filterMedecin = [];
   private filterDecede = [];
-
   constructor(private service: ApercuCorpsService,
               private userservice: UsersService,
               private serviceMedcin: MedecinsService,
@@ -47,7 +50,6 @@ export class ApercuDuCorpComponent implements OnInit {
               private pdfService: PdfService,
               private toastService: ToastrService,
               private dataService: DataService) {}
-
   public  getAll() {
     this.service.getAll().subscribe(data => {
       this.source = data;

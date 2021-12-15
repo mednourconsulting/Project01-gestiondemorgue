@@ -59,7 +59,7 @@ export class DashboardComponent {
       delete: false,
     },
     columns: {
-      id: {
+      numRegister: {
         title: 'Numéro de registre',
         type: 'number',
         editable: false,

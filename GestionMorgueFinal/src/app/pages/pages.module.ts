@@ -12,18 +12,24 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { PagesMenu } from './pages-menu';
-import { NbMenuModule } from '@nebular/theme';
+import {NbButtonModule, NbCardModule, NbDialogModule, NbMenuModule} from '@nebular/theme';
 import { AuthModule } from '../@auth/auth.module';
 import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
 import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
 import {CertificatModule} from './certificat/certificat.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {UsersListModule} from './users-list/users-list.module';
+import { ShowDialogComponent } from './show-dialog/show-dialog.component';
+
 
 const PAGES_COMPONENTS = [
   PagesComponent,
+  ShowDialogComponent,
 ];
+const ENTRY_COMPONENTS = [
+  ShowDialogComponent,
 
+];
 @NgModule({
   imports: [
     NgxSelectModule,
@@ -38,12 +44,20 @@ const PAGES_COMPONENTS = [
     MiscellaneousModule,
     AuthModule.forRoot(),
     ReactiveFormsModule,
+    NbDialogModule.forChild(),
+    NbCardModule,
+    NbButtonModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,
   ],
+  entryComponents: [
+    ...ENTRY_COMPONENTS ,
+  ],
+  exports: [ ShowDialogComponent ],
   providers: [
     PagesMenu,
+    ShowDialogComponent,
   ],
 })
 export class PagesModule {

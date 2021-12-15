@@ -20,7 +20,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
                Le champ "{{ label }}" n'accepte que les nombres </p>
              <p class="caption status-danger" *ngIf="showPattern"> Incorrect "{{ label }}" </p>
              <p class="caption status-danger" *ngIf="showRequired"> Le champ "{{ label }}" est obligatoire</p>
-             <p class="caption status-danger" *ngIf="ar">Le champs "{{ label }}" n'accepte que les lettre en arabe, les espaces et les nombres</p>
+             <p class="caption status-danger" *ngIf="ar">Le champ "{{ label }}" n'accepte que les lettre en arabe, les espaces et les nombres</p>
              <p class="caption status-danger" *ngIf="addressAr">Le champ "{{ label }}" n'accepte que les lettre en arabe,
                  les espaces et les nombres, et les caractères suivantes ° et ,</p>
              <p class="caption status-danger" *ngIf="fr">Le champ "{{ label }}" n'accepte que les lettre en français, les espaces et

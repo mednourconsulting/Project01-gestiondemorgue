@@ -7,7 +7,7 @@ import {CauseService} from '../../../@core/backend/common/services/Cause.service
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -28,7 +28,7 @@ export class AttestationComponent implements OnInit {
       custom: [
         {
           name: 'ppddff',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: '<i class="fas fa-file-pdf"   data-toggle="tooltip" data-placement="top" title="Attestation" aria-hidden="true"></i>',
         },
       ],
     },
@@ -73,7 +73,7 @@ export class AttestationComponent implements OnInit {
             list: [
               {value: 'Femme', title: 'Femme'},
               {value: 'Homme', title: 'Homme'},
-              {value: 'Indetermini', title: 'Indetermini'},
+              {value: 'Indéterminé', title: 'Indéterminé'},
             ],
           },
         },

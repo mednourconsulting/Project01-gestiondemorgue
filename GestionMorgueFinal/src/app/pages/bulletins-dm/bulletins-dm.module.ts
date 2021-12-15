@@ -11,7 +11,7 @@ import {
   NbAutocompleteModule,
   NbButtonModule,
   NbCardModule,
-  NbCheckboxModule,
+  NbCheckboxModule, NbDialogModule,
   NbInputModule,
   NbSelectModule,
   NbTabsetModule,
@@ -22,10 +22,10 @@ import {ComponentsModule} from '../../@components/components.module';
 import {NgxSelectModule} from "ngx-select-ex";
 
 
-
 @NgModule({
   declarations: [BulletinsDMComponent,
-    BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent],
+    BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent,
+  ],
   imports: [
     CommonModule,
     BulletinsDMRoutingModule,

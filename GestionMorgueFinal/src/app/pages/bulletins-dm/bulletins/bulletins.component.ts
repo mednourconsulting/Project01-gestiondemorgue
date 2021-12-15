@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Bulletins} from '../../../@core/backend/common/model/Bulletins';
 import {BulletinsService} from '../../../@core/backend/common/services/Bulletins.service';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
@@ -12,23 +12,25 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {formatDate} from '@angular/common';
 import { DatePipe } from '@angular/common';
 import {Validators, AbstractControl, FormBuilder, FormGroup, FormControl} from '@angular/forms';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import {CauseService} from '../../../@core/backend/common/services/Cause.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {Router} from '@angular/router';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+
 import {DataBulletinsService} from './dataBulletins.service';
+
+import {Observable, of} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {NbDialogRef, NbDialogService} from '@nebular/theme';
+import {ShowDialogComponent} from '../../show-dialog/show-dialog.component';
+import {DomSanitizer} from '@angular/platform-browser';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'ngx-bulletins',
   templateUrl: './bulletins.component.html',
   styleUrls: ['./bulletins.component.scss'],
-  providers: [BulletinsService,
-    DecedesService,
-    MedecinsService,
-    UsersService,
-    CauseService,
-    DataBulletinsService],
+  providers: [BulletinsService, DecedesService, MedecinsService, UsersService, CauseService, ShowDialogComponent],
 })
 
 export class BulletinsComponent implements OnInit, OnChanges {
@@ -49,9 +51,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
   public jstoday = '';
   public c: string;
   public i = 0;
-
-
-
   constructor(private service: BulletinsService,
               private serviceD: DecedesService,
               private serviceM: MedecinsService,
@@ -59,10 +58,11 @@ export class BulletinsComponent implements OnInit, OnChanges {
               private userservice: UsersService,
               private logoBase64: LogoBase64Service,
               private serviceC: CauseService,
-              private datePipe: DatePipe,
+              private dialogService: NbDialogService,
+              private sanitizer: DomSanitizer,
               private dataBulletins: DataBulletinsService,
               private toastService: ToastrService) {}
-
+              
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     throw new Error('Method not implemented.');
   }
@@ -313,7 +313,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
               ],
               [
                 {
-                  text: 'N° de l\'acte au registre des décès ' + this.numRgtr +
+                  text: 'N° de l\'acte au registre des décès ' +
+                    this.checkIfNullOrUndefind(this.DecedeHumain.numRegister) +
                     '\n de l\'hopital/ DMH/Commune ',
                   colSpan: 3,
                   fontSize: 12,
@@ -362,11 +363,11 @@ export class BulletinsComponent implements OnInit, OnChanges {
               ],
               [
                 {
-                  text: 'N° de l\'acte au registre  ' + this.numRgtr,
+                  text: 'N° de l\'acte au registre  ' + this.checkIfNullOrUndefind(this.DecedeHumain.numRegister),
                   border: [true, false, false, false],
                 },
                 {
-                  text: 'N° de compostage:' + this.Bulletins.compostage,
+                  text: 'N° de compostage:' + this.checkIfNullOrUndefind(this.Bulletins.compostage),
                   border: [false, false, true, false],
                 },
               ],
@@ -380,9 +381,9 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   fontSize: 12,
                   // margin: [0, 10, 0, 10],
                   ul: [
-                    'Province ou Prefecture: ' + this.Bulletins.province,
-                    'Cercle: ' + this.Bulletins.cercle,
-                    'Municipalité /Centre/ Commune: ' + this.Bulletins.centre,
+                    'Province ou Prefecture: ' + this.checkIfNullOrUndefind(this.Bulletins.province),
+                    'Cercle: ' + this.checkIfNullOrUndefind(this.Bulletins.cercle),
+                    'Municipalité /Centre/ Commune: ' + this.checkIfNullOrUndefind(this.Bulletins.centre),
                   ],
                 },
               ],
@@ -396,9 +397,9 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   fontSize: 12,
                   // margin: [0, 10, 0, 10],
                   ul: [
-                    'Province ou Prefecture: ' + this.DecedeHumain.provinceD,
-                    'Cercle: ' + this.DecedeHumain.prefectureD,
-                    'Municipalité /Centre/ Commune: ' + this.DecedeHumain.communeD,
+                    'Province ou Prefecture: ' + this.checkIfNullOrUndefind(this.DecedeHumain.provinceD),
+                    'Cercle: ' + this.checkIfNullOrUndefind(this.DecedeHumain.prefectureD),
+                    'Municipalité /Centre/ Commune: ' + this.checkIfNullOrUndefind(this.DecedeHumain.communeD),
                   ],
                 },
               ],
@@ -408,7 +409,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                   border: [true, false, false, true],
                 },
                 {
-                  text: this.Bulletins.residece,
+                  text: this.checkIfNullOrUndefind(this.Bulletins.residece),
                   border: [false, false, true, true],
                 },
 
@@ -430,7 +431,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.Bulletins.typeBulletin,
+                  text: this.checkIfNullOrUndefind(this.Bulletins.typeBulletin),
                 },
               ],
               [
@@ -440,7 +441,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.jstoday,
+                  text: this.checkIfNullOrUndefind(this.jstoday),
                 },
               ],
               [
@@ -450,7 +451,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.lieuxDeces,
+                  text: this.checkIfNullOrUndefind(this.DecedeHumain.lieuxDeces),
                 },
               ],
               [
@@ -460,7 +461,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.sexe,
+                  text: this.checkIfNullOrUndefind(this.DecedeHumain.sexe),
                 },
               ],
               [
@@ -480,7 +481,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.nationalite,
+                  text: this.checkIfNullOrUndefind(this.DecedeHumain.nationalite),
                 },
               ],
               [
@@ -490,7 +491,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, false],
-                  text: this.DecedeHumain.etat,
+                  text: this.checkIfNullOrUndefind(this.DecedeHumain.etat),
                 },
               ], [
                 {
@@ -499,7 +500,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 },
                 {
                   border: [false, false, true, true],
-                  text: this.DecedeHumain.profession,
+                  text: this.checkIfNullOrUndefind(this.DecedeHumain.profession),
                 },
               ],
             ],
@@ -527,8 +528,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 {
                   border: [false, false, true, false],
                   ul: [
-                    'Cause initiale: ' + this.DecedeHumain.causeInitial,
-                    'Cause immédiate: ' + this.DecedeHumain.causeImmdiate,
+                    'Cause initiale: ' + this.checkIfNullOrUndefind(this.DecedeHumain.causeInitial),
+                    'Cause immédiate: ' + this.checkIfNullOrUndefind(this.DecedeHumain.causeImmdiate),
                     '',
                   ],
                 },
@@ -541,7 +542,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 {
                   border: [false, false, true, false],
                   ul: [
-                    'Cause: ' + this.DecedeHumain.causeMort,
+                    'Cause: ' + this.checkIfNullOrUndefind(this.DecedeHumain.causeMort),
                   ],
                 },
               ],
@@ -549,7 +550,9 @@ export class BulletinsComponent implements OnInit, OnChanges {
                 {
                   border: [true, false, true, true],
                   colSpan: 2,
-                  text: 'Constatation faite par ' + this.MedecinHumain.nom + ' ' + this.MedecinHumain.prenom,
+                  text: 'Constatation faite par ' +
+                    this.checkIfNullOrUndefind(this.MedecinHumain.nom) + ' ' +
+                    this.checkIfNullOrUndefind(this.MedecinHumain.prenom),
                 },
                 '',
               ],
@@ -925,8 +928,35 @@ export class BulletinsComponent implements OnInit, OnChanges {
     });
     this.id = event.data.id;
   }
+  open(data) {
+    this.dialogService.open(ShowDialogComponent, {
+      context: {
+        title: 'Informations sur le ' + data.typeBulletin + ' du décédé '
+          + data.decede.nom + ' ' + data.decede.prenom,
+        list : [
+          {key: 'type de Bulletin', value : data.typeBulletin},
+          {key: 'Date de déclaration', value : this.ConvertDate(data.declaration) as any as Date},
+          {key: 'Médecin', value : data.medecin.nom + ' ' + data.medecin.prenom},
+          {key: 'Décédé', value : data.decede.nom + ' ' + data.decede.prenom},
+          {key: 'Province ou préfécture', value : data.province},
+          {key: 'Cercle', value : data.cercle},
+          {key: 'Centre', value : data.centre},
+          {key: 'diagnostique attestation', value : data.diagnostique},
+          {key: 'milieu de résidence', value : data.residece},
+          {key: 'Lieu d\'enterrement', value : data.lieuEntrement},
+          {key: 'Cimetière', value : data.cimetiere},
+          {key: 'Numéro de tombe ', value : data.numTombe},
+          {key: 'N° Compostage', value : data.compostage},
+        ],
+      },
+    });
+  }
+
   onCustomConfirm(event) {
     switch (event.action) {
+      case 'info':
+       this.open(event.data);
+        break;
       case 'edit':
         if (this.isAdmin) {
             this.onEdit(event);

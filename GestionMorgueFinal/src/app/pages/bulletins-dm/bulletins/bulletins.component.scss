@@ -1,9 +1,12 @@
 @import '../../../@theme/styles/myStyle';
 :host ::ng-deep ng2-st-tbody-edit-delete { display: inline-block !important; width: 30%; height: 0 !important; margin-top: 0;}
-:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom { margin-top: 0; display: inline-block; width: 30%; text-align: center; font-size: 0; }
+:host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom {margin: 0 5px; display: inline-block; width: fit-content; text-align: center;}
+:host ::ng-deep ng2-smart-table .ng2-smart-actions a.ng2-smart-action:not(:last-child) { border: none;}
 :host ::ng-deep ng2-st-tbody-custom a.ng2-smart-action.ng2-smart-action-custom-custom:hover { color: $color_blue; font-weight: bold;}
 
-:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-file-pdf:before {
+:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-info:before {
+  @include my-fa-icon($color: $color_lightGreen);
+}:host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-file-pdf:before {
   @include my-fa-icon($color: $color_blue );
 }
 :host ::ng-deep ng2-smart-table .ng2-smart-actions .fa-edit:before {
@@ -24,7 +27,7 @@
   font-size: 0.9375rem;
   font-weight: bold!important;
   line-height: 1;
-  font-family: $font_tajawal;
+  font-family: $my_font;
   text-transform: capitalize;
 }
 :host ::ng-deep ng2-smart-table table tr th a {

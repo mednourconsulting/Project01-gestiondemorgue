@@ -10,6 +10,9 @@ import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {DomSanitizer} from '@angular/platform-browser';
+import {NbDialogService} from "@nebular/theme";
+import {ShowDialogComponent} from "../../show-dialog/show-dialog.component";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -92,15 +95,19 @@ export class DecedesComponent implements OnInit {
       custom: [
         {
           name: 'pdfFrancais',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf"  data-toggle="tooltip" data-placement="top" title="Certificat de décès " aria-hidden="true"></i>'),
         },
         {
           name: 'delete',
-          title: '<i class="fa fa-trash"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fa fa-trash"  data-toggle="tooltip" data-placement="top" title="Supprimer" aria-hidden="true"></i>'),
         },
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-edit"  data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>'),
+        },
+        {
+          name: 'info',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-info" data-toggle="tooltip" data-placement="top" title="Détail" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -297,7 +304,10 @@ export class DecedesComponent implements OnInit {
               private logoBase64: LogoBase64Service,
               private datePipe: DatePipe,
               private toastService: ToastrService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer,
+              private dialogService: NbDialogService,
+  ) {
   }
   init() {
     this.service.getAll().subscribe(data => {
@@ -910,13 +920,77 @@ export class DecedesComponent implements OnInit {
       },
     };
   }
+  open(data) {
+    this.dialogService.open(ShowDialogComponent, {
+      context: {
+        title: 'Informations sur le décédé '
+          + data.nom + ' ' + data.prenom,
+        list : [
+          {key: 'adresse', value : data.adresse},
+          {key: 'age Gestationnel', value : data.ageGestationnel},
+          {key: 'age de la Mere', value : data.ageMere},
+          {key: 'autopsie', value : data.autopsie},
+          {key: 'cause Immédiate', value : data.causeImmdiate},
+          {key: 'cause Initial', value : data.causeInitial},
+          {key: 'cause de la Mort', value : data.causeMort},
+          {key: 'cin', value : data.cin},
+          {key: 'circonstances de survenue', value : data.circonServ, textarea: true},
+          {key: 'commune', value : data.communeD},
+          {key: 'contribution de Grossesse? ', value : data.contribueGros},
+          {key: 'date de Décès', value : (data.dateDeces != null ) ?
+              this.ConvertDate(data.dateDeces) as any as Date : ''},
+          {key: 'date de Naissance', value : (data.dateNaissance != null ) ?
+              this.ConvertDate(data.dateNaissance) as any as Date : ''},
+          {key: 'date d\'Operation', value : (data.dateOperation != null ) ?
+              this.ConvertDate(data.dateOperation) as any as Date : ''},
+          {key: 'date de survenue', value : (data.dateServ != null ) ?
+              this.ConvertDate(data.dateServ) as any as Date : ''},
+          {key: 'deces Femme', value : data.decesFemme},
+          {key: 'deces à cause d\'une Grossesse', value : data.decesGrossesse},
+          {key: 'etat', value : data.etat},
+          {key: 'fils de ', value : data.fils},
+          {key: 'grossesse Multiple ?', value : data.grossesseMultiple},
+          {key: 'heure de Deces', value : data.heure},
+          {key: 'lieu de Naissance', value : data.lieuNaiss},
+          {key: 'lieu de Survenue', value : data.lieuServ},
+          {key: 'lieu de Deces', value : data.lieuxDeces},
+          {key: 'maladie', value : data.maladie},
+          {key: 'mort Ne ?', value : (data.mortNe === false) ? 'Non' : (data.mortNe  === true) ? 'Oui' : ''},
+          {key: 'motif d\'Operation', value : data.motifOperation},
+          {key: 'nationalité', value : data.nationalite},
+          {key: 'nature de la Mort', value : data.natureMort},
+          {key: 'nom', value : data.nom},
+          {key: 'numero de Register', value : data.numRegister},
+          {key: 'obstacle', value :  (data.obstacle === false) ? 'Non' : (data.obstacle  === true) ? 'Oui' : ' '},
+          {key: 'operation', value : data.operation},
+          {key: 'poids à la Naissance', value : data.poidsNaissance},
+          {key: 'prefecture', value : data.prefectureD},
+          {key: 'prenom', value : data.prenom},
+          {key: 'profession', value : data.profession},
+          {key: 'province', value : data.provinceD},
+          {key: 'resultats d\'Autopsie', value : data.resultatsAutopsie},
+          {key: 'sexe', value : data.sexe},
+          {key: 'الإسم', value : data.prenomAR, language: 'arabe'},
+          {key: 'النسب', value : data.nomAR, language: 'arabe'},
+          {key: 'العنوان', value : data.adresseAR, language: 'arabe'},
+          {key: 'الجنسية', value : data.nationaliteAR, language: 'arabe'},
+          {key: 'مكان الوفاة', value : data.lieuDecesAR, language: 'arabe'},
+          {key: 'إسم الأب أو الأم', value : data.filsAR, language: 'arabe'},
+        ],
+      },
+    });
+  }
   onCustomConfirm(event) {
     switch ( event.action) {
+      case 'info':
+        this.open(event.data);
+        console.warn(event.data);
+        break;
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition(event.data);
         pdfMake.createPdf(documentDefinition).open();
         this.toastService.showToast('success', 'PDf ouvert',
-          'Le certificat de deces est ouvert dans un nouvel onglet ');
+          'Le certificat de décès est ouvert dans un nouvel onglet ');
         break;
       case 'edit':
         if (this.isAdmin) {
@@ -1050,6 +1124,7 @@ export class DecedesComponent implements OnInit {
       // decede.numRegister = formValues.numRegister;
     return decede;
   }
+
   doSave(decede) {
     if ( this.id == null) {
       this.service.create(decede).subscribe(obj => {

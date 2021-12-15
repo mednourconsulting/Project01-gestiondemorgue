@@ -1,0 +1,19 @@
+@import 'src/app/@theme/styles/themes';
+@import 'src/app/@theme/styles/myStyle';
+
+@include nb-install-component() {
+  nb-card {
+    width: 1000px;
+    max-height: 600px;
+  }
+  nb-card-body {
+    padding: 2rem;
+  }
+}
+label {
+  text-transform: capitalize;
+}
+.card-header {
+  @extend %my-card-header;
+}
+

@@ -1,0 +1,33 @@
+<nb-card>
+  <nb-card-header class="card-header">{{title}}</nb-card-header>
+  <nb-card-body>
+    <div *ngFor="let l of list" class="form-group">
+      <div *ngIf="l.value != null && l.value != '' && l.language !== 'arabe' " class="form-group row">
+        <label class="form-control-label col-md-6">{{l.key}} : </label>
+        <p *ngIf="l.textarea" class="col-md-6">
+          <textarea class="form-control" rows="2">
+            {{l.value}}
+          </textarea>
+        </p>
+        <p *ngIf="!l.textarea" class="col-md-6">
+          <output class="form-control form-control-alternative">
+            {{l.value}}
+          </output>
+        </p>
+      </div>
+      <div  *ngIf="l.value != null && l.value != '' && l.language === 'arabe'" style="text-align: right" class="form-group row flex-row-reverse">
+        <label class="form-control-label col-md-6 ">: {{l.key}} </label>
+        <p *ngIf="l.textarea" class="col-md-6">
+          <textarea class="form-control" rows="2">
+            {{l.value}}
+          </textarea>
+        </p>
+        <p *ngIf="!l.textarea" class="col-md-6 ">
+          <output class="form-control form-control-alternative">
+            {{l.value}}
+          </output>
+        </p>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

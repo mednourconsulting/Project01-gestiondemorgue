@@ -11,6 +11,7 @@ import {AbstractControl} from '@angular/forms';
 import {DataService} from './data.service';
 import {PdfService} from './pdf.service';
 
+
 @Component({
   selector: 'ngx-transfert-corps',
   templateUrl: './transfert-corps.component.html',
@@ -38,8 +39,8 @@ export class TransfertCorpsComponent implements OnInit {
               private serviceDecede: DecedesService,
               private dataService: DataService,
               private pdfService: PdfService,
-              private toastService: ToastrService) {
-  }
+              private toastService: ToastrService) {}
+ 
 
   public getAll() {
     this.service.getAll().subscribe(data => {
