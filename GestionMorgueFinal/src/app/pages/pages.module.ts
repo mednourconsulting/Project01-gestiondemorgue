@@ -18,6 +18,7 @@ import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
 import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
 import {CertificatModule} from './certificat/certificat.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {UsersListModule} from './users-list/users-list.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -28,6 +29,7 @@ const PAGES_COMPONENTS = [
     NgxSelectModule,
     PagesRoutingModule,
     ThemeModule,
+    UsersListModule,
     DashboardModule,
     BulletinsDMModule,
     DocumentsAdminModule,
