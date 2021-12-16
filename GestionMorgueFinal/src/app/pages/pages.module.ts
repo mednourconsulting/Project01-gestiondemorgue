@@ -12,7 +12,14 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { PagesMenu } from './pages-menu';
-import {NbButtonModule, NbCardModule, NbDialogModule, NbMenuModule} from '@nebular/theme';
+import {
+  NbAutocompleteModule,
+  NbButtonModule,
+  NbCardModule,
+  NbDialogModule, NbInputModule,
+  NbMenuModule,
+  NbSelectModule
+} from '@nebular/theme';
 import { AuthModule } from '../@auth/auth.module';
 import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
 import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
@@ -47,6 +54,9 @@ const ENTRY_COMPONENTS = [
     NbDialogModule.forChild(),
     NbCardModule,
     NbButtonModule,
+    NbAutocompleteModule,
+    NbSelectModule,
+    NbInputModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,

@@ -63,6 +63,10 @@ export class DataBulletinsService {
           name: 'edit',
           title: '<i class="fas fa-edit"></i>',
         },
+        {
+          name: 'info',
+          title: '<i class="fas fa-info"></i>',
+        },
       ],
     },
     columns: {
@@ -255,8 +259,6 @@ export class DataBulletinsService {
 
   constructor(private datePipe: DatePipe , private fb: FormBuilder , private router: Router) {
   }
-
-
 
   public passToMedecin() {
     this.router.navigateByUrl('/pages/bulletins-dm/medcins');

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {User} from '../../@core/interfaces/common/users';
 import {UsersService} from '../../@core/backend/common/services/users.service';
 import {RolesRenderComponent} from './roles-render.component';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ToastrService} from '../../@core/backend/common/services/toastr.service';
+import {NbDialogService} from '@nebular/theme';
+import {ShowDialogComponent} from '../show-dialog/show-dialog.component';
 
 @Component({
   selector: 'ngx-users-list',
@@ -72,7 +74,8 @@ export class UsersListComponent implements OnInit {
 
   constructor(private userService: UsersService,
               private sanitizer: DomSanitizer,
-              private toastService: ToastrService) { }
+              private toastService: ToastrService,
+              private dialogService: NbDialogService) { }
 
   ngOnInit() {
     this.userService.getCurrentUser().subscribe(data => {
@@ -82,18 +85,40 @@ export class UsersListComponent implements OnInit {
      this.source = u;
     });
   }
+
+  open(data) {
+    this.dialogService.open(ShowDialogComponent, {
+      context: {
+        title: 'Informations sur l\'utilisateur '
+          + data.lastName + ' ' + data.firstName,
+        data: [
+          {key: 'nom', value: data.lastName},
+          {key: 'prenom', value: data.firstName},
+          {key: 'email', value: data.email},
+          {key: 'roles', value: data.role},
+        ],
+        list: [
+          {key: 'nom', value: data.lastName},
+          {key: 'prenom', value: data.firstName},
+          {key: 'email', value: data.email},
+          {key: 'roles', value: data.role},
+        ],
+        editForm: true,
+       // showInfo: true,
+      },
+    });
+  }
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
         //  this.toastService.toastOfEdit('warning');
-        console.warn('edited');
-
+        this.open(event.data);
         break;
       case 'delete':
          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
            this.userService.delete(event.data.id).subscribe(data => {
              if (data !== null) {
-               this.source = this.source.map(e => e);
+               this.source = this.source.filter(item => item.id !== data.id);
                this.toastService.toastOfDelete('success');
              } else {
                this.toastService.showToast('danger', 'Suppression inachevée',

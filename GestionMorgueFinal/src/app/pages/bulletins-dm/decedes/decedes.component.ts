@@ -977,6 +977,7 @@ export class DecedesComponent implements OnInit {
           {key: 'مكان الوفاة', value : data.lieuDecesAR, language: 'arabe'},
           {key: 'إسم الأب أو الأم', value : data.filsAR, language: 'arabe'},
         ],
+        showInfo: true,
       },
     });
   }
@@ -984,7 +985,6 @@ export class DecedesComponent implements OnInit {
     switch ( event.action) {
       case 'info':
         this.open(event.data);
-        console.warn(event.data);
         break;
       case 'pdfFrancais':
         const documentDefinition = this.getDocumentDefinition(event.data);

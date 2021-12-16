@@ -115,12 +115,12 @@ export class PagesMenu {
           },
         ],
       },
-      {
+     /* {
         title: 'Utilisateurs',
         icon: 'people-outline',
         link: '/pages/users',
         children: undefined,
-      },
+      },*/
       // {
       //   title: 'Rapport',
       //   icon: '',

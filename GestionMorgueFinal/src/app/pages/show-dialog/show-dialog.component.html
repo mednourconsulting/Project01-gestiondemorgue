@@ -1,4 +1,4 @@
-<nb-card>
+<nb-card *ngIf = "showInfo">
   <nb-card-header class="card-header">{{title}}</nb-card-header>
   <nb-card-body>
     <div *ngFor="let l of list" class="form-group">
@@ -18,7 +18,7 @@
       <div  *ngIf="l.value != null && l.value != '' && l.language === 'arabe'" style="text-align: right" class="form-group row flex-row-reverse">
         <label class="form-control-label col-md-6 ">: {{l.key}} </label>
         <p *ngIf="l.textarea" class="col-md-6">
-          <textarea class="form-control" rows="2">
+          <textarea class="form-control" rows="3">
             {{l.value}}
           </textarea>
         </p>
@@ -31,3 +31,53 @@
     </div>
   </nb-card-body>
 </nb-card>
+
+
+  <nb-card *ngIf="editForm">
+    <div class="container-xxl">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="register-container">
+            <div [formGroup]="editUserForm"  aria-labelledby="title" autocomplete="off">
+              <div class="row">
+                <div class="form-control-group col-md-6">
+                  <label for="input-name">Nom Complet</label>
+                  <input  nbInput
+                          autofocus
+                          class="form-control"
+                          fieldSize
+                          id="input-name"
+                          formControlName="fullName"
+                          placeholder="Nom et Prénom">
+                </div>
+                <div class="form-control-group col-md-6">
+                  <label for="email-input">Email</label>
+                  <input  nbInput
+                          fieldSize
+                          class="form-control"
+                          id="email-input"
+                          formControlName="email"
+                          placeholder="Email">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-control-group col-md-6">
+                  <label for="role" class="form-control-label">Role</label>
+                  <nb-select class="form-control"
+                             fullWidth
+                             placeholder="Role"
+                             formControlName="role"
+                             id="role">
+                    <nb-option [value]="ADMIN">Admin</nb-option>
+                    <nb-option [value]="USER">User</nb-option>
+                  </nb-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nb-card>
+
+

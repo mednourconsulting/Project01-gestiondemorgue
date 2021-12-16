@@ -30,7 +30,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   selector: 'ngx-bulletins',
   templateUrl: './bulletins.component.html',
   styleUrls: ['./bulletins.component.scss'],
-  providers: [BulletinsService, DecedesService, MedecinsService, UsersService, CauseService, ShowDialogComponent],
+  providers: [BulletinsService, DecedesService,
+    MedecinsService, UsersService, CauseService,
+    ShowDialogComponent, DataBulletinsService],
 })
 
 export class BulletinsComponent implements OnInit, OnChanges {
@@ -60,9 +62,8 @@ export class BulletinsComponent implements OnInit, OnChanges {
               private serviceC: CauseService,
               private dialogService: NbDialogService,
               private sanitizer: DomSanitizer,
-              private dataBulletins: DataBulletinsService,
+              public  dataBulletins: DataBulletinsService,
               private toastService: ToastrService) {}
-              
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     throw new Error('Method not implemented.');
   }
@@ -948,6 +949,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
           {key: 'Numéro de tombe ', value : data.numTombe},
           {key: 'N° Compostage', value : data.compostage},
         ],
+        showInfo : true,
       },
     });
   }

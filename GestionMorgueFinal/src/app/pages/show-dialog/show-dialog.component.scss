@@ -16,4 +16,17 @@ label {
 .card-header {
   @extend %my-card-header;
 }
-
+:host {
+  .title {
+    margin-bottom: 2rem;
+  }
+}
+.register-container {
+  padding: 3rem;
+}
+.left-column {
+  background-color: $color_blue;
+}
+input {
+  height: 3em;
+}
