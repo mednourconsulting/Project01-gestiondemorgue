@@ -34,43 +34,67 @@
 
 
   <nb-card *ngIf="editForm">
+    <nb-card-header class="card-header">{{title}}</nb-card-header>
     <div class="container-xxl">
       <div class="row">
         <div class="col-xl-12">
           <div class="register-container">
             <div [formGroup]="editUserForm"  aria-labelledby="title" autocomplete="off">
-              <div class="row">
-                <div class="form-control-group col-md-6">
-                  <label for="input-name">Nom Complet</label>
+              <div class="row mb-2">
+                <div class="form-control-group col-md-6 mb-2">
+                  <label for="input-name">Nom</label>
                   <input  nbInput
                           autofocus
                           class="form-control"
                           fieldSize
                           id="input-name"
-                          formControlName="fullName"
-                          placeholder="Nom et Prénom">
+                          formControlName="lastName"
+                          placeholder="Nom">
+                  <ngx-validation-message label="Nom" [showRequired]="getControl('lastName')?.errors?.required && getControl('lastName').touched">
+                  </ngx-validation-message>
                 </div>
-                <div class="form-control-group col-md-6">
-                  <label for="email-input">Email</label>
+                <div class="form-control-group col-md-6 mb-2">
+                  <label for="input-name">Prénom</label>
                   <input  nbInput
-                          fieldSize
+                          autofocus
                           class="form-control"
-                          id="email-input"
-                          formControlName="email"
-                          placeholder="Email">
+                          fieldSize
+                          formControlName="firstName"
+                          placeholder="Prénom">
+                  <ngx-validation-message label="Prénom" [showRequired]="getControl('firstName')?.errors?.required && getControl('firstName').touched">
+                  </ngx-validation-message>
                 </div>
               </div>
-              <div class="row">
-                <div class="form-control-group col-md-6">
-                  <label for="role" class="form-control-label">Role</label>
-                  <nb-select class="form-control"
-                             fullWidth
+              <div class="row mb-2">
+                <div class="form-control-group col-md-6 mb-2">
+                <label>Email</label>
+                <input  nbInput
+                        fieldSize
+                        class="form-control"
+                        formControlName="email"
+                        placeholder="Email">
+                  <ngx-validation-message label="Email" [showPattern]="getControl('email')?.hasError('pattern') &&getControl('email').touched"
+                                          [showRequired]="getControl('email')?.errors?.required && getControl('email').touched">
+                  </ngx-validation-message>
+              </div>
+                <div class="form-control-group col-md-6 mb-2">
+                  <label class="form-control-label">Role</label>
+                  <nb-select fullWidth
                              placeholder="Role"
-                             formControlName="role"
-                             id="role">
+                             formControlName="role">
                     <nb-option [value]="ADMIN">Admin</nb-option>
                     <nb-option [value]="USER">User</nb-option>
                   </nb-select>
+                  <ngx-validation-message label="Role"
+                                          [showRequired]="getControl('role')?.hasError('required') && getControl('role').touched">
+                  </ngx-validation-message>
+                </div>
+              </div>
+              <div class="row flex-row-reverse mb-2">
+                <div class="form-control-group  col-md-6 mb-2">
+                  <button nbButton fullWidth status="primary" size="large" [disabled]="!editUserForm.valid">
+                    Modifier
+                  </button>
                 </div>
               </div>
             </div>

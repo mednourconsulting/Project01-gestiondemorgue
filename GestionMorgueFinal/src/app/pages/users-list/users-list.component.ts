@@ -89,7 +89,7 @@ export class UsersListComponent implements OnInit {
   open(data) {
     this.dialogService.open(ShowDialogComponent, {
       context: {
-        title: 'Informations sur l\'utilisateur '
+        title: 'Modifier l\'utilisateur '
           + data.lastName + ' ' + data.firstName,
         data: [
           {key: 'nom', value: data.lastName},

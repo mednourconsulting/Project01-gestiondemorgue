@@ -30,3 +30,22 @@ label {
 input {
   height: 3em;
 }
+//to change the page's scrollbar
+/* width */
+//---------------------------------------
+:host ::ng-deep {
+ nb-card nb-card-body::-webkit-scrollbar {
+    width: 0.7rem !important;
+    height: 0.8em!important;
+  }
+
+  /* thumb */
+  nb-card nb-card-body::-webkit-scrollbar-thumb {
+    background: #d7caca !important;
+  }
+
+  /* Track */
+  nb-card nb-card-body::-webkit-scrollbar-track {
+    background: #f7f9fc!important;
+  }
+}

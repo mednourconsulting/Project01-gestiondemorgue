@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NbDialogRef} from '@nebular/theme';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {EMAIL_PATTERN} from '../../@auth/components';
 
 @Component({
   selector: 'ngx-show-dialog',
@@ -17,8 +18,18 @@ export class ShowDialogComponent implements OnInit {
   ADMIN = 'ADMIN';
   USER = 'USER';
 
-  constructor(protected ref: NbDialogRef<ShowDialogComponent>) {}
+  constructor(protected ref: NbDialogRef<ShowDialogComponent>,
+              private fb: FormBuilder,
+  ) {}
   ngOnInit() {
+    this.editUserForm = this.fb.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.pattern(EMAIL_PATTERN)]],
+      role: ['', [Validators.required]],
+    });
   }
-
+  getControl(name: string): AbstractControl {
+    return this.editUserForm.get(name);
+  }
 }

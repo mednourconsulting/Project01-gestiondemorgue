@@ -1,5 +1,4 @@
-
-  <nb-card >
+<nb-card >
     <nb-card-header class="card-header bg-info">
       <div class="row">
         <div class="col-sm-12">Ajouter un Bulletin</div>
@@ -153,8 +152,7 @@
                         class="type-select "
                         fullWidth
                         required
-                        placeholder="Cimetière"
-            >
+                        placeholder="Cimetière">
               <nb-option *ngFor="let t of dataBulletins.cimetiereList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Cimetière"
@@ -200,7 +198,6 @@
           <div class="form-group">
             <label  class="label">Décédé</label>
             <ngx-select formControlName="decede"
-                        class="form-control"
                         [allowClear]="true"
                         [items]="listDecede"
                         (select)="doSelectD($event)"
@@ -219,7 +216,6 @@
           <div class="form-group">
             <label  class="label">Médecin</label><br>
             <ngx-select formControlName="medecin"
-                         class="form-control"
                          [allowClear]="true"
                          [items]="listMedcin"
                          (select)="doSelectM($event)"
@@ -261,5 +257,3 @@
      </div>
 
   </nb-card>
-
-

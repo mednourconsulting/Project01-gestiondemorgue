@@ -27,6 +27,7 @@ import {CertificatModule} from './certificat/certificat.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {UsersListModule} from './users-list/users-list.module';
 import { ShowDialogComponent } from './show-dialog/show-dialog.component';
+import {ComponentsModule} from "../@components/components.module";
 
 
 const PAGES_COMPONENTS = [
@@ -57,6 +58,7 @@ const ENTRY_COMPONENTS = [
     NbAutocompleteModule,
     NbSelectModule,
     NbInputModule,
+    ComponentsModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,

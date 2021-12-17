@@ -11,8 +11,8 @@ import {ToastrService} from '../../../@core/backend/common/services/toastr.servi
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {NbDialogService} from "@nebular/theme";
-import {ShowDialogComponent} from "../../show-dialog/show-dialog.component";
+import {NbDialogService} from '@nebular/theme';
+import {ShowDialogComponent} from '../../show-dialog/show-dialog.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({

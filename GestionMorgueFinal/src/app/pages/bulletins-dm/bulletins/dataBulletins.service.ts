@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Injectable()
 export class DataBulletinsService {
@@ -53,19 +54,19 @@ export class DataBulletinsService {
       custom: [
         {
           name: 'bulletin',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf" data-toggle="tooltip" data-placement="top" title="Le bulletin" aria-hidden="true"></i>'),
         },
         {
           name: 'delete',
-          title: '<i class="fa fa-trash"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Supprimer" aria-hidden="true"></i>'),
         },
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>'),
         },
         {
           name: 'info',
-          title: '<i class="fas fa-info"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-info" data-toggle="tooltip" data-placement="top" title="Détail" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -257,7 +258,8 @@ export class DataBulletinsService {
   });
 
 
-  constructor(private datePipe: DatePipe , private fb: FormBuilder , private router: Router) {
+  constructor(private datePipe: DatePipe , private fb: FormBuilder , private router: Router,
+              private sanitizer: DomSanitizer) {
   }
 
   public passToMedecin() {
