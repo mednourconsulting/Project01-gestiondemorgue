@@ -6,7 +6,7 @@ import {MedecinsService} from '../../../@core/backend/common/services/Medecins.s
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'ngx-medcins',

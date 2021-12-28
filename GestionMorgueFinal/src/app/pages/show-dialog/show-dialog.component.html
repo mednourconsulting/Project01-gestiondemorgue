@@ -33,13 +33,13 @@
 </nb-card>
 
 
-  <nb-card *ngIf="editForm">
-    <nb-card-header class="card-header">{{title}}</nb-card-header>
+<nb-card *ngIf="editForm">
+    <nb-card-header class="card-header bg-info">{{title}}</nb-card-header>
     <div class="container-xxl">
       <div class="row">
         <div class="col-xl-12">
           <div class="register-container">
-            <div [formGroup]="editUserForm"  aria-labelledby="title" autocomplete="off">
+            <div [formGroup]="editUserForm"  aria-labelledby="title">
               <div class="row mb-2">
                 <div class="form-control-group col-md-6 mb-2">
                   <label for="input-name">Nom</label>
@@ -80,6 +80,7 @@
                 <div class="form-control-group col-md-6 mb-2">
                   <label class="form-control-label">Role</label>
                   <nb-select fullWidth
+                             multiple
                              placeholder="Role"
                              formControlName="role">
                     <nb-option [value]="ADMIN">Admin</nb-option>
@@ -92,7 +93,7 @@
               </div>
               <div class="row flex-row-reverse mb-2">
                 <div class="form-control-group  col-md-6 mb-2">
-                  <button nbButton fullWidth status="primary" size="large" [disabled]="!editUserForm.valid">
+                  <button class="bg-info " style="color:#fff" (click)="onEdit()" nbButton fullWidth status="primary" size="large" [disabled]="!editUserForm.valid">
                     Modifier
                   </button>
                 </div>

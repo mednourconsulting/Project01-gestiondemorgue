@@ -53,18 +53,20 @@ export class NgxRequestPasswordComponent implements OnInit {
     this.submitted = true;
 
     this.service.requestPassword(this.strategy, this.user).subscribe((result: NbAuthResult) => {
+      console.warn('NbAuthResult', result);
       this.submitted = false;
       if (result.isSuccess()) {
-        this.messages = result.getMessages();
+        this.messages = result.getResponse().body.messages;
       } else {
         this.errors = result.getErrors();
+        this.errors.push(result.getResponse().error.errors) ;
       }
 
       const redirect = result.getRedirect();
       if (redirect) {
         setTimeout(() => {
           return this.router.navigateByUrl(redirect);
-        }, this.redirectDelay);
+        }, 3000);
       }
       this.cd.detectChanges();
     });

@@ -38,8 +38,8 @@ export class SexeDecesComponent implements OnInit {
 
   public chartColors: Array<any> = [
     {
-      backgroundColor: ['#82CDE0', '#E08282', '#82E0AA'],
-      hoverBackgroundColor: ['#82CDE0', '#E08282', '#82E0AA'],
+      backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'],
+      hoverBackgroundColor: ['#FF5A5E', '#5AD3D1', '#FFC870'],
       borderWidth: 2,
     },
   ];

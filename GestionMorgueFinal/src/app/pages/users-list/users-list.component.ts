@@ -50,11 +50,11 @@ export class UsersListComponent implements OnInit {
       delete: false,
     },
     columns: {
-      firstName: {
+      lastName: {
         title: 'Nom',
         type: 'string',
       },
-      lastName: {
+      firstName: {
         title: 'Prénom',
         type: 'string',
       },
@@ -87,26 +87,25 @@ export class UsersListComponent implements OnInit {
   }
 
   open(data) {
+    const roles = [];
+    data.role.forEach(e => {roles.push(e.id) ; });
+    console.warn('roles', data.role);
     this.dialogService.open(ShowDialogComponent, {
       context: {
         title: 'Modifier l\'utilisateur '
           + data.lastName + ' ' + data.firstName,
-        data: [
-          {key: 'nom', value: data.lastName},
-          {key: 'prenom', value: data.firstName},
-          {key: 'email', value: data.email},
-          {key: 'roles', value: data.role},
-        ],
         list: [
+          {key: 'id', value: data.id},
           {key: 'nom', value: data.lastName},
           {key: 'prenom', value: data.firstName},
           {key: 'email', value: data.email},
-          {key: 'roles', value: data.role},
+          {key: 'roles', value: roles},
         ],
         editForm: true,
        // showInfo: true,
       },
     });
+
   }
   onCustomConfirm(event) {
     switch ( event.action) {

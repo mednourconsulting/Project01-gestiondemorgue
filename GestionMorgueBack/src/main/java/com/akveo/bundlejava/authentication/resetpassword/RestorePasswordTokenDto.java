@@ -6,12 +6,25 @@
 
 package com.akveo.bundlejava.authentication.resetpassword;
 
+import com.akveo.bundlejava.user.User;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import java.time.LocalDateTime;
 
 public class RestorePasswordTokenDto {
+
+    private Long id;
+    private User user;
     private String token;
 
-    private LocalDateTime expiryDate;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime expiresIn;
 
     public String getToken() {
         return token;
@@ -21,11 +34,27 @@ public class RestorePasswordTokenDto {
         this.token = token;
     }
 
-    public LocalDateTime getExpiryDate() {
-        return expiryDate;
+    public LocalDateTime getExpiresIn() {
+        return expiresIn;
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpiresIn(LocalDateTime expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

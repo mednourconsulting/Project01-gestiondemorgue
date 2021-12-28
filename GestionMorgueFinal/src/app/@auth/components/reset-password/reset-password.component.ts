@@ -3,12 +3,18 @@
  * Licensed under the Single Application / Multi Application License.
  * See LICENSE_SINGLE_APP / LICENSE_MULTI_APP in the 'docs' folder for license information on type of purchased license.
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {FormGroup, FormBuilder, Validators, ValidationErrors} from '@angular/forms';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import { NB_AUTH_OPTIONS, NbAuthService, NbAuthResult } from '@nebular/auth';
+import {Observable, of, Subject} from 'rxjs';
+import {catchError, concatMap, map, tap} from 'rxjs/operators';
 import { getDeepFromObject } from '../../helpers';
 import {Location} from '@angular/common';
+import {flatMap} from 'rxjs/operators';
+import {User} from '../../../@core/backend/common/model/User';
+import {UsersService} from '../../../@core/backend/common/services/users.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'ngx-reset-password-page',
@@ -23,19 +29,31 @@ export class NgxResetPasswordComponent implements OnInit {
   showMessages: any = this.getConfigValue('forms.resetPassword.showMessages');
   strategy: string = this.getConfigValue('forms.resetPassword.strategy');
   isPasswordRequired: boolean = this.getConfigValue('forms.validation.password.required');
-
   submitted = false;
   errors: string[] = [];
   messages: string[] = [];
   user: any = {};
+  isTokenSet: boolean = false;
   resetPasswordForm: FormGroup;
-
+  activeRouteParam$: Observable<Params> = of();
+  result$: Observable<any> = of();
+  errors$: Subject<string> = new Subject<string>();
   constructor(protected service: NbAuthService,
               protected location: Location,
-    @Inject(NB_AUTH_OPTIONS) protected options = {},
+              private userService: UsersService,
+
+              @Inject(NB_AUTH_OPTIONS) protected options = {},
     protected cd: ChangeDetectorRef,
     protected fb: FormBuilder,
-    protected router: Router) { }
+    protected router: Router,
+              private route: ActivatedRoute) {
+    this.activeRouteParam$ = this.route.queryParams.pipe(tap((param) => {
+      console.warn('param:', param );
+      if (param['token']) {
+        this.isTokenSet = true;
+      }
+    } ));
+  }
 
   ngOnInit(): void {
     const passwordValidators = [
@@ -53,7 +71,7 @@ export class NgxResetPasswordComponent implements OnInit {
   get password() { return this.resetPasswordForm.get('password'); }
   get confirmPassword() { return this.resetPasswordForm.get('confirmPassword'); }
 
-  resetPass(): void {
+  /*resetPass(): void {
     this.errors = this.messages = [];
     this.submitted = true;
     this.user = this.resetPasswordForm.value;
@@ -77,6 +95,59 @@ export class NgxResetPasswordComponent implements OnInit {
       }
       this.cd.detectChanges();
     });
+  }*/
+  resetPass(): void {
+    this.result$ = this.activeRouteParam$.pipe(
+      concatMap(param => {
+        if (param['token']) {
+          if (this.resetPasswordForm.valid) {
+            if (this.password.value === this.confirmPassword.value) {
+              return this.userService.restorePassword({token: param['token'],
+                newPassword: this.password.value, confirmPassword: this.confirmPassword.value}).pipe(
+                map(() => {
+                  setTimeout(() => {
+                     this.router.navigateByUrl('/auth/login');
+                  }, 1000);
+                  this.resetPasswordForm.reset();
+                  return 'Votre mot de passe a bien été modifié';
+                }),
+                catchError((error: HttpErrorResponse) => {
+                  this.errors$.next(error.statusText);
+                  return of();
+                }),
+              );
+            }
+          }
+        } else {
+          if (this.resetPasswordForm.valid) {
+            if (this.password.value === this.confirmPassword.value) {
+              return this.userService.getCurrentUser()
+                .pipe(
+                  flatMap((user: User) => {
+                    console.warn('user', user );
+                    const tmpUser = new User();
+                    tmpUser.passwordHash = this.password.value;
+                    tmpUser.id = user.id;
+                    return this.userService.updateUser(tmpUser);
+                  }),
+                  map((user) => {
+                    console.warn('user', user);
+                    // setInterval(() => {
+                    //  this.router.navigateByUrl('/pages/dashboard');
+                    // }, 1000);
+                    this.resetPasswordForm.reset();
+                    return 'Votre mot de passe a bien été modifié';
+                  }),
+                  catchError((error: HttpErrorResponse) => {
+                    this.errors$.next(error.statusText);
+                    return of();
+                  }),
+                );
+            }
+          }
+        }
+      }),
+    );
   }
   back() {
     this.location.back();
@@ -97,4 +168,5 @@ export class NgxResetPasswordComponent implements OnInit {
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
+
 }

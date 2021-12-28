@@ -30,7 +30,7 @@
                       fullWidth
                       id="input-email"
                       formControlName="email"
-                      [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+                      [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
                       [attr.aria-invalid]="email.invalid && email.touched ? true : null"
                       placeholder="Email address">
               <ngx-validation-message label="Email" [showPattern]="email?.hasError('pattern') && email.touched"
@@ -47,7 +47,7 @@
                       id="input-password"
                       formControlName="password"
                       type="{{showPassword ? 'text' : 'password' }}"
-                      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+                      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
                       placeholder="Password">
                 <div class="input-group-append">
                   <button class="btn btn-info btn-lg" (click)="togglePassword()">

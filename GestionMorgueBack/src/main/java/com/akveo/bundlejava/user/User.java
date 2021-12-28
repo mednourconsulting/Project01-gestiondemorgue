@@ -43,8 +43,7 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "user_name", nullable = false)
-    @NotEmpty(message = "Please, provide an user name")
+    @Column(name = "user_name")
     private String userName;
 
     @Column(name = "email", nullable = false)

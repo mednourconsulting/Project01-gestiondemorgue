@@ -60,4 +60,8 @@
    nb-auth-block {
     max-width: 60rem!important;
   }
+  :host ::ng-deep div.layout-container nb-sidebar.menu-sidebar div.main-container
+  div.scrollable nb-menu .menu-item > .menu-items > .menu-item a:active {
+    color: #0c2c43!important;
+  }
 }

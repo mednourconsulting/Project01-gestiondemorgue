@@ -8,6 +8,7 @@ import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {DomSanitizer} from '@angular/platform-browser';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -28,7 +29,7 @@ export class AttestationComponent implements OnInit {
       custom: [
         {
           name: 'ppddff',
-          title: '<i class="fas fa-file-pdf"   data-toggle="tooltip" data-placement="top" title="Attestation" aria-hidden="true"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf"   data-toggle="tooltip" data-placement="top" title="Attestation" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -116,7 +117,8 @@ export class AttestationComponent implements OnInit {
               private serviceCause: CauseService,
               private logoBase64: LogoBase64Service,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private sanitizer: DomSanitizer) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+0530');
   }
   init() {

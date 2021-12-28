@@ -8,24 +8,18 @@ package com.akveo.bundlejava.authentication.resetpassword;
 
 import com.akveo.bundlejava.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "restore_user_password")
 public class RestorePassword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "generated_token")
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)

@@ -23,7 +23,7 @@ export class NgxRegisterComponent implements OnInit {
 
   minLength: number = this.getConfigValue('forms.validation.password.minLength');
   maxLength: number = this.getConfigValue('forms.validation.password.maxLength');
-  isFullNameRequired: boolean = this.getConfigValue('forms.validation.fullName.required');
+  // isFullNameRequired: boolean = this.getConfigValue('forms.validation.fullName.required');
   isEmailRequired: boolean = this.getConfigValue('forms.validation.email.required');
   isPasswordRequired: boolean = this.getConfigValue('forms.validation.password.required');
   redirectDelay: number = this.getConfigValue('forms.register.redirectDelay');
@@ -46,7 +46,9 @@ export class NgxRegisterComponent implements OnInit {
     protected router: Router,
               private toastService: ToastrService) { }
 
-  get fullName() { return this.registerForm.get('fullName'); }
+  // get fullName() { return this.registerForm.get('fullName'); }
+  get lastName() { return this.registerForm.get('lastName'); }
+  get firstName() { return this.registerForm.get('firstName'); }
   get email() { return this.registerForm.get('email'); }
   get password() { return this.registerForm.get('password'); }
   get confirmPassword() { return this.registerForm.get('confirmPassword'); }
@@ -54,9 +56,9 @@ export class NgxRegisterComponent implements OnInit {
   get role() { return this.registerForm.get('role'); }
 
   ngOnInit(): void {
-    const fullNameValidators = [
+   /* const fullNameValidators = [
     ];
-    this.isFullNameRequired && fullNameValidators.push(Validators.required);
+    this.isFullNameRequired && fullNameValidators.push(Validators.required);*/
 
     const emailValidators = [
       Validators.pattern(EMAIL_PATTERN),
@@ -70,7 +72,9 @@ export class NgxRegisterComponent implements OnInit {
     this.isPasswordRequired && passwordValidators.push(Validators.required);
 
     this.registerForm = this.fb.group({
-      fullName: this.fb.control('', [...fullNameValidators]),
+    //  fullName: this.fb.control('', [...fullNameValidators]),
+      lastName: this.fb.control('', [Validators.required]),
+      firstName: this.fb.control('', [Validators.required]),
       email: this.fb.control('', [...emailValidators]),
       password: this.fb.control('', [...passwordValidators]),
       confirmPassword: this.fb.control('', [...passwordValidators]),
@@ -110,6 +114,7 @@ export class NgxRegisterComponent implements OnInit {
   }
   createUser(): void {
     this.user = this.registerForm.value;
+    console.warn('user : ', this.user);
     this.errors = this.messages = [];
     this.submitted = true;
 
@@ -117,7 +122,7 @@ export class NgxRegisterComponent implements OnInit {
       this.submitted = false;
       this.registerForm.reset();
       this.toastService.showToast('success', 'Ajout d\'un nouveau utilisateur',
-        'L\'utilisateur ' + this.user.fullName + ' est ajouté avec  succès');
+        'L\'utilisateur ' + this.user.lastName + ' ' + this.user.firstName + ' est ajouté avec  succès');
     }, error => {
 
         this.toastService.showToast('danger', 'Email déjà utilisé',

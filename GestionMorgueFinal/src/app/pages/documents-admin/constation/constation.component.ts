@@ -8,6 +8,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {DomSanitizer} from '@angular/platform-browser';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -28,7 +29,7 @@ export class ConstationComponent implements OnInit {
       custom: [
         {
           name: 'pdf',
-          title: '<i class="fas fa-file-pdf"   data-toggle="tooltip" data-placement="top" title="Certificat" aria-hidden="true"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf"   data-toggle="tooltip" data-placement="top" title="Certificat" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -116,7 +117,8 @@ export class ConstationComponent implements OnInit {
               private serviceCause: CauseService,
               private logoBase64: LogoBase64Service,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private sanitizer: DomSanitizer) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+0530');
     this.service.getAll().subscribe(data => {
       this.source = data;

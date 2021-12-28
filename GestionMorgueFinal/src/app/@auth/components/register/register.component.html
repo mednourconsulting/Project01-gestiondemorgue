@@ -28,34 +28,34 @@
           </ul>
         </nb-alert>
 
-        <div [formGroup]="registerForm" aria-labelledby="title" autocomplete="off">
+        <div [formGroup]="registerForm" aria-labelledby="title">
           <div class="row">
             <div class="form-control-group col-md-6">
-              <label for="input-name">Nom Complet</label>
+              <label for="input-lastname">Nom</label>
               <input  nbInput
                       autofocus
                       class="form-control"
                       fieldSize
-                      id="input-name"
-                      formControlName="fullName"
-                      [status]="fullName.dirty ? (fullName.invalid  ? 'danger' : 'success') : ''"
-                      [attr.aria-invalid]="fullName.invalid && fullName.touched ? true : null"
-                      placeholder="Nom et Prénom">
-              <ngx-validation-message label="Nom Complet" [showRequired]="fullName?.errors?.required && fullName.touched">
+                      id="input-lastname"
+                      formControlName="lastName"
+                      [status]="lastName.dirty ? (lastName.invalid  ? 'danger' : 'success') : 'basic'"
+                      [attr.aria-invalid]="lastName.invalid && lastName.touched ? true : null"
+                      placeholder="Nom">
+              <ngx-validation-message label="Nom" [showRequired]="lastName?.errors?.required && lastName.touched">
               </ngx-validation-message>
             </div>
             <div class="form-control-group col-md-6">
-              <label for="email-input">Email</label>
+              <label for="email-input">Prénom</label>
               <input  nbInput
                       fieldSize
                       class="form-control"
-                      id="email-input"
-                      formControlName="email"
-                      [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
-                      [attr.aria-invalid]="email.invalid && email.touched ? true : null"
+                      id="input-prenom"
+                      formControlName="firstName"
+                      [status]="firstName.dirty ? (firstName.invalid  ? 'danger' : 'success') : 'basic'"
+                      [attr.aria-invalid]="firstName.invalid && firstName.touched ? true : null"
                       placeholder="Email">
-              <ngx-validation-message label="Email address" [showPattern]="email?.hasError('pattern') && email.touched"
-                                      [showRequired]="email?.errors?.required && email.touched"></ngx-validation-message>
+              <ngx-validation-message label="Email address"
+                                      [showRequired]="firstName?.errors?.required && firstName.touched"></ngx-validation-message>
             </div>
           </div>
 
@@ -69,7 +69,7 @@
                         id="password-input"
                         formControlName="password"
                         [type]="getInputType()"
-                        [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+                        [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
                         placeholder="Mot de passse"
                         >
                 <div class="input-group-append">
@@ -92,7 +92,7 @@
                     id="input-re-password"
                     formControlName="confirmPassword"
                     type="password"
-                    [status]="confirmPassword.dirty ? (confirmPassword.invalid || password.value != confirmPassword.value  ? 'danger' : 'success') : ''"
+                    [status]="confirmPassword.dirty ? (confirmPassword.invalid || password.value != confirmPassword.value  ? 'danger' : 'success') : 'basic'"
                     placeholder="Mot de passe">
             <ngx-validation-message label="Confirmation du mot de passe"
                                     [showMinLength]="confirmPassword?.hasError('minlength') && confirmPassword.touched"
@@ -105,8 +105,19 @@
           </div>
 
           <div class="row">
-
-
+            <div class="form-control-group col-md-6">
+              <label for="email-input">Email</label>
+              <input  nbInput
+                      fieldSize
+                      class="form-control"
+                      id="email-input"
+                      formControlName="email"
+                      [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
+                      [attr.aria-invalid]="email.invalid && email.touched ? true : null"
+                      placeholder="Email">
+              <ngx-validation-message label="Email address" [showPattern]="email?.hasError('pattern') && email.touched"
+                                      [showRequired]="email?.errors?.required && email.touched"></ngx-validation-message>
+            </div>
             <div class="form-control-group col-md-6">
               <label for="role" class="form-control-label">Role</label>
               <nb-select fullWidth size="large" placeholder="Role" formControlName="role" id="role">

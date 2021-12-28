@@ -11,24 +11,14 @@ import {Injectable} from '@angular/core';
 export class PagesMenu {
 
   getMenu(): Observable<NbMenuItem[]> {
-    const dashboardMenu = [
-      {
-        title: '',
-        link: '/pages/iot-dashboard',
-        children: undefined,
-      },
-    ];
-
     const menu = [
       {
-        title: 'Table de Bord',
+        title: 'Tableau de Bord',
         icon: 'home-outline',
         link: '/pages/dashboard',
-        children: undefined,
       },
       {
         title: 'Bulletins',
-        /*de décès et de mortinalité*/
          icon: 'layout-outline',
         children: [
           {
@@ -119,14 +109,7 @@ export class PagesMenu {
         title: 'Utilisateurs',
         icon: 'people-outline',
         link: '/pages/users',
-        children: undefined,
       },
-      // {
-      //   title: 'Rapport',
-      //   icon: '',
-      // },
-    ];
-    const Parameters = [
       {
         title: 'Paramètres',
         icon: 'settings-outline',
@@ -148,29 +131,15 @@ export class PagesMenu {
         ],
       },
     ];
-
-    return of([...dashboardMenu, ...menu, ...Parameters]);
+    return of([...menu]);
   }
 
   getMenuUser(): Observable<NbMenuItem[]> {
-    const dashboardMenu = [
-      {
-        title: '',
-        link: '/pages/iot-dashboard',
-        children: undefined,
-      },
-    ];
-
     const menu = [
       {
-        title: 'Table de Bord',
+        title: 'Tableau de Bord',
         icon: 'home-outline',
         link: '/pages/dashboard',
-        children: undefined,
-      },
-      {
-        title: '',
-        group: true,
       },
       {
         title: 'Bulletins',
@@ -261,17 +230,9 @@ export class PagesMenu {
           },
         ],
       },
-      // {
-      //   title: 'Rapport',
-      //   icon: '',
-      // },
-    ];
-    const Parameters = [
       {
         title: 'Paramètres',
         icon: 'settings-outline',
-        /* title: 'Authentification',
-         icon: 'lock-outline',*/
         children: [
           {
             title: 'réinitialiser le mot de passe',
@@ -285,6 +246,6 @@ export class PagesMenu {
       },
     ];
 
-    return of([...dashboardMenu, ...menu, ...Parameters]);
+    return of([...menu]);
   }
 }

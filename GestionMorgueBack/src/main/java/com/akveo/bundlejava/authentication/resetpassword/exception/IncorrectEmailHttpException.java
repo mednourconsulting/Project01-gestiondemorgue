@@ -12,6 +12,6 @@ import org.springframework.http.HttpStatus;
 public class IncorrectEmailHttpException extends HttpException {
     public IncorrectEmailHttpException() {
         // TODO check http status
-        super("Email is invalid or doesn't registered", HttpStatus.FORBIDDEN);
+        super("L'email saisi n'est pas correcte !!", HttpStatus.FORBIDDEN);
     }
 }

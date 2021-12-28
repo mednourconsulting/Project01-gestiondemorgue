@@ -24,6 +24,8 @@ public class AuthControllerOAuthTest {
     public static final String EXISTING_EMAIL = "admin@admin.com";
     public static final String EXISTING_PASSWORD = "password";
     public static final String NEW_EMAIL = "user123@user.com";
+    public static final String NEW_FIRSTNAME = "user";
+    public static final String NEW_LASTNAME = "user";
     public static final String NEW_PASSWORD = "1234";
     public static final String USERNAME = "user123";
 
@@ -54,8 +56,7 @@ public class AuthControllerOAuthTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        SignUpDTO request = new SignUpDTO(
-            USERNAME, NEW_EMAIL, NEW_PASSWORD, NEW_PASSWORD);
+        SignUpDTO request = new SignUpDTO(NEW_EMAIL,NEW_LASTNAME, NEW_FIRSTNAME, NEW_PASSWORD, NEW_PASSWORD);
         HttpEntity<SignUpDTO> entity = new HttpEntity<>(request, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(

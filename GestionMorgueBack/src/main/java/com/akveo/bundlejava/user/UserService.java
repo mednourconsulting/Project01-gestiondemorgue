@@ -55,6 +55,7 @@ public class UserService {
 
     @Transactional
     public User register(SignUpDTO signUpDTO) throws UserAlreadyExistsException {
+
         if (!signUpDTO.getPassword().equals(signUpDTO.getConfirmPassword())) {
             throw new PasswordsDontMatchException();
         }
@@ -82,7 +83,7 @@ public class UserService {
 
     public UserDTO getUserById(Long id) {
         User existingUser = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundHttpException("User with id: " + id + " not found", HttpStatus.NOT_FOUND)
+                () -> new UserNotFoundHttpException("Utilisateur non trouvé", HttpStatus.NOT_FOUND)
         );
 
         return modelMapper.map(existingUser, UserDTO.class);
@@ -99,7 +100,7 @@ public class UserService {
             userRepository.deleteById(id);
             return true;
         } catch (EmptyResultDataAccessException e) {
-            throw new UserNotFoundHttpException("User with id: " + id + " not found", HttpStatus.NOT_FOUND);
+            throw new UserNotFoundHttpException("Utilisateur non trouvé", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -130,14 +131,14 @@ public class UserService {
     private UserDTO updateUser(Long id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id).
                 orElseThrow(() -> new UserNotFoundHttpException(
-                        "User with id: " + id + " not found", HttpStatus.NOT_FOUND)
+                        "Utilisateur non trouvé", HttpStatus.NOT_FOUND)
                 );
 
         User updatedUser = modelMapper.map(userDTO, User.class);
         updatedUser.setId(id);
         updatedUser.setPasswordHash(existingUser.getPasswordHash());
         // Current version doesn't update roles
-        updatedUser.setRole(existingUser.getRole());
+         updatedUser.setRole(existingUser.getRole());
 
         userRepository.save(updatedUser);
 
@@ -147,7 +148,8 @@ public class UserService {
     private User signUpUser(SignUpDTO signUpDTO) {
         User user = new User();
         user.setEmail(signUpDTO.getEmail());
-        user.setUserName(signUpDTO.getFullName());
+        user.setLastName(signUpDTO.getLastName());
+        user.setFirstName(signUpDTO.getFirstName());
         String role = signUpDTO.getRole();
         String encodedPassword = encodePassword(signUpDTO.getPassword());
         user.setPasswordHash(encodedPassword);
@@ -162,4 +164,6 @@ public class UserService {
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
+
+
 }

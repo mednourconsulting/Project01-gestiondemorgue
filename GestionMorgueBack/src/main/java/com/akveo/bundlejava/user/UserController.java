@@ -8,9 +8,11 @@ package com.akveo.bundlejava.user;
 
 import com.akveo.bundlejava.authentication.SignUpDTO;
 import com.akveo.bundlejava.user.exception.UserAlreadyExistsException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -34,10 +37,20 @@ import static org.springframework.http.ResponseEntity.ok;
 public class UserController {
 
     private UserService userService;
+    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private ModelMapper modelMapper;
+
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          UserRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                           ModelMapper modelMapper) {
         this.userService = userService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -124,6 +137,16 @@ public class UserController {
         return ok(userService.register(userDTO));
     }
 
+    @PutMapping("/updatePassword/{id}")
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user) {
+        Optional<User> userFromDb = this.userRepository.findById(id);
+        if(userFromDb.isPresent()) {userFromDb.get().setPasswordHash(this.passwordEncoder.encode(user.getPasswordHash()));
+            User updatedUser =  this.userRepository.save(userFromDb.get());
+            UserDTO updatedUserDto = modelMapper.map(updatedUser, UserDTO.class);
+            return ok(updatedUserDto);
+        }
+        return null;
+    }
 
 
 }

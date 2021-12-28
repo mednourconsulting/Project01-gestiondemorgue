@@ -7,27 +7,20 @@
 import { NgModule } from '@angular/core';
 import {NgxSelectModule} from 'ngx-select-ex';
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
-import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
-import { PagesMenu } from './pages-menu';
 import {
   NbAutocompleteModule,
   NbButtonModule,
   NbCardModule,
   NbDialogModule, NbInputModule,
   NbMenuModule,
-  NbSelectModule
+  NbSelectModule,
 } from '@nebular/theme';
 import { AuthModule } from '../@auth/auth.module';
-import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
-import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
-import {CertificatModule} from './certificat/certificat.module';
 import {ReactiveFormsModule} from '@angular/forms';
-import {UsersListModule} from './users-list/users-list.module';
 import { ShowDialogComponent } from './show-dialog/show-dialog.component';
-import {ComponentsModule} from "../@components/components.module";
+import {ComponentsModule} from '../@components/components.module';
 
 
 const PAGES_COMPONENTS = [
@@ -43,13 +36,7 @@ const ENTRY_COMPONENTS = [
     NgxSelectModule,
     PagesRoutingModule,
     ThemeModule,
-    UsersListModule,
-    DashboardModule,
-    BulletinsDMModule,
-    DocumentsAdminModule,
-    CertificatModule,
     NbMenuModule,
-    MiscellaneousModule,
     AuthModule.forRoot(),
     ReactiveFormsModule,
     NbDialogModule.forChild(),
@@ -68,7 +55,6 @@ const ENTRY_COMPONENTS = [
   ],
   exports: [ ShowDialogComponent ],
   providers: [
-    PagesMenu,
     ShowDialogComponent,
   ],
 })

@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class UsersService extends UserData {
-
+  public user: User;
   constructor(private api: UsersApi, private authService: NbAuthService) {
     super();
   }
@@ -28,7 +28,7 @@ export class UsersService extends UserData {
   }
 
   getCurrentUser(): Observable<User> {
-    return this.authService.isAuthenticated()
+    return this.authService.isAuthenticatedOrRefresh()
       .pipe(
         switchMap(authenticated => {
           return authenticated ? this.api.getCurrent() : of(null);
@@ -37,7 +37,8 @@ export class UsersService extends UserData {
         if (u && !u.setting) {
           u.setting = {};
         }
-        return u;
+        this.user = u;
+        return this.user;
       }));
   }
 
@@ -66,5 +67,11 @@ export class UsersService extends UserData {
   }
   findAll(): Observable<any> {
     return this.api.findAll();
+  }
+  updateUser(user: any): Observable<any> {
+    return this.api.updateUser(user);
+  }
+  restorePassword(params: any): Observable<any>  {
+    return this.api.restorePassword(params);
   }
 }

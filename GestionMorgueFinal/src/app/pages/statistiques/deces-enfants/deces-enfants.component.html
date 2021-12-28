@@ -5,20 +5,21 @@
         <nb-card-body>
           <div class="row">
 
-              <div class="col-md-3">
-                  <form  autocomplete="off" [formGroup]="reactiveForm" (ngSubmit)="OnSubmit()">
-                      <input type="number" min="1900" max="2099" step="1"
-                             class="form-control"
-                             formControlName="annee">
-                    <ngx-validation-message label="filtre"
-                                            [showMin]="getControl('annee')?.hasError('min')"
-                                            [showMax]="getControl('annee')?.hasError('max')"
-                                            [min]="1900"
-                                            [max]="2099"
-                                            [showRequired]="!getControl('annee').valid && getControl('annee').touched">
-                  </ngx-validation-message>
-                  </form>
-              </div>
+            <div class="col-md-3">
+              <form  autocomplete="off" [formGroup]="reactiveForm" (ngSubmit)="OnSubmit()">
+                <label class="label">Année</label>
+                <input type="number" min="1900" max="2099" step="1"
+                       class="form-control"
+                       formControlName="annee">
+                <ngx-validation-message label="Année"
+                                        [showMin]="getControl('annee')?.hasError('min')"
+                                        [showMax]="getControl('annee')?.hasError('max')"
+                                        [min]="1900"
+                                        [max]="2099"
+                                        [showRequired]="!getControl('annee').valid && getControl('annee').touched">
+                </ngx-validation-message>
+              </form>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-12">
