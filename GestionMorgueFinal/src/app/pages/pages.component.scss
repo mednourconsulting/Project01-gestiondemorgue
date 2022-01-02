@@ -67,7 +67,7 @@
 }
 
 :host ::ng-deep .form-control {
-padding: 2px 3px !important;
+padding: 0 0 0 2px !important;
 }
 :host ::ng-deep {
   .ngx-select__toggle, .select-button {
@@ -77,6 +77,10 @@ padding: 2px 3px !important;
 }
   nb-select.size-medium button {
     padding: 0!important;
+  }
+  .ngx-select__item_active {
+    color: #fff !important;
+    background-color: #17a2b8!important;
   }
 }
 

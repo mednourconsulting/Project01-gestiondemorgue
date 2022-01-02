@@ -15,7 +15,7 @@
                       [items]="listDeced"
                       (select)="doSelectD($event)"
                       (remove)="doRemoveD($event)"
-                      placeholder="choisir décédé..."
+
                       required>
           </ngx-select>
           <ngx-validation-message label="Décédé"
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label  class="label">Centre médico-légal</label>
           <input formControlName="centerMedicoLegal"class="form-control" type="text"
-                 id="centre" placeholder="Centre médico-légal" required>
+                 id="centre"  required>
           <ngx-validation-message label="Centre médico-légal"
                                   [showRequired]="!getControl('centerMedicoLegal').valid && getControl('centerMedicoLegal').touched"
                                   [fr]="getControl('centerMedicoLegal')?.hasError('pattern')">
@@ -45,7 +45,6 @@
                       [items]="listMedcin"
                       (select)="doSelectM($event)"
                       (remove)="doRemoveM($event)"
-                      placeholder="choisir médecin..."
                       required>
 
           </ngx-select>
@@ -58,7 +57,7 @@
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
           <input formControlName="dateDeclaration" class="form-control" type="Date"
-                 id="dateDec" placeholder="Date de déclaration" required>
+                 id="dateDec"  required>
           <ngx-validation-message label="Date de déclaration"
                                   [showRequired]="!getControl('dateDeclaration').valid && getControl('dateDeclaration').touched">
           </ngx-validation-message>

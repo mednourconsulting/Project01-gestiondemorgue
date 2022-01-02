@@ -13,7 +13,7 @@
             <nb-select  formControlName="typeBulletin"
                         class="type-select form-control "
                          fullWidth
-                        placeholder="Type de bulletin"
+
                         required>
               <nb-option *ngFor="let t of dataBulletins.typeBulletinList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -28,7 +28,7 @@
             <nb-select  formControlName="province"
                         class="type-select form-control "
                          fullWidth
-                        placeholder="Province ou préfecture"
+
                         required>
               <nb-option *ngFor="let t of dataBulletins.provinceList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -45,7 +45,7 @@
 
               name= "declaration"
               class="form-control"
-              placeholder="Date de déclaration"
+
               required
               formControlName="declaration"
               (ngModelChange)="Bulletins.declaration = $event"/>
@@ -68,7 +68,7 @@
                    name= "cercle"
                    required
                    id="cercle"
-                   placeholder="Cercle">
+                   >
             <ngx-validation-message label="Cercle"
                                     [showRequired]="!getControl('cercle').valid && getControl('cercle').touched"
                                     [fr]="getControl('cercle')?.hasError('pattern')">
@@ -85,7 +85,7 @@
                    name= "centre"
                    required
                    id="municipalite"
-                   placeholder="Municipalité/Centre/Commune"
+
             >
             <ngx-validation-message label="Municipalité/Centre/Commune"
                                     [showRequired]="!getControl('centre').valid && getControl('centre').touched"
@@ -100,7 +100,7 @@
                         class="type-select form-control  "
                         fullWidth
                         required
-                        placeholder="Diagnostique Attestation"
+
             >
               <nb-option *ngFor="let t of dataBulletins.diagnostiqueList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -118,7 +118,7 @@
             <nb-select  formControlName="residece"
                         class="type-select form-control "
                         fullWidth required
-                        placeholder="Lieu de résidence"
+
                         >
               <nb-option *ngFor="let t of dataBulletins.milieuList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -135,7 +135,7 @@
             <nb-select  formControlName="lieuEntrement"
                         class="type-select form-control "
                         fullWidth required
-                        placeholder="Lieu Enterrement"
+
                         >
               <nb-option *ngFor="let t of dataBulletins.lieuList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -152,7 +152,7 @@
                         class="type-select form-control "
                         fullWidth
                         required
-                        placeholder="Cimetière">
+                        >
               <nb-option *ngFor="let t of dataBulletins.cimetiereList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
             <ngx-validation-message label="Cimetière"
@@ -173,7 +173,7 @@
                    name= "numTombe"
                    required
 
-                   placeholder="Numéro de tombe"
+
             >
             <ngx-validation-message label="Numéro de tombe"
                                     [showRequired]="!getControl('numTombe').valid && getControl('numTombe').touched">
@@ -187,7 +187,7 @@
                    class="form-control"
                    type="text"
                    id="Compostage"
-                   placeholder="Compostage"
+
                   >
             <ngx-validation-message label="Compostage"
                                     [fr]="getControl('compostage')?.hasError('pattern')">
@@ -202,7 +202,7 @@
                         [items]="listDecede"
                         (select)="doSelectD($event)"
                         (remove)="doRemoveD($event)"
-                        placeholder="Décédé" required>
+                        required>
             </ngx-select>
             <ngx-validation-message label="Décédé"
                                     [showRequired]="!getControl('decede').valid && getControl('decede').touched">
@@ -220,7 +220,7 @@
                          [items]="listMedcin"
                          (select)="doSelectM($event)"
                          (remove)="doRemoveM($event)"
-                         placeholder="Médecin" required>
+                         required>
 
             </ngx-select>
             <ngx-validation-message label="Médecin"

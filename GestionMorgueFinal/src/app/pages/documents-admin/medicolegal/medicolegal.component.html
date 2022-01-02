@@ -13,11 +13,12 @@
                 <div class="form-group">
                     <label class="label">Médecin</label>
                   <ngx-select class="form-control"
-                              placeholder="Médecin"
                               formControlName="medecin"
-                              [allowClear]="true"
-                              [items]="listDecede"
-                              required></ngx-select>
+                              [items]="listMedcin"
+                              (select)="doSelectM($event)"
+                              (remove)="doRemoveM($event)"
+                              required>
+                  </ngx-select>
                   <ngx-validation-message label="Médecin"
                                           [showRequired]="!dataMedicoLegalService.getControl('medecin').valid && dataMedicoLegalService.getControl('medecin').touched">
                   </ngx-validation-message>
@@ -30,9 +31,10 @@
 
                   <ngx-select class="form-control"
                               formControlName="defunt"
-                              placeholder="Défunt"
                               [allowClear]="true"
-                              [items]="listDecede" required></ngx-select>
+                              [items]="listDecede"
+                              (select)="doSelectD($event)"
+                              (remove)="doRemoveD($event)" required></ngx-select>
                   <ngx-validation-message label="Défunt"
                                           [showRequired]="!dataMedicoLegalService.getControl('defunt').valid && dataMedicoLegalService.getControl('defunt').touched">
                   </ngx-validation-message>
@@ -46,7 +48,7 @@
                            class="form-control"
                            type="text"
                            id="dec"
-                           placeholder="Déclarant"
+
                            required="true">
                   <ngx-validation-message label="Déclarant"
                                           [showRequired]="!dataMedicoLegalService.getControl('declarant').valid && dataMedicoLegalService.getControl('declarant').touched"
@@ -66,7 +68,7 @@
                            class="form-control"
                            type="text"
                            id="cin"
-                           placeholder="CIN Déclarant"
+
                     >
                   <ngx-validation-message label="CIN Déclarant"
                                           [fr]="dataMedicoLegalService.getControl('cin')?.hasError('pattern')">
@@ -80,7 +82,7 @@
                            class="form-control"
                            type="text"
                            id="adresse"
-                           placeholder="Adresse Déclarant"
+
                            required="true">
                   <ngx-validation-message label="Adresse Déclarant"
                                           [showRequired]="!dataMedicoLegalService.getControl('address').valid && dataMedicoLegalService.getControl('address').touched"
@@ -95,7 +97,7 @@
                            class="form-control"
                            type="Date"
                            id="datedec"
-                           placeholder="Date déclaration"
+
                     >
 
                 </div>

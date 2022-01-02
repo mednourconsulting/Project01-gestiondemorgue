@@ -13,7 +13,7 @@
         <div class="form-group">
           <label  class="label">Code</label>
           <input formControlName="code" class="form-control"type="text"
-                 id="code" required="true" placeholder="code">
+                 id="code" required="true" >
           <ngx-validation-message label="code"
                                   [showRequired]="!getControl('code').valid && getControl('code').touched"
                                   [fr]="getControl('code')?.hasError('pattern')"></ngx-validation-message>
@@ -23,7 +23,7 @@
         <div class="form-group">
           <label  class="label">Description</label>
           <textarea  formControlName="description" required="true" class="form-control"  type="text"
-                  placeholder="Description" >
+                   >
           </textarea>
           <ngx-validation-message label="description"
                                   [showRequired]="!getControl('description').valid && getControl('description').touched"
@@ -33,10 +33,10 @@
 
 
       <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">الوصف</label>
+        <div class="form-group arabe">
+          <label  class="label float-right">الوصف</label>
           <textarea  formControlName="descriptionAR" required="true" class="form-control"  type="text"
-                     placeholder="الوصف" >
+                      >
           </textarea>
           <ngx-validation-message label="الوصف"
                                   [showRequired]="getControl('descriptionAR').touched && !getControl('descriptionAR').valid"

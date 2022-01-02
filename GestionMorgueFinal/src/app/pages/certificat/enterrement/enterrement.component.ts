@@ -74,8 +74,10 @@ export class EnterrementComponent implements OnInit {
       declaration: {
         title: 'Date de déclaration',
         valuePrepareFunction: (data) => {
-          const raw: Date = new Date(data);
-          return this.datePipe.transform(raw, 'dd-MM-yyyy');
+          if (data != null) {
+            const r: Date = new Date(data);
+            return this.datePipe.transform(r, 'dd-MM-yyyy');
+          } else return ' ';
         },
       },
     },
@@ -327,8 +329,11 @@ export class EnterrementComponent implements OnInit {
     }
   }
   ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
   createCertificatFromForm(): CertificatEnterrement {
     const formValues = this.reactiveForm.value;

@@ -15,7 +15,7 @@
                       [items]="listMedecin"
                       (select)="doSelectM($event)"
                       (remove)="doRemoveM($event)"
-                      placeholder="Médecin"
+
                       required>
           </ngx-select>
           <ngx-validation-message label="Médecin"
@@ -32,7 +32,7 @@
                       [items]="listDecede"
                        (select)="doSelectD($event)"
                        (remove)="doRemoveD($event)"
-                      placeholder="Nom"
+
                       required>
           </ngx-select>
           <ngx-validation-message label="Décédé"
@@ -44,7 +44,7 @@
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
           <input formControlName="declaration"  class="form-control" type="Date"
-                 id="dateDec" placeholder="Date de déclaration"required>
+                 id="dateDec" required>
           <ngx-validation-message label="Date de déclaration"
                                   [showRequired]="!getControl('declaration').valid && getControl('declaration').touched">
           </ngx-validation-message>
@@ -58,7 +58,7 @@
         <div class="form-group">
           <label  class="label">Déclarant</label>
           <input formControlName="declarant"  class="form-control" type="text"
-                 id="declarant" placeholder="Déclarant" required>
+                 id="declarant"  required>
           <ngx-validation-message label="Déclarant"
                                   [showRequired]="!getControl('declarant').valid && getControl('declarant').touched"
                                   [fr]="getControl('declarant').hasError('pattern')">
@@ -69,7 +69,7 @@
         <div class="form-group">
           <label  class="label">CIN du déclarant</label>
           <input formControlName="cin"  class="form-control" type="text"
-                 id="CINdec" placeholder="CIN du déclarant" required>
+                 id="CINdec"  required>
           <ngx-validation-message label="CIN du déclarant"
                                   [showRequired]="!getControl('cin').valid && getControl('cin').touched"
                                   [fr]="getControl('cin').hasError('pattern')">
@@ -80,7 +80,7 @@
         <div class="form-group">
           <label  class="label">N° téléphone </label>
           <input formControlName="tel"  class="form-control" type="text"
-                 id="tel" placeholder="Tel.." required>
+                 id="tel"  required>
           <ngx-validation-message label="N° téléphone"
                                   [showRequired]="!getControl('tel').valid && getControl('tel').touched"
                                   [number]="getControl('tel').hasError('pattern')">
@@ -96,7 +96,7 @@
           <nb-select  formControlName="cercueilType"
                       class="form-control"
                       fullWidth
-                      placeholder="type" required>
+                      required>
             <nb-option *ngFor="let t of dataService.cercueil" [value]="t" >{{ t }}</nb-option>
           </nb-select>
           <ngx-validation-message label="Type de cercueil"
@@ -110,7 +110,7 @@
           <nb-select  formControlName="destination"
                       class="form-control"
                       fullWidth
-                      placeholder="Destination du corps"
+
                       required>
             <nb-option *ngFor="let t of dataService.destinationCorps" [value]="t" >{{ t }}</nb-option>
           </nb-select>
@@ -124,7 +124,7 @@
         <div class="form-group">
           <label  class="label">Fourgon mortuaire Mle </label>
           <input formControlName="mortuaire"  class="form-control" type="text"
-                 id="fourgon" placeholder="Fourgon mortuaire Mle" required>
+                 id="fourgon"  required>
           <ngx-validation-message label="Mortuaire"
                                   [showRequired]="!getControl('mortuaire').valid && getControl('mortuaire').touched"
                                   [fr]="getControl('mortuaire').hasError('pattern')">
@@ -138,9 +138,9 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="form-group">
-          <label  class="label">La société ou l'administration </label>
+          <label  class="label">La société ou l'administration du transfert </label>
           <input formControlName="inhumationSociete"  class="form-control" type="text"
-                 id="txt" placeholder="La société ou l'administration chargée de l'inhumation ou du transfert" required>
+                 id="txt"required>
           <ngx-validation-message label="Société d'inhumation"
                                   [showRequired]="!getControl('inhumationSociete').valid && getControl('inhumationSociete').touched"
                                   [fr]="getControl('inhumationSociete').hasError('pattern')">
@@ -151,7 +151,7 @@
         <div class="form-group">
           <label  class="label">Remarques </label>
           <textarea formControlName="remarque" class="form-control" type="text"
-                 id="Remarque" placeholder="Remarques...">
+                 id="Remarque" >
           </textarea>
           <ngx-validation-message label="Remarques"
                                   [fr]="getControl('remarque').hasError('pattern')">

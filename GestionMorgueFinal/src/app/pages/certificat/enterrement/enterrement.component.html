@@ -10,8 +10,8 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label  class="label">Défunt</label>
-          <nb-select  formControlName="defunt" class="type-select " fullWidth
-                      placeholder="Choisir Défunt..." required="true">
+          <nb-select  formControlName="defunt" class="type-select form-control" fullWidth
+                       required="true">
             <nb-option *ngFor="let t of NomDecede" [value]="t.nom + ' ' + t.prenom" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
           </nb-select>
           <ngx-validation-message label="Décédé"
@@ -23,7 +23,7 @@
         <div class="form-group">
           <label  class="label">Ville</label>
           <input formControlName="ville" class="form-control" type="text"
-                 id="centre" placeholder="Ville"required="true">
+                 id="centre" required="true">
           <ngx-validation-message label="ville"
                                   [showRequired]="!getControl('ville').valid && getControl('ville').touched"
                                   [fr]="getControl('declaration').hasError('pattern')">
@@ -36,7 +36,7 @@
         <div class="form-group">
           <label  class="label">Date declaration</label>
           <input formControlName="declaration" class="form-control" type="Date"
-                 id="dateDec" placeholder="Declarant"  required="true">
+                 id="dateDec"   required="true">
           <ngx-validation-message label="Date de déclaration"
                                   [showRequired]="!getControl('declaration').valid && getControl('declaration').touched">
           </ngx-validation-message>

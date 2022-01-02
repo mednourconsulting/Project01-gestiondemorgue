@@ -94,7 +94,6 @@ export class UsersListComponent implements OnInit {
         }
         return u;
       });
-      this.toastService.toastOfEdit('success');
       },
       );
   }

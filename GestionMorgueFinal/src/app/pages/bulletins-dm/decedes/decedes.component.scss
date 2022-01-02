@@ -76,8 +76,8 @@
   @extend %my-label;
 }
 div.arabe {
-  input::placeholder {
-    float: right;
+  input {
+   text-align: end!important;
   }
 }
 

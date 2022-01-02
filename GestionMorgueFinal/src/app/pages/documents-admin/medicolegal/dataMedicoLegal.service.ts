@@ -141,8 +141,10 @@ export class DataMedicoLegalService {
       declaration: {
         title: 'Date de déclaration',
         valuePrepareFunction: (data) => {
+          if (data != null) {
           const r: Date = new Date(data);
           return this.datePipe.transform(r, 'dd-MM-yyyy');
+          } else return ' ';
         },
       },
     },
@@ -154,8 +156,11 @@ export class DataMedicoLegalService {
   }
 
   public ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
   public formControl () {
     this.reactiveForm = this.fb.group({

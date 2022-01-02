@@ -990,8 +990,11 @@ export class BulletinsComponent implements OnInit, OnChanges {
   }
 
   ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
 
   show() {

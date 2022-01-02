@@ -142,8 +142,10 @@ export class DecedesComponent implements OnInit {
       dateNaissance: {
         title: 'Date de naissance',
         valuePrepareFunction: (data) => {
-          const raw: Date = new Date(data);
-          return this.datePipe.transform(raw, 'dd-MM-yyyy');
+          if (data != null) {
+            const r: Date = new Date(data);
+            return this.datePipe.transform(r, 'dd-MM-yyyy');
+          } else return ' ';
         },
       },
       lieuNaiss: {
@@ -179,8 +181,10 @@ export class DecedesComponent implements OnInit {
       dateDeces: {
         title: 'Date décès',
         valuePrepareFunction: (data) => {
-          const row: Date = new Date(data);
-          return this.datePipe.transform(row, 'dd-MM-yyyy');
+          if (data != null) {
+            const r: Date = new Date(data);
+            return this.datePipe.transform(r, 'dd-MM-yyyy');
+          } else return ' ';
         },
       },
       heure: {
@@ -338,7 +342,7 @@ export class DecedesComponent implements OnInit {
       causeMort: [''],
       causeInitial: [''],
       causeImmdiate: [''],
-      profession: ['', [Validators.required]],
+      profession: [''],
       obstacle: [''],
       autopsie: [''],
       operation: [''],
@@ -420,8 +424,11 @@ export class DecedesComponent implements OnInit {
 
   }
   ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
   getTexte(value) {
     if (value === true)

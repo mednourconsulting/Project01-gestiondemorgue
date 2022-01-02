@@ -73,4 +73,8 @@
   @extend %my-label;
 }
 
-
+div.arabe {
+  input {
+    text-align: end!important;
+  }
+}

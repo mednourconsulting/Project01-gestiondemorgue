@@ -72,5 +72,8 @@
 .label {
   @extend %my-label;
 }
-
-
+div.arabe {
+  textarea {
+    text-align: end!important;
+  }
+}

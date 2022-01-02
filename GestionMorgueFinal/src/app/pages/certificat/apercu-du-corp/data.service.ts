@@ -137,8 +137,10 @@ export class DataService {
       dateDeclaration: {
         title: 'Date de déclaration',
         valuePrepareFunction: (data) => {
-          const raw: Date = new Date(data);
-          return this.datePipe.transform(raw, 'dd-MM-yyyy');
+          if (data != null) {
+            const r: Date = new Date(data);
+            return this.datePipe.transform(r, 'dd-MM-yyyy');
+          } else return ' ';
         },
       },
     },

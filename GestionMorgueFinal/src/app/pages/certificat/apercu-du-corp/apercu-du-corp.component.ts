@@ -98,8 +98,11 @@ export class ApercuDuCorpComponent implements OnInit {
   }
 
   public ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
 
   public pdfFrancais (data) {

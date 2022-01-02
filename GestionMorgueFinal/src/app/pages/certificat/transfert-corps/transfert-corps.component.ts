@@ -101,8 +101,11 @@ export class TransfertCorpsComponent implements OnInit {
   }
 
   ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
 
   public pdfFrancais(data) {
@@ -148,7 +151,6 @@ export class TransfertCorpsComponent implements OnInit {
         inhumationSociete: event.inhumationSociete,
         cin: event.cin,
       });
-      console.warn(this.dataService.reactiveForm);
       this.id = event.id;
     } else {
       this.toastService.toastOfEdit('warning');
