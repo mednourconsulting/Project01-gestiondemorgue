@@ -9,6 +9,7 @@ import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {User} from '../../../@core/interfaces/common/users';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({

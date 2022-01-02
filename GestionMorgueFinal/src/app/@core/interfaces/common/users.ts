@@ -10,7 +10,7 @@ import { Settings } from './settings';
 
 export interface User {
   id: number;
-  role: string;
+  role: string[];
   firstName: string;
   lastName: string;
   email: string;
@@ -20,6 +20,8 @@ export interface User {
   address: Address;
   settings: Settings;
 }
+
+
 
 export interface Address {
   street: string;

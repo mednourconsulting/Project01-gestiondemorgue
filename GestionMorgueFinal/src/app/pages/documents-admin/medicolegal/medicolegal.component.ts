@@ -8,12 +8,11 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {Router} from '@angular/router';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
-import {AbstractControl} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 import {DataMedicoLegalService} from './dataMedicoLegal.service';
 import {PdfMedicoLegalService} from './pdfMedicoLegal.service';
+import {User} from '../../../@core/interfaces/common/users';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({

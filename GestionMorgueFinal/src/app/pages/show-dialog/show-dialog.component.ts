@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NbDialogRef} from '@nebular/theme';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EMAIL_PATTERN} from '../../@auth/components';
 import {UsersService} from '../../@core/backend/common/services/users.service';
+import {DialogEmitterService} from '../users-list/services/dialog-emitter.service';
 
 @Component({
   selector: 'ngx-show-dialog',
@@ -16,14 +17,15 @@ export class ShowDialogComponent implements OnInit {
   @Input() editForm: boolean;
   @Input() list: { key: string; value: any; textarea?; language? }[];
   editUserForm: FormGroup;
-  ADMIN = 2;
-  USER = 1;
+  ADMIN = 'ADMIN';
+  USER = 'USER';
   user: any = {};
 
 
   constructor(protected ref: NbDialogRef<ShowDialogComponent>,
               private fb: FormBuilder,
               private userService: UsersService,
+              private dialogEmitterService: DialogEmitterService,
   ) {}
   ngOnInit() {
     this.editUserForm = this.fb.group({
@@ -44,9 +46,13 @@ export class ShowDialogComponent implements OnInit {
   }
   onEdit() {
     this.user = this.editUserForm.value;
+    console.warn('this user', this.user);
     this.user.id = this.list[0].value;
-    this.userService.update(this.user).subscribe((e) => {
-      console.warn('updated', e);
+    this.userService.update(this.user).subscribe((user) => {
+
+      console.warn('user', user);
+      this.dialogEmitterService.emit(user);
+      this.ref.close(user);
     });
   }
 }

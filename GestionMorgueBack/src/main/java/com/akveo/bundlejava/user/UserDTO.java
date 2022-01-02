@@ -7,6 +7,7 @@
 package com.akveo.bundlejava.user;
 
 import com.akveo.bundlejava.address.AddressDTO;
+import com.akveo.bundlejava.role.Role;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -96,6 +97,12 @@ public class UserDTO {
 
     public void setRole(Set<String> roles) {
         this.role = roles;
+    }
+
+    public void transformRoles(Set<Role> roles) {
+        roles.forEach(role1 -> {
+            this.role.add(role1.getName());
+        });
     }
 
     @Override

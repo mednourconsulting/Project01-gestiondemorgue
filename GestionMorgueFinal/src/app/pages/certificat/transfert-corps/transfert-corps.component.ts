@@ -10,6 +10,7 @@ import {ToastrService} from '../../../@core/backend/common/services/toastr.servi
 import {AbstractControl} from '@angular/forms';
 import {DataService} from './data.service';
 import {PdfService} from './pdf.service';
+import {User} from '../../../@core/interfaces/common/users';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class TransfertCorpsComponent implements OnInit {
               private dataService: DataService,
               private pdfService: PdfService,
               private toastService: ToastrService) {}
- 
+
 
   public getAll() {
     this.service.getAll().subscribe(data => {

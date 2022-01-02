@@ -7,6 +7,8 @@ export class User {
         public isDeleted?: false,
         public firstName?: string,
         public lastName?: string,
-        public roles?: string,
+        public roles?: string[],
     ) {}
 }
+
+

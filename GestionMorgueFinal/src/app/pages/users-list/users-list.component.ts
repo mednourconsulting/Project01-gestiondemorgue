@@ -6,6 +6,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {ToastrService} from '../../@core/backend/common/services/toastr.service';
 import {NbDialogService} from '@nebular/theme';
 import {ShowDialogComponent} from '../show-dialog/show-dialog.component';
+import {DialogEmitterService} from './services/dialog-emitter.service';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'ngx-users-list',
@@ -64,32 +66,47 @@ export class UsersListComponent implements OnInit {
       },
       role: {
         title: 'Role',
-        type: 'custom',
-        renderComponent: RolesRenderComponent,
+        type: 'list',
       },
     },
   };
   source: Array<User>;
   private isAdmin: boolean;
-
+  dialogReceiver$: Observable<any> = of();
   constructor(private userService: UsersService,
               private sanitizer: DomSanitizer,
               private toastService: ToastrService,
-              private dialogService: NbDialogService) { }
+              private dialogService: NbDialogService,
+              private dialogEmitterService: DialogEmitterService,
+              ) { }
 
   ngOnInit() {
     this.userService.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
     });
-    this.userService.findAll().subscribe(u => {
-     this.source = u;
-    });
+    this.findAll();
+    this.dialogEmitterService.subject().subscribe(
+      (user: User) => {
+      //  console.warn('source', this.source);
+      this.source = this.source.map(u => {
+        if (u.id === user.id) {
+          return user;
+        }
+        return u;
+      });
+      this.toastService.toastOfEdit('success');
+      },
+      );
   }
-
+  findAll() {
+  this.userService.findAll().subscribe((u: User[]) => {
+    console.warn('users', u);
+    this.source = u;
+  });
+}
   open(data) {
     const roles = [];
-    data.role.forEach(e => {roles.push(e.id) ; });
-    console.warn('roles', data.role);
+    data.role.forEach(e => {roles.push(e) ; });
     this.dialogService.open(ShowDialogComponent, {
       context: {
         title: 'Modifier l\'utilisateur '
@@ -116,8 +133,8 @@ export class UsersListComponent implements OnInit {
       case 'delete':
          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
            this.userService.delete(event.data.id).subscribe(data => {
-             if (data !== null) {
-               this.source = this.source.filter(item => item.id !== data.id);
+             if (data === true) {
+               this.source = this.source.filter(item => item.id !== event.data.id);
                this.toastService.toastOfDelete('success');
              } else {
                this.toastService.showToast('danger', 'Suppression inachevée',
@@ -125,7 +142,6 @@ export class UsersListComponent implements OnInit {
              }
            });
             }
-          console.warn('deleted');
         break;
     }
   }

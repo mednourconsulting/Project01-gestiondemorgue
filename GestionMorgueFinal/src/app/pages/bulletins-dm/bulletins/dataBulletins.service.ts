@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Injectable()
 export class DataBulletinsService {

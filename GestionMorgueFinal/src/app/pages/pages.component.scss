@@ -65,3 +65,18 @@
     color: #0c2c43!important;
   }
 }
+
+:host ::ng-deep .form-control {
+padding: 2px 3px !important;
+}
+:host ::ng-deep {
+  .ngx-select__toggle, .select-button {
+  background: none!important;
+  border: none !important;
+    padding: 0!important;
+}
+  nb-select.size-medium button {
+    padding: 0!important;
+  }
+}
+

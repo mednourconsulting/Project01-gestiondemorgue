@@ -10,7 +10,8 @@ import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer} from '@angular/platform-browser';
+import {User} from '../../../@core/interfaces/common/users';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -109,7 +110,6 @@ export class EnterrementComponent implements OnInit {
   }
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
-      this.date = new Date();
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();

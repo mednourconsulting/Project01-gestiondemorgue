@@ -101,7 +101,7 @@ public class UserController {
      * @return all users data
      */
     @GetMapping("/")
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAll() {
         return ok(userService.findAll());
     }
 

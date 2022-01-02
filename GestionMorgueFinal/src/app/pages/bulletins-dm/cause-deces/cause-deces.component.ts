@@ -5,6 +5,7 @@ import {UsersService} from '../../../@core/backend/common/services/users.service
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
+import {User} from '../../../@core/interfaces/common/users';
 
 @Component({
   selector: 'ngx-cause-deces',

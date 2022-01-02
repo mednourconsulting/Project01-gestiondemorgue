@@ -309,10 +309,13 @@ export class DecedesComponent implements OnInit {
               private dialogService: NbDialogService,
   ) {
   }
-  init() {
+  getAll() {
     this.service.getAll().subscribe(data => {
-    this.source = data;
+      this.source = data;
     });
+  }
+  init() {
+    this.getAll();
     this.reactiveForm = this.fb.group({
       nom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
       prenom: ['', [Validators.required, Validators.pattern(this.frPattern)]],
@@ -994,6 +997,7 @@ export class DecedesComponent implements OnInit {
         break;
       case 'edit':
         if (this.isAdmin) {
+          console.warn('event data', event.data);
           this.reactiveForm.setValue({
             nom: event.data.nom,
             prenom: event.data.prenom,
@@ -1121,16 +1125,13 @@ export class DecedesComponent implements OnInit {
       decede.circonServ = formValues.circonServ ;
       decede.dateOperation = formValues.dateOperation;
       decede.motifOperation = formValues.motifOperation ;
-      // decede.numRegister = formValues.numRegister;
+      decede.numRegister = 'DC00' + this.id;
     return decede;
   }
-
   doSave(decede) {
     if ( this.id == null) {
       this.service.create(decede).subscribe(obj => {
-        console.warn('the obj', obj);
         this.service.defineRegisterNumber(obj).subscribe(data => {
-          console.warn('the data', data);
           this.source.push(obj);
           this.source = this.source.map(e => e);
           this.toastService.toastOfSave('success');
@@ -1139,6 +1140,7 @@ export class DecedesComponent implements OnInit {
       });
     } else {
       if (this.isAdmin) {
+        console.warn('decede', decede);
       this.service.update(decede).subscribe(data1 => {
         this.source = this.source.map(e => e);
         this.init();

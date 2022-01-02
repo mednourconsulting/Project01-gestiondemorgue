@@ -11,6 +11,7 @@ import { NbMenuItem } from '@nebular/theme';
 import { InitUserService } from '../@theme/services/init-user.service';
 import {UsersService} from '../@core/backend/common/services/users.service';
 import {MENU_ITEMS_ADMIN, MENU_ITEMS_USERS} from './pages-menuList';
+import {User} from '../@core/interfaces/common/users';
 
 @Component({
   selector: 'ngx-pages',
@@ -43,9 +44,9 @@ export class PagesComponent implements OnDestroy, OnInit {
   }
 
   initMenu() {
-    this.userService.getCurrentUser().subscribe( data => {
+    this.userService.getCurrentUser().subscribe(data => {
       this.isAdmin = data.role.includes('ADMIN');
-    } );
+    });
   }
   ngOnDestroy(): void {
     this.alive = false;

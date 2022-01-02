@@ -5,19 +5,17 @@ import {UsersService} from '../../../@core/backend/common/services/users.service
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import pdfMake from 'pdfmake/build/pdfmake';
-import jsPDF from 'jspdf';
-import {DatePipe, formatDate} from '@angular/common';
+import {formatDate} from '@angular/common';
 
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
-import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {AbstractControl} from '@angular/forms';
 
 import {DataService} from './data.service';
 import {PdfService} from './pdf.service';
 
-import {DomSanitizer} from "@angular/platform-browser";
+import {User} from '../../../@core/interfaces/common/users';
 
 
 

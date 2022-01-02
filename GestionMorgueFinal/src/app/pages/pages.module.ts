@@ -21,6 +21,7 @@ import { AuthModule } from '../@auth/auth.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import { ShowDialogComponent } from './show-dialog/show-dialog.component';
 import {ComponentsModule} from '../@components/components.module';
+import {DialogEmitterService} from './users-list/services/dialog-emitter.service';
 
 
 const PAGES_COMPONENTS = [
@@ -56,6 +57,7 @@ const ENTRY_COMPONENTS = [
   exports: [ ShowDialogComponent ],
   providers: [
     ShowDialogComponent,
+    DialogEmitterService,
   ],
 })
 export class PagesModule {

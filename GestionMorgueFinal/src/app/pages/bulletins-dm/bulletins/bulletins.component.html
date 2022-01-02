@@ -11,7 +11,7 @@
           <div class="form-group">
             <label  class="label">Type de bulletin</label>
             <nb-select  formControlName="typeBulletin"
-                        class="type-select "
+                        class="type-select form-control "
                          fullWidth
                         placeholder="Type de bulletin"
                         required>
@@ -26,7 +26,7 @@
           <div class="form-group">
             <label  class="label">Province ou préfecture</label><br>
             <nb-select  formControlName="province"
-                        class="type-select "
+                        class="type-select form-control "
                          fullWidth
                         placeholder="Province ou préfecture"
                         required>
@@ -97,7 +97,7 @@
           <div class="form-group">
             <label  class="label">Attestation de diagnostic</label>
             <nb-select  formControlName="diagnostique"
-                        class="type-select "
+                        class="type-select form-control  "
                         fullWidth
                         required
                         placeholder="Diagnostique Attestation"
@@ -116,7 +116,7 @@
           <div class="form-group">
             <label  class="label">Lieu de résidence</label>
             <nb-select  formControlName="residece"
-                        class="type-select"
+                        class="type-select form-control "
                         fullWidth required
                         placeholder="Lieu de résidence"
                         >
@@ -133,7 +133,7 @@
             <label  class="label">Lieu d'enterrement
             </label>
             <nb-select  formControlName="lieuEntrement"
-                        class="type-select "
+                        class="type-select form-control "
                         fullWidth required
                         placeholder="Lieu Enterrement"
                         >
@@ -149,7 +149,7 @@
           <div class="form-group">
             <label  class="label">Cimetière</label>
             <nb-select  formControlName="cimetiere"
-                        class="type-select "
+                        class="type-select form-control "
                         fullWidth
                         required
                         placeholder="Cimetière">
@@ -197,7 +197,7 @@
         <div class="col-sm-4">
           <div class="form-group">
             <label  class="label">Décédé</label>
-            <ngx-select formControlName="decede"
+            <ngx-select formControlName="decede" class="form-control "
                         [allowClear]="true"
                         [items]="listDecede"
                         (select)="doSelectD($event)"
@@ -216,7 +216,7 @@
           <div class="form-group">
             <label  class="label">Médecin</label><br>
             <ngx-select formControlName="medecin"
-                         [allowClear]="true"
+                         [allowClear]="true" class="form-control "
                          [items]="listMedcin"
                          (select)="doSelectM($event)"
                          (remove)="doRemoveM($event)"
