@@ -27,6 +27,7 @@
 //---------------------------------------
 :host ::ng-deep {
   nb-layout div.scrollable-container div.scrollable::-webkit-scrollbar,
+  nb-layout div.scrollable-container div.layout div.layout-container div.content div.columns nb-layout-column.bg-info nb-card nb-card-body.container-fluid::-webkit-scrollbar,
   nb-layout div.scrollable-container::-webkit-scrollbar {
     width: 0.7rem !important;
     height: 0.8em!important;
