@@ -48,7 +48,6 @@ export class NgxResetPasswordComponent implements OnInit {
     protected router: Router,
               private route: ActivatedRoute) {
     this.activeRouteParam$ = this.route.queryParams.pipe(tap((param) => {
-      console.warn('param:', param );
       if (param['token']) {
         this.isTokenSet = true;
       }
@@ -99,6 +98,8 @@ export class NgxResetPasswordComponent implements OnInit {
   resetPass(): void {
     this.result$ = this.activeRouteParam$.pipe(
       concatMap(param => {
+        // Pour changer le mot de passe on vérifie s'il sajit d'une request depuis
+        // un token de récupération de mot de passe ou bien une request depuis une session
         if (param['token']) {
           if (this.resetPasswordForm.valid) {
             if (this.password.value === this.confirmPassword.value) {
@@ -107,7 +108,7 @@ export class NgxResetPasswordComponent implements OnInit {
                 map(() => {
                   setTimeout(() => {
                      this.router.navigateByUrl('/auth/login');
-                  }, 1000);
+                  }, 3000);
                   this.resetPasswordForm.reset();
                   return 'Votre mot de passe a bien été modifié';
                 }),
@@ -124,17 +125,15 @@ export class NgxResetPasswordComponent implements OnInit {
               return this.userService.getCurrentUser()
                 .pipe(
                   flatMap((user: User) => {
-                    console.warn('user', user );
                     const tmpUser = new User();
                     tmpUser.passwordHash = this.password.value;
                     tmpUser.id = user.id;
                     return this.userService.updateUser(tmpUser);
                   }),
                   map((user) => {
-                    console.warn('user', user);
-                    // setInterval(() => {
-                    //  this.router.navigateByUrl('/pages/dashboard');
-                    // }, 1000);
+                     setTimeout(() => {
+                      this.router.navigateByUrl('/pages/dashboard');
+                     }, 3000);
                     this.resetPasswordForm.reset();
                     return 'Votre mot de passe a bien été modifié';
                   }),

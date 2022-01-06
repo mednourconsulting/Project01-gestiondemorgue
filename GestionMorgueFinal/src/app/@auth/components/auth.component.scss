@@ -10,8 +10,10 @@
   $auth-layout-padding: 2.5rem;
 
   nb-card {
-    margin: 0;
-   // height: calc(100vh - 2 * #{$auth-layout-padding});
+    width: 40%;
+    margin:auto;
+    height: 100%;
+    // height: calc(100vh - 2 * #{$auth-layout-padding});
   }
 
   .navigation .link {
@@ -35,7 +37,7 @@
   }
 
   nb-auth-block {
-    margin: auto;
+    margin:2rem auto;
     max-width: 100%!important;
    // overflow: hidden;
     min-height: 40vh;
@@ -51,12 +53,18 @@
 
   ::ng-deep {
     nb-layout .layout .layout-container .content .columns nb-layout-column {
-     // background-color:#fff;
+      // background-color:#fff;
       padding: $auth-layout-padding;
-    // padding: 0 0 $auth-layout-padding 0;
+      // padding: 0 0 $auth-layout-padding 0;
+      background: #0c2c43 url('../../../assets/images/bg-img.PNG') no-repeat;
+      background-size: cover;
 
       @include media-breakpoint-down(sm) {
-        padding: 0;
+        padding:1.5rem;
+        nb-card {
+          width: 80%;
+          margin:auto;
+        }
       }
     }
   }

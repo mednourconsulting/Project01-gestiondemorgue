@@ -5,21 +5,16 @@
         <div class="text-center login-img">
           <img src="assets/images/LogovilleTANGER.png">
         </div>
-        <div *ngIf="showMessages.error && errors?.length && !submitted" class="alert alert-warning my-auto" role="alert">
-          Email ou mot de passe incorrect
-        </div>
-        <div *ngIf="showMessages.success && messages?.length && !submitted" class="alert alert-info">
-          Authentifier avec succès
-        </div>
 
-        <!--div class="padding login-title-container">
+
+        <div class="padding login-title-container">
           <div class="text-center login-title-firstChild">
             Commune Urbaine Tanger
           </div>
           <div class="text-center login-title-lastChild">
             Centre Medico-Légal
           </div>
-        </div-->
+        </div>
 
 
         <form role="form" [formGroup]="loginForm" aria-labelledby="title" class="login-form">
@@ -65,12 +60,17 @@
             <p style="text-align: right; cursor: pointer; color: gray" (click)="motDePasseOublie()">Mot de passe oublié ?</p>
           </div>
           <div class="text-center login-actions">
-
             <button nbButton fullWidth size="medium" status="primary"  type="submit" class="btn btn-info login-button"
                     (click)="login()"
                     [class.btn-pulse]="submitted">
               Connexion
             </button>
+            <div *ngIf="showMessages.error && errors?.length && !submitted" class="alert alert-warning my-auto" role="alert">
+              Email ou mot de passe incorrect
+            </div>
+            <div *ngIf="showMessages.success && messages?.length && !submitted" class="alert alert-info">
+              Authentifier avec succès
+            </div>
           </div>
         </form>
       </div>
