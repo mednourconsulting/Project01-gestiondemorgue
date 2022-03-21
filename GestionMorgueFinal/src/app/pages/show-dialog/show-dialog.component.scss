@@ -2,12 +2,19 @@
 @import 'src/app/@theme/styles/myStyle';
 
 @include nb-install-component() {
+  .container {
+    padding: 0!important;
+  }
   nb-card {
-    width: 1000px;
-    max-height: 600px;
+    margin: auto;
+    width: 100%;
+    min-width: 80%;
+    height:100% ;
   }
   nb-card-body {
-    padding: 2rem;
+    padding: 1rem;
+    width: fit-content;
+    height: fit-content;
   }
 }
 label {
@@ -22,7 +29,7 @@ label {
   }
 }
 .register-container {
-  padding: 3rem;
+ padding: 1rem;
 }
 .left-column {
   background-color: $color_blue;

@@ -13,6 +13,8 @@ import {DialogEmitterService} from './services/dialog-emitter.service';
   styleUrls: ['./users-list.component.scss'],
 })
 export class UsersListComponent implements OnInit {
+  currentUser: User;
+  isCurrentUser: boolean;
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -79,6 +81,7 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getCurrentUser().subscribe(data => {
+      this.currentUser = data;
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.findAll();
@@ -101,6 +104,7 @@ export class UsersListComponent implements OnInit {
   });
 }
   open(data) {
+    console.warn('is current user', this.currentUser.email === data.email);
     const roles = [];
     data.role.forEach(e => {roles.push(e) ; });
     this.dialogService.open(ShowDialogComponent, {
@@ -115,7 +119,7 @@ export class UsersListComponent implements OnInit {
           {key: 'roles', value: roles},
         ],
         editForm: true,
-       // showInfo: true,
+        isCurrentUser: (this.currentUser.email === data.email),
       },
     });
 
@@ -123,11 +127,11 @@ export class UsersListComponent implements OnInit {
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
-        //  this.toastService.toastOfEdit('warning');
         this.open(event.data);
         break;
       case 'delete':
          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
+           if (!(this.currentUser.email === event.data.email)) {
            this.userService.delete(event.data.id).subscribe(data => {
              if (data === true) {
                this.source = this.source.filter(item => item.id !== event.data.id);
@@ -137,6 +141,10 @@ export class UsersListComponent implements OnInit {
                  'Essayer plus tard !');
              }
            });
+           } else {
+             this.toastService.showToast('danger', 'Suppression inachevée',
+               'Vous ne pouvez pas supprimer votre compte!');
+           }
             }
         break;
     }

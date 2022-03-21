@@ -11,7 +11,7 @@ export class DialogEmitterService {
   }
   sub(): Subscription {
     return this.dialogEmitter.subscribe({
-      next: (user) => console.warn(user),
+      next: (user) => console.warn('emited'),
     });
   }
   subject() {

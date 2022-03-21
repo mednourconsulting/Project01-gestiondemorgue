@@ -35,9 +35,10 @@
 
 <nb-card *ngIf="editForm">
     <nb-card-header class="card-header bg-info">{{title}}</nb-card-header>
-    <div class="container-xxl">
+    <nb-card-body class="container">
+      <div style="font-size: 1.5rem; line-height: 1.5" class="alert-danger p-2 d-flex justify-content-center align-items-center" *ngIf="isCurrentUser"> <i class="fa fa-exclamation-triangle mr-2" aria-hidden="true"></i> Après avoir modifié vos informations personnelles et cliqué sur le bouton "modifier", vous serez déconnecté, pour que le système actualise vos données. </div>
       <div class="row">
-        <div class="col-xl-12">
+        <div class="col-sm-12">
           <div class="register-container">
             <div [formGroup]="editUserForm"  aria-labelledby="title">
               <div class="row mb-2">
@@ -102,7 +103,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </nb-card-body>
   </nb-card>
 
 
