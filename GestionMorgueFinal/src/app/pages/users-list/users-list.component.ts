@@ -14,7 +14,6 @@ import {DialogEmitterService} from './services/dialog-emitter.service';
 })
 export class UsersListComponent implements OnInit {
   currentUser: User;
-  isCurrentUser: boolean;
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',

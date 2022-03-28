@@ -96,7 +96,6 @@ export class TransfertCorpsComponent implements OnInit {
     this.getAllMedecin();
     this.getAllDecede();
     this.getUser();
-    this.addToSelect();
     this.dataService.formControl();
   }
 
@@ -227,7 +226,7 @@ export class TransfertCorpsComponent implements OnInit {
       this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
         certificat.defunt = objj;
         this.service.update(certificat).subscribe(obj => {
-          this.source = this.source.map(e => e);
+          this.getAll();
         });
       });
     });

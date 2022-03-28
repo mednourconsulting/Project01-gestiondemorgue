@@ -56,6 +56,7 @@ export class ApercuDuCorpComponent implements OnInit {
 
   public getAllDecede () {
     this.serviceDecede.getAll().subscribe(dataa => {
+      console.warn('decedes', dataa);
       dataa.forEach(obj => {
         this.listDeced.push({text: obj.nom + ' ' + obj.prenom, id: obj.id , obj : obj });
         this.filterDecede.push({
@@ -64,6 +65,8 @@ export class ApercuDuCorpComponent implements OnInit {
           title: obj.nom + ' ' +  obj.prenom,
         });
       });
+      this.dataService.settings.columns.defunt.filter.config.list = this.filterDecede;
+      this.dataService.settings = Object.assign({}, this.dataService.settings);
     });
   }
 
@@ -77,7 +80,6 @@ export class ApercuDuCorpComponent implements OnInit {
           title: obj.nom + ' ' +  obj.prenom,
         });
       });
-      this.dataService.settings.columns.defunt.filter.config.list = this.filterDecede;
       this.dataService.settings.columns.medecin.filter.config.list = this.filterMedecin;
       this.dataService.settings = Object.assign({}, this.dataService.settings);
     });
@@ -211,11 +213,17 @@ export class ApercuDuCorpComponent implements OnInit {
         this.serviceDecede.getById(certificat.defunt).subscribe(objj => {
           certificat.defunt = objj;
           this.service.update(certificat).subscribe(data1 => {
-            this.source = this.source.map(e => e);
+            this.getAll();
+            this.dataService.reactiveForm.reset();
+            this.toastService.toastOfEdit('success');
+          }, error => {
+            this.toastService.toastOfEdit('danger');
           });
-          this.dataService.reactiveForm.reset();
-          this.toastService.toastOfEdit('success');
-        }); });
+        }, error => {
+          this.toastService.toastOfEdit('danger');
+        }); }, error => {
+        this.toastService.toastOfEdit('danger');
+      });
     } else {
       this.toastService.toastOfEdit('warning');
     }

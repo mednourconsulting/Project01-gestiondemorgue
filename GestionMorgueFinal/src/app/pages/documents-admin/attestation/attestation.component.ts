@@ -53,7 +53,7 @@ export class AttestationComponent implements OnInit {
 
     },
     columns: {
-      id: {
+      numRegister: {
         title: 'numéro de registre',
         type: 'number',
         editable: false,

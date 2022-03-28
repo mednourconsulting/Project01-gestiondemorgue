@@ -186,15 +186,20 @@ export class BulletinsComponent implements OnInit, OnChanges {
       this.dataBulletins.reactiveForm.reset();
     } else {
       if (this.isAdmin) {
-
+        console.warn('bulletin', bulletin);
+        console.warn('bulletin.medecin', this.MedecinHumain);
+        console.warn('bulletin.decede', this.DecedeHumain);
         bulletin.medecin = this.MedecinHumain;
         bulletin.decede = this.DecedeHumain;
             this.service.update(bulletin).subscribe(data1 => {
-              this.source = this.source.map(e => e);
-            });
-        this.medecinDetails = false;
-        this.dataBulletins.reactiveForm.reset();
-        this.toastService.toastOfEdit('success');
+              this.getAll();
+              this.toastService.toastOfEdit('success');
+              this.dataBulletins.reactiveForm.reset();
+              this.medecinDetails = false;
+            }, error => {
+              this.toastService.toastOfEdit('danger');
+            } );
+
       } else {
         this.toastService.toastOfEdit('warning');
       }
