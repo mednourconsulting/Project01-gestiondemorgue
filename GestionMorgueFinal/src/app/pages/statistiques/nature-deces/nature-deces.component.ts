@@ -63,12 +63,12 @@ export class NatureDecesComponent implements OnInit {
 
   public chartColors: Array<any> = [
     {
-      backgroundColor: 'rgb(253,180,92)',
+      backgroundColor: 'rgb(253,180,92,0.5)',
       borderColor: 'rgb(222,156,86)',
       borderWidth: 2,
     },
     {
-      backgroundColor: 'rgb(90,211,209)',
+      backgroundColor: 'rgb(90,211,209,0.5)',
       borderColor: 'rgb(71,159,158)',
       borderWidth: 2,
     },

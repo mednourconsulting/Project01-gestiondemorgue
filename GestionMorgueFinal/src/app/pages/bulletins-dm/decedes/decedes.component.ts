@@ -42,7 +42,7 @@ export class DecedesComponent implements OnInit {
   confirmationList = [{value: 'Oui', title: 'Oui'},
     {value: 'Non', title: 'Non'},
     {value: 'Inconnu', title: 'Inconnu'}];
-  CauseMort = ['accident', 'homicide', 'suicide', 'Inconnu',
+  causeMort = ['accident', 'homicide', 'suicide', 'Inconnu',
     'noyade', 'brûlure', 'intoxication', 'traumatisme', 'Maladie'];
   causes = [];
   lieuList = [{value: 'Domicile', title: 'Domicile'},
@@ -51,7 +51,6 @@ export class DecedesComponent implements OnInit {
     {value: 'Voie public', title: 'Voie public'},
     {value: 'Zone de commerce/service', title: 'Zone de commerce/service'},
     {value: 'Etablissement collectif', title: 'Etablissement collectif'},
-    {value: 'Local industriel/chantier', title: 'Local industriel/chantier'},
     {value: 'Local industriel/chantier', title: 'Local industriel/chantier'},
     {value: 'Exploitation agricole', title: 'Exploitation agricole'},
     {value: 'Autre', title: 'Autre'},
@@ -520,7 +519,8 @@ export class DecedesComponent implements OnInit {
                     + '\nAdresse du domicile habituel :  ' + DecedesComponent.checkIfNullOrUndefind(list.adresse)
                     + '\nY\'a-t-il un obstacle médico-légal?  ' +
                     DecedesComponent.checkIfNullOrUndefind(this.getTexte(list.obstacle))
-                    + '\n N° de l\'acte au registre des décès :  ' + DecedesComponent.checkIfNullOrUndefind(list.id),
+                    + '\n N° de l\'acte au registre des décès :  ' + DecedesComponent.
+                    checkIfNullOrUndefind(list.numRegister),
                 },
                 {
                   border: [true, false, true, true],
@@ -553,7 +553,8 @@ export class DecedesComponent implements OnInit {
               ],
               [
                 {
-                  text: 'N° de l\'acte au registre des décès : ' + DecedesComponent.checkIfNullOrUndefind(list.id) ,
+                  text: 'N° de l\'acte au registre des décès : ' +
+                    DecedesComponent.checkIfNullOrUndefind(list.numRegister) ,
                   border: [true, false, true, false],
                   fontSize: 10,
                   colSpan: 2,
@@ -1004,7 +1005,6 @@ export class DecedesComponent implements OnInit {
         break;
       case 'edit':
         if (this.isAdmin) {
-          console.warn('event data', event.data);
           this.reactiveForm.setValue({
             nom: event.data.nom,
             prenom: event.data.prenom,
@@ -1083,6 +1083,11 @@ export class DecedesComponent implements OnInit {
   getControl(name: string): AbstractControl {
     return this.reactiveForm.get(name);
   }
+  get compareDates() {
+    const dateDeces =  new Date(this.reactiveForm.get('dateDeces').value);
+    const dateNaissance =  new Date(this.reactiveForm.get('dateNaissance').value);
+    return dateDeces < dateNaissance ;
+  }
   createDecedeFromForm(): Decedes {
     const formValues = this.reactiveForm.value;
     const decede = new Decedes();
@@ -1136,34 +1141,40 @@ export class DecedesComponent implements OnInit {
     return decede;
   }
   doSave(decede) {
-    if ( this.id == null) {
-      this.service.create(decede).subscribe(obj => {
-        this.service.defineRegisterNumber(obj).subscribe(data => {
-          this.source.push(obj);
-          this.source = this.source.map(e => e);
-          this.toastService.toastOfSave('success');
-          this.reactiveForm.reset();
+    const dateDeces =  new Date(decede.dateDeces);
+    const dateNaissance =  new Date(decede.dateNaissance);
+    if ( dateDeces >= dateNaissance ) {
+      if ( this.id == null) {
+        this.service.create(decede).subscribe(obj => {
+          this.service.defineRegisterNumber(obj).subscribe(data => {
+            this.init();
+            this.id = null ;
+            this.toastService.toastOfSave('success');
+            this.reactiveForm.reset();
+          });
         });
-      });
+      } else {
+        if (this.isAdmin) {
+          this.service.update(decede).subscribe(data1 => {
+            this.source = this.source.map(e => e);
+            this.init();
+            this.reactiveForm.reset();
+            this.id = null ;
+          });
+          this.toastService.toastOfEdit('success');
+        } else {
+          this.toastService.toastOfEdit('warning');
+        }
+      }
     } else {
-      if (this.isAdmin) {
-        console.warn('decede', decede);
-      this.service.update(decede).subscribe(data1 => {
-        this.source = this.source.map(e => e);
-        this.init();
-        this.reactiveForm.reset();
-      });
-      this.toastService.toastOfEdit('success');
-    } else {
-      this.toastService.toastOfEdit('warning');
+      this.toastService.showToast('danger', 'Date invalide',
+        'La date du décès doit être supérieure ou égale à la date de naissance !');
     }
-  }
   }
   onSubmit() {
     if (this.reactiveForm.valid) {
       const decede: Decedes = this.createDecedeFromForm();
       this.doSave(decede);
-      this.id = null ;
     } else {
       this.toastService.toastOfSave('validate');
     }

@@ -13,7 +13,6 @@
             <nb-select  formControlName="typeBulletin"
                         class="type-select form-control "
                          fullWidth
-
                         required>
               <nb-option *ngFor="let t of dataBulletins.typeBulletinList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -28,7 +27,6 @@
             <nb-select  formControlName="province"
                         class="type-select form-control "
                          fullWidth
-
                         required>
               <nb-option *ngFor="let t of dataBulletins.provinceList" [value]="t.value" >{{ t.title }}</nb-option>
             </nb-select>
@@ -172,8 +170,6 @@
                    min="1"
                    name= "numTombe"
                    required
-
-
             >
             <ngx-validation-message label="Numéro de tombe"
                                     [showRequired]="!getControl('numTombe').valid && getControl('numTombe').touched">
@@ -187,7 +183,6 @@
                    class="form-control"
                    type="text"
                    id="Compostage"
-
                   >
             <ngx-validation-message label="Compostage"
                                     [fr]="getControl('compostage')?.hasError('pattern')">

@@ -114,7 +114,6 @@ export class NgxRegisterComponent implements OnInit {
   }
   createUser(): void {
     this.user = this.registerForm.value;
-    console.warn('user : ', this.user);
     this.errors = this.messages = [];
     this.submitted = true;
 

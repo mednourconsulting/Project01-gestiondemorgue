@@ -13,21 +13,18 @@
     padding-top: nb-theme(layout-padding-top);
   }
 }
-.logo {
-  /*
-
-width: 133px;
-  height: 94.2px;
-  */
-  width: 80%;
-  height: 100%;
-  position: absolute;
-
+.logo{
+  margin-top:130px !important;
+  padding: 0;
+  width: 150px;
+  height: 100px;
 }
-::ng-deep nb-menu .menu-item {
-border-bottom: none!important;
-}
+
+
+::ng-deep nb-menu .menu-item a {
+font-size: 12px!important;
+}/*
 :host ::ng-deep nb-auth-block {
   width: 60rem!important;
 }
-
+*/

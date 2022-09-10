@@ -47,7 +47,7 @@ export class ApercuDuCorpComponent implements OnInit {
               private serviceDecede: DecedesService,
               private pdfService: PdfService,
               private toastService: ToastrService,
-              private dataService: DataService) {}
+              public dataService: DataService) {}
   public  getAll() {
     this.service.getAll().subscribe(data => {
       this.source = data;
@@ -56,7 +56,6 @@ export class ApercuDuCorpComponent implements OnInit {
 
   public getAllDecede () {
     this.serviceDecede.getAll().subscribe(dataa => {
-      console.warn('decedes', dataa);
       dataa.forEach(obj => {
         this.listDeced.push({text: obj.nom + ' ' + obj.prenom, id: obj.id , obj : obj });
         this.filterDecede.push({

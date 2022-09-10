@@ -18,7 +18,7 @@ export class PagesMenu {
         link: '/pages/dashboard',
       },
       {
-        title: 'Bulletins',
+        title: 'Généralités',
          icon: 'layout-outline',
         children: [
           {
@@ -124,10 +124,6 @@ export class PagesMenu {
             title: 'Réinitialiser le mot de passe',
             link: '/auth/reset-password',
           },
-          {
-            title: 'Déconnection',
-            link: '/auth/logout',
-          },
         ],
       },
     ];
@@ -142,7 +138,7 @@ export class PagesMenu {
         link: '/pages/dashboard',
       },
       {
-        title: 'Bulletins',
+        title: 'Généralités',
         /*de décès et de mortinalité*/
         icon: 'layout-outline',
         children: [
@@ -235,12 +231,8 @@ export class PagesMenu {
         icon: 'settings-outline',
         children: [
           {
-            title: 'réinitialiser le mot de passe',
+            title: 'Réinitialiser le mot de passe',
             link: '/auth/reset-password',
-          },
-          {
-            title: 'Déconnection',
-            link: '/auth/logout',
           },
         ],
       },

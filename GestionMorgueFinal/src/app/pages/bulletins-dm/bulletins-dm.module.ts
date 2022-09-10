@@ -9,9 +9,9 @@ import {BulletinsDMComponent} from './bulletins-dm.component';
 import { CauseDecesComponent } from './cause-deces/cause-deces.component';
 import {
   NbAutocompleteModule,
-  NbButtonModule,
+  NbButtonModule, NbCalendarModule,
   NbCardModule,
-  NbCheckboxModule, NbDialogModule,
+  NbCheckboxModule, NbDatepickerModule, NbDialogModule,
   NbInputModule,
   NbSelectModule,
   NbTabsetModule,
@@ -41,6 +41,8 @@ import {NgxSelectModule} from "ngx-select-ex";
     ComponentsModule,
     NbAutocompleteModule,
     NgxSelectModule,
+    NbCalendarModule,
+    NbDatepickerModule,
   ],
   exports: [
     DecedesComponent,

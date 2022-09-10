@@ -9,5 +9,10 @@
       "name": "jwt.refreshTokenSecretKey",
       "type": "java.lang.String",
       "description": "Description for jwt.refreshTokenSecretKey."
+    },
+    {
+      "name": "spring.boot.admin.client.url",
+      "type": "java.lang.String",
+      "description": "Description for spring.boot.admin.client.url."
     }
   ] }

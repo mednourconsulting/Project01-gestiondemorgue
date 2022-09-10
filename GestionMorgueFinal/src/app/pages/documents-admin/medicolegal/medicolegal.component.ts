@@ -12,7 +12,6 @@ import {ToastrService} from '../../../@core/backend/common/services/toastr.servi
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
 import {DataMedicoLegalService} from './dataMedicoLegal.service';
 import {PdfMedicoLegalService} from './pdfMedicoLegal.service';
-import {User} from '../../../@core/interfaces/common/users';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -43,7 +42,7 @@ export class MedicolegalComponent implements OnInit {
               private logoBase64: LogoBase64Service,
               private toastService: ToastrService,
               private pdfMedicoLegalService: PdfMedicoLegalService,
-              private  dataMedicoLegalService: DataMedicoLegalService,
+              public  dataMedicoLegalService: DataMedicoLegalService,
               ) {}
 
   // get all the data from the data base of MedicoLegal
@@ -229,7 +228,6 @@ export class MedicolegalComponent implements OnInit {
   }
 
   public create (certificat) {
-    console.warn('certificat', certificat);
     this.serviceMedecin.getById(certificat.medecin).subscribe(obj1 => {
       certificat.medecin = obj1;
       this.serviceDecede.getById(certificat.defunt).subscribe(objj => {

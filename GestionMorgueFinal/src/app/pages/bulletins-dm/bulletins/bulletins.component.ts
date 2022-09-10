@@ -164,7 +164,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    this.passingMedecinDecedeToTheFormControle();
+   // this.passingMedecinDecedeToTheFormControle();
     if (this.dataBulletins.reactiveForm.valid) {
       const bulletin: Bulletins = this.createBulletinFromForm();
       this.doSave(bulletin);
@@ -174,7 +174,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
     }
   }
 
-  doSave(bulletin) {
+/*  doSave(bulletin) {
     if (this.id == null) {
         bulletin.medecin = this.MedecinHumain;
         bulletin.decede = this.DecedeHumain;
@@ -186,9 +186,6 @@ export class BulletinsComponent implements OnInit, OnChanges {
       this.dataBulletins.reactiveForm.reset();
     } else {
       if (this.isAdmin) {
-        console.warn('bulletin', bulletin);
-        console.warn('bulletin.medecin', this.MedecinHumain);
-        console.warn('bulletin.decede', this.DecedeHumain);
         bulletin.medecin = this.MedecinHumain;
         bulletin.decede = this.DecedeHumain;
             this.service.update(bulletin).subscribe(data1 => {
@@ -205,8 +202,53 @@ export class BulletinsComponent implements OnInit, OnChanges {
       }
     }
 
+  }*/
+
+  doSave(certificat) {
+    if (this.id == null) {
+      this.create(certificat);
+    } else {
+      this.update(certificat);
+    }
+  }
+  public create (certificat) {
+    console.warn('certificat:', certificat);
+    this.serviceM.getById(certificat.medecin).subscribe(obj1 => {
+      certificat.medecin = obj1;
+      this.serviceD.getById(certificat.decede).subscribe(objj => {
+        certificat.decede = objj;
+        this.service.create(certificat).subscribe(obj => {
+          this.source.push(obj);
+          this.source = this.source.map(e => e);
+          this.dataBulletins.reactiveForm.reset();
+          this.toastService.toastOfSave('success');
+        });
+      });
+    });
   }
 
+  public update(certificat) {
+    console.warn('certificat:', certificat);
+    if (this.isAdmin) {
+      this.serviceM.getById(certificat.medecin).subscribe(obj => {
+        certificat.medecin = obj;
+        this.serviceD.getById(certificat.decede).subscribe(objj => {
+          certificat.decede = objj;
+          this.service.update(certificat).subscribe(data1 => {
+            this.source = this.source.map(c => {
+              if (c.id === data1.id) {
+                return data1;
+              }
+              return c;
+            });
+            this.dataBulletins.reactiveForm.reset();
+            this.toastService.toastOfEdit('success');
+          });
+        }); });
+    } else {
+      this.toastService.toastOfEdit('warning');
+    }
+  }
   generatePdf(action = 'open') {
     const documentDefinition = this.getDocumentDefinition();
     switch (action) {
@@ -1035,6 +1077,7 @@ export class BulletinsComponent implements OnInit, OnChanges {
     this.MedecinHumain = null;
   }
   // Select and remove function Decede
+  date = new Date();
   public doSelectD (value: any) {
     if (value === 0) {
       this.dataBulletins.passToDecede();

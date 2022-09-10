@@ -2,6 +2,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
+import {AdminGuard} from '../@auth/admin.guard';
 
 const routes: Routes = [{
   path: '',
@@ -52,6 +53,7 @@ const routes: Routes = [{
         .then(m => m.MiscellaneousModule),
     },
     {
+      canActivate: [AdminGuard],
       path: 'users',
       loadChildren: () => import('./users-list/users-list.module').then(m => m.UsersListModule),
     },

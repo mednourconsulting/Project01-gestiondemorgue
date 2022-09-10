@@ -98,12 +98,10 @@ export class UsersListComponent implements OnInit {
   }
   findAll() {
   this.userService.findAll().subscribe((u: User[]) => {
-    console.warn('users', u);
     this.source = u;
   });
 }
   open(data) {
-    console.warn('is current user', this.currentUser.email === data.email);
     const roles = [];
     data.role.forEach(e => {roles.push(e) ; });
     this.dialogService.open(ShowDialogComponent, {
@@ -126,25 +124,36 @@ export class UsersListComponent implements OnInit {
   onCustomConfirm(event) {
     switch ( event.action) {
       case 'edit':
+        if (this.isAdmin) {
         this.open(event.data);
+        } else {
+          this.toastService.showToast('warning', 'Action inachevée',
+            'Vous ne disposer pas des droits pour effectuer cet action !!');
+        }
         break;
       case 'delete':
-         if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
-           if (!(this.currentUser.email === event.data.email)) {
-           this.userService.delete(event.data.id).subscribe(data => {
-             if (data === true) {
-               this.source = this.source.filter(item => item.id !== event.data.id);
-               this.toastService.toastOfDelete('success');
-             } else {
-               this.toastService.showToast('danger', 'Suppression inachevée',
-                 'Essayer plus tard !');
-             }
-           });
-           } else {
-             this.toastService.showToast('danger', 'Suppression inachevée',
-               'Vous ne pouvez pas supprimer votre compte!');
-           }
+        if (this.isAdmin) {
+          if (window.confirm('Vous êtes sûr de vouloir supprimer ?')) {
+            if (!(this.currentUser.email === event.data.email)) {
+              this.userService.delete(event.data.id).subscribe(data => {
+                if (data === true) {
+                  this.source = this.source.filter(item => item.id !== event.data.id);
+                  this.toastService.toastOfDelete('success');
+                } else {
+                  this.toastService.showToast('danger', 'Suppression inachevée',
+                    'Essayer plus tard !');
+                }
+              });
+            } else {
+              this.toastService.showToast('danger', 'Suppression inachevée',
+                'Vous ne pouvez pas supprimer votre compte!');
             }
+          }
+        } else {
+          this.toastService.showToast('warning', 'Action inachevée',
+            'Vous ne disposer pas des droits pour effectuer cet action !!');
+        }
+
         break;
     }
   }

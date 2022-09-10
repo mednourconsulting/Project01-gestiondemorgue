@@ -38,7 +38,7 @@ export class TransfertCorpsComponent implements OnInit {
               private serviceM: MedecinsService,
               private userservice: UsersService,
               private serviceDecede: DecedesService,
-              private dataService: DataService,
+              public dataService: DataService,
               private pdfService: PdfService,
               private toastService: ToastrService) {}
 

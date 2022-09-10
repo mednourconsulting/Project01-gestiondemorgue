@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Medecins} from '../../../@core/backend/common/model/Medecins';
-import {LocalDataSource} from 'ng2-smart-table';
-import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {MedecinsService} from '../../../@core/backend/common/services/Medecins.service';
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
-import {User} from '../../../@core/interfaces/common/users';
 
 @Component({
   selector: 'ngx-medcins',

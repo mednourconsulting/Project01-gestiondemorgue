@@ -71,7 +71,6 @@ export class ShowDialogComponent implements OnInit {
   }
   onEdit() {
     this.user = this.editUserForm.value;
-    console.warn('this user', this.user);
     this.user.id = this.list[0].value;
     this.userService.update(this.user).subscribe((user) => {
       this.dialogEmitterService.emit(user);

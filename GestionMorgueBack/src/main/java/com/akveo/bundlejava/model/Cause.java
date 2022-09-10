@@ -1,11 +1,19 @@
 package com.akveo.bundlejava.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Cause implements Serializable {
     @Id
@@ -14,39 +22,4 @@ public class Cause implements Serializable {
     private String code;
     private String description;
     private String descriptionAR;
-
-    public Cause() {
-    }
-
-    public String getDescriptionAR() {
-        return descriptionAR;
-    }
-
-    public void setDescriptionAR(String descriptionAR) {
-        this.descriptionAR = descriptionAR;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

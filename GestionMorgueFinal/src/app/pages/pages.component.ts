@@ -18,6 +18,7 @@ import {User} from '../@core/interfaces/common/users';
   styleUrls: ['pages.component.scss'],
   template: `
     <ngx-one-column-layout>
+      <div>hello</div>
       <nb-menu  [items]="(isAdmin) ? menu_admin : menu_user "></nb-menu>
       <router-outlet></router-outlet>
     </ngx-one-column-layout>

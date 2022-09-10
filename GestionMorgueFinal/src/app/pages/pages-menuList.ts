@@ -7,7 +7,7 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
     link: '/pages/dashboard',
   },
   {
-    title: 'Bulletins',
+    title: 'Généralités',
     icon: 'layout-outline',
     children: [
       {
@@ -97,7 +97,16 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
   {
     title: 'Utilisateurs',
     icon: 'people-outline',
-    link: '/pages/users/',
+    children: [
+      {
+        title: 'Nouveau utilisateur',
+        link: '/auth/register',
+      },
+      {
+        title: 'Liste des utilisateurs',
+        link: '/pages/users/',
+      },
+    ],
   },
   {
     title: 'Paramètres',
@@ -106,16 +115,8 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
      icon: 'lock-outline',*/
     children: [
       {
-        title: 'Ajouter un nouveau utilisateur',
-        link: '/auth/register',
-      },
-      {
         title: 'Réinitialiser le mot de passe',
         link: '/auth/reset-password',
-      },
-      {
-        title: 'Déconnection',
-        link: '/auth/logout',
       },
     ],
   },
@@ -127,7 +128,7 @@ export const MENU_ITEMS_USERS: NbMenuItem[] = [
     link: '/pages/dashboard',
   },
   {
-    title: 'Bulletins',
+    title: 'Généralités',
     /*de décès et de mortinalité*/
     icon: 'layout-outline',
     children: [
@@ -222,10 +223,6 @@ export const MENU_ITEMS_USERS: NbMenuItem[] = [
       {
         title: 'Réinitialiser le mot de passe',
         link: '/auth/reset-password',
-      },
-      {
-        title: 'Déconnection',
-        link: '/auth/logout',
       },
     ],
   },

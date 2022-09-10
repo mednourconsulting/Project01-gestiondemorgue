@@ -7,6 +7,7 @@ import {RolesRenderComponent} from './roles-render.component';
 import {RouterModule, Routes} from '@angular/router';
 import { path } from '@angular-devkit/core/src/virtual-fs';
 import { DialogEmitterService } from './services/dialog-emitter.service';
+import {AdminGuard} from '../../@auth/admin.guard';
 
 
 const routes: Routes = [{
