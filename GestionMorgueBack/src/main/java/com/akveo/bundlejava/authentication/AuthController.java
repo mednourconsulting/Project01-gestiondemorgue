@@ -13,7 +13,12 @@ import com.akveo.bundlejava.authentication.resetpassword.ResetPasswordService;
 import com.akveo.bundlejava.authentication.resetpassword.RestorePasswordDTO;
 import com.akveo.bundlejava.authentication.resetpassword.RequestPasswordDTO;
 import com.akveo.bundlejava.authentication.resetpassword.ResetPasswordDTO;
+import com.akveo.bundlejava.authentication.resetpassword.exception.CantSendEmailHttpException;
+import com.akveo.bundlejava.authentication.resetpassword.exception.IncorrectEmailHttpException;
+import com.akveo.bundlejava.authentication.utils.AuthResultDTO;
+import com.akveo.bundlejava.user.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +26,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -29,7 +36,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * Controller which provides functionality for authentication
  */
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -69,9 +76,12 @@ public class AuthController {
         if (!restorePasswordDTO.getNewPassword().equals(restorePasswordDTO.getConfirmPassword())) {
             throw new PasswordsDontMatchException();
         }
-
-        restorePasswordService.restorePassword(restorePasswordDTO);
-        return ok("Password was restored");
+        try {
+            restorePasswordService.restorePassword(restorePasswordDTO);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (IOException iOException) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -96,8 +106,27 @@ public class AuthController {
      */
     @PostMapping("/request-pass")
     public ResponseEntity requestPassword(@Valid @RequestBody RequestPasswordDTO requestPasswordDTO) {
-        requestPasswordService.requestPassword(requestPasswordDTO);
-        return ok("Ok");
+        AuthResultDTO authResult = new AuthResultDTO();
+        try {
+            ArrayList<String> messages = new ArrayList<String>();
+            requestPasswordService.requestPassword(requestPasswordDTO);
+            authResult.setSuccess(true);
+            messages.add("Lien de récupération, envoyé avec succès ");
+            authResult.setMessages(messages);
+            return new ResponseEntity(authResult, HttpStatus.OK);
+        } catch ( IncorrectEmailHttpException e) {
+            authResult.setSuccess(false);
+            ArrayList<String>messages = new ArrayList<String>();
+            messages.add(e.getMessage());
+            authResult.setErrors(messages);
+            return new ResponseEntity(authResult,HttpStatus.NOT_FOUND);
+        }   catch ( CantSendEmailHttpException c) {
+            authResult.setSuccess(false);
+            ArrayList<String> messages = new ArrayList<String>();
+            messages.add(c.getMessage());
+            authResult.setErrors(messages);
+            return new ResponseEntity(authResult,HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**

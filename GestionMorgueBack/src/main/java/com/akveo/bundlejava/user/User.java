@@ -10,6 +10,7 @@ import com.akveo.bundlejava.role.Role;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -43,8 +44,7 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "user_name", nullable = false)
-    @NotEmpty(message = "Please, provide an user name")
+    @Column(name = "user_name")
     private String userName;
 
     @Column(name = "email", nullable = false)
@@ -155,6 +155,13 @@ public class User implements Serializable {
 
     public void setRole(Set<Role> role) {
         this.role = role;
+    }
+    public Set<String> transformRoles(Set<Role> roles) {
+        Set<String> roleDto = new HashSet<>();
+        roles.forEach(role1 -> {
+            roleDto.add(role1.getName());
+        });
+        return roleDto;
     }
 
     public String getStreet() {

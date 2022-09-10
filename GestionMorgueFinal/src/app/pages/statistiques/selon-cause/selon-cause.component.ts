@@ -12,7 +12,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 export class SelonCauseComponent implements OnInit {
   public TA: number; A: number; M: number; T: number; F: number; L: number; C: number; O: number; ML: number;
   public chartType: string = 'bar';
-  public chartDatasets: Array<any> = [ { data: [0, 0, 0, 0, 0, 0, 0, 0, 0], label: '' }];
+  public chartDatasets: Array<any> = [ { data: [0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Nombre de décès selon la cause' }];
   public annee: number;
   currentDate = (new Date).getFullYear().toString();
   public chartLabels: Array<any> =
@@ -22,7 +22,7 @@ export class SelonCauseComponent implements OnInit {
   private List: any[] = [];
   message: string = '';
   messageAnnee: string = '';
-  private reactiveForm: FormGroup;
+  reactiveForm: FormGroup;
 
 
   constructor(private theme: NbThemeService,
@@ -69,7 +69,13 @@ export class SelonCauseComponent implements OnInit {
 
 
   // we separate the cause nature and cause non natural list is a list of json with two atrubite date and cause
-  chartColors: any;
+  public chartColors: Array<any> = [
+    {
+      backgroundColor: 'rgb(247,70,74)',
+      borderColor: 'rgb(255,90,94)',
+      borderWidth: 2,
+    },
+  ];
   chartOptions: any;
   condestions (list: any[]) {
     this.initialise();

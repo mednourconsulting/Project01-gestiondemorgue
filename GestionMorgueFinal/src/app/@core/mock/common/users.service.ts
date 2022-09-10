@@ -20,7 +20,6 @@ export class UsersService extends UserData {
   getCurrentUser(): Observable<User> {
     return observableOf(this.data[0]);
   }
-
   list(pageNumber: number = 1, pageSize: number = 10): Observable<User[]> {
     return observableOf(this.data);
   }
@@ -56,7 +55,7 @@ export class UsersService extends UserData {
   private data: User[] = [
     {
       id: 1,
-      role: 'user',
+      role: ['user'],
       firstName: 'Mark',
       lastName: 'Walmart',
       login: '@mdo',
@@ -74,7 +73,7 @@ export class UsersService extends UserData {
     },
     {
       id: 2,
-      role: 'user',
+      role: ['user'],
       firstName: 'Jacob',
       lastName: 'Cuba',
       login: '@mdo',
@@ -92,7 +91,7 @@ export class UsersService extends UserData {
     },
     {
       id: 3,
-      role: 'user',
+      role: ['user'],
       firstName: 'Larry',
       lastName: 'Page',
       login: '@twitter',
@@ -110,7 +109,7 @@ export class UsersService extends UserData {
     },
     {
       id: 4,
-      role: 'user',
+      role: ['user'],
       firstName: 'John',
       lastName: 'Snow',
       login: '@snow',

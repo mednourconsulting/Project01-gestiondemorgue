@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/decedes"})
+@RequestMapping({"api/decedes"})
 public class DecedesController {
 
     @Autowired
@@ -61,5 +61,10 @@ public class DecedesController {
     public ResponseEntity<Decedes> delete(@PathVariable("id") Long id) {
        return this.decedesService.delete(id);
 
+    }
+
+    @PutMapping("/defineRegisterNumber")
+    public ResponseEntity<Decedes> defineRegisterNumber(@RequestBody Decedes decede) {
+        return ResponseEntity.ok(this.decedesService.defineRegisterNumber(decede));
     }
 }

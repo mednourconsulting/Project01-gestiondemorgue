@@ -1,19 +1,23 @@
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header bg-info">
     <div class="row">
       <div class="col-sm-12">Ajouter un certificat d'aperçu de corps</div></div>
 
   </nb-card-header>
   <nb-card-body>
-    <form autocomplete="off"  [formGroup]="reactiveForm">
+    <form autocomplete="off"  [formGroup]="dataService.reactiveForm">
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Décédé</label>
-          <nb-select formControlName="defunt" class="type-select "  nbSelect fullWidth
-                      placeholder="choisir décédé..." required="true">
-            <nb-option *ngFor="let t of NomDeced" [value]="t.id" >{{ t.nom }} {{ t.prenom }}</nb-option>
-          </nb-select>
+          <ngx-select formControlName="defunt"
+                      class="form-control"
+                      [items]="listDeced"
+                      (select)="doSelectD($event)"
+                      (remove)="doRemoveD($event)"
+
+                      required>
+          </ngx-select>
           <ngx-validation-message label="Décédé"
                                   [showRequired]="!getControl('defunt').valid && getControl('defunt').touched">
           </ngx-validation-message>
@@ -22,8 +26,8 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Centre médico-légal</label>
-          <input formControlName="centerMedicoLegal"class="form-control" type="string" nbInput fullWidth
-                 id="centre" placeholder="Centre médico-légal" required="true">
+          <input formControlName="centerMedicoLegal"class="form-control" type="text"
+                 id="centre"  required>
           <ngx-validation-message label="Centre médico-légal"
                                   [showRequired]="!getControl('centerMedicoLegal').valid && getControl('centerMedicoLegal').touched"
                                   [fr]="getControl('centerMedicoLegal')?.hasError('pattern')">
@@ -36,10 +40,14 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Médecin/ Assistant de santé</label>
-          <nb-select formControlName="medecin"  class="type-select " nbSelect fullWidth
-                     placeholder="choisir médecin..." required="true">
-            <nb-option *ngFor="let t of NomMedcin" [value]="t.id">{{t.nom}} {{t.prenom}}</nb-option>
-          </nb-select>
+          <ngx-select formControlName="medecin"
+                      class="form-control"
+                      [items]="listMedcin"
+                      (select)="doSelectM($event)"
+                      (remove)="doRemoveM($event)"
+                      required>
+
+          </ngx-select>
           <ngx-validation-message label="Médecin/ Assistant de santé"
                                   [showRequired]="!getControl('medecin').valid && getControl('medecin').touched">
           </ngx-validation-message>
@@ -48,8 +56,8 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label  class="label">Date de déclaration</label>
-          <input formControlName="dateDeclaration" class="form-control" type="Date" nbInput fullWidth
-                 id="dateDec" placeholder="Date de déclaration" required="true">
+          <input formControlName="dateDeclaration" class="form-control" type="Date"
+                 id="dateDec"  required>
           <ngx-validation-message label="Date de déclaration"
                                   [showRequired]="!getControl('dateDeclaration').valid && getControl('dateDeclaration').touched">
           </ngx-validation-message>
@@ -58,8 +66,8 @@
     </div>
 
     <div class="float-right">
-      <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="danger">Enregistrer</button>
-      <button class="btn mr-1 " (click)="reactiveForm.reset()" nbButton status="danger" outline>Annuler</button>
+      <button class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
+      <button class="btn mr-1 " (click)="dataService.reactiveForm.reset()" nbButton status="info" outline>Annuler</button>
       <!--
       <button  class="btn btn-secondary mr-1" (click)="generatePdf('francais')" type="submit" nbButton  status="danger" outline>Certificat</button>
       <button class="btn btn-secondary mr-1" (click)="generatePdf('arabe')" type="submit" nbButton  status="danger" outline>شهادة</button>
@@ -68,13 +76,18 @@
     </form>
   </nb-card-body>
 </nb-card>
-<div class="card">
-  <div class="card-header">
-    Liste des certificats d'aperçu de corps
-  </div>
+<nb-card>
+  <nb-card-header class="card-header bg-info">
+    <div class="row">
+      <div class="col-sm-12">Liste des certificats d'aperçu de corps</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
-    <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustomConfirm($event)">
+    <ng2-smart-table
+      [settings]="dataService.settings"
+      [source]="source"
+      (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>
 

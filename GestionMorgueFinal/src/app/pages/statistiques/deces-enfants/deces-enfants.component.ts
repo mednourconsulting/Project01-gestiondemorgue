@@ -21,7 +21,7 @@ export class DecesEnfantsComponent implements OnInit {
   public chartDatasets: Array<any> = [
     { data: [0, 0, 0], label: 'My First dataset' },
   ];
-  public chartLabels: Array<any> = ['Garçon', 'Fille', 'Indéterminé'];
+  public chartLabels: Array<any> = ['Fille', 'Garçon', 'Indéterminé'];
   public chartColors: Array<any> = [
     {
       backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'],

@@ -10,9 +10,10 @@
   $auth-layout-padding: 2.5rem;
 
   nb-card {
-    margin: 0;
-    box-shadow: 0 0.5rem 1rem 0 rgb(192, 208, 255) !important;
-    height: calc(100vh - 2 * #{$auth-layout-padding});
+    width: 40%;
+    margin:auto;
+    // height: 100%;
+     height: calc(100vh - 2 * #{$auth-layout-padding});
   }
 
   .navigation .link {
@@ -32,31 +33,54 @@
   nb-card-body {
     display: flex;
     width: 100%;
+    padding: 0!important;
   }
 
   nb-auth-block {
-    margin: auto;
-    height: 100%;
+    margin:2rem auto;
+    max-width: 100%!important;
+   // overflow: hidden;
+    min-height: 40vh;
+
   }
 
   @include media-breakpoint-down(sm) {
     nb-card {
       border-radius: 0;
-      height: 100vh;
+      //min-height: 80vh;
     }
   }
 
   ::ng-deep {
     nb-layout .layout .layout-container .content .columns nb-layout-column {
+      // background-color:#fff;
       padding: $auth-layout-padding;
-      background-color: #FFFFFF;
+      // padding: 0 0 $auth-layout-padding 0;
+      background: #0c2c43 url('../../../assets/images/bg-img.PNG') no-repeat;
+      background-size: cover;
+
+      nb-card nb-card-body.container-fluid::-webkit-scrollbar {
+        width: 0.7rem !important;
+        height: 0em!important;
+      }
+      /* thumb */
+      nb-card nb-card-body.container-fluid::-webkit-scrollbar-thumb {
+        background: #d7caca !important;
+      }
+
+      /* Track */
+      nb-card nb-card-body.container-fluid::-webkit-scrollbar-track {
+        background: #f7f9fc!important;
+      }
 
       @include media-breakpoint-down(sm) {
-        padding: 0;
+        padding:1.5rem;
+        nb-card {
+          width: 80%;
+          margin:auto;
+        }
       }
+
     }
   }
-}
-.nb-layout {
-  background-color: #b94a48;
 }

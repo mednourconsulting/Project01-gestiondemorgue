@@ -4,6 +4,8 @@ import {CauseService} from '../../../@core/backend/common/services/Cause.service
 import {UsersService} from '../../../@core/backend/common/services/users.service';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {DomSanitizer} from '@angular/platform-browser';
+import {User} from '../../../@core/interfaces/common/users';
 
 @Component({
   selector: 'ngx-cause-deces',
@@ -46,7 +48,9 @@ export class CauseDecesComponent implements OnInit {
   constructor(private service: CauseService,
               private userservice: UsersService,
               private toastService: ToastrService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer,
+  ) {
   }
   settings = {
     add: {
@@ -63,7 +67,7 @@ export class CauseDecesComponent implements OnInit {
       mode: 'inline',
     },
     delete: {
-      deleteButtonContent: '<i class="fas fa-trash"></i>',
+      deleteButtonContent: '<i class="fas fa-trash"  data-toggle="tooltip" data-placement="top" title="Supprimer" aria-hidden="true"></i>',
       confirmDelete: true,
 
     },
@@ -74,7 +78,7 @@ export class CauseDecesComponent implements OnInit {
       custom: [
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-edit"  data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>'),
         },
       ],
     },

@@ -1,682 +1,646 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <nb-card>
-    <nb-card-header class="hostt">
-        <div class="row">
-            <div class="col-sm-12">Ajouter Les Informations D'un Décédé</div>
-        </div>
-    </nb-card-header>
-    <nb-card-body class="host">
+  <nb-card-header class="card-header bg-info">
+    <div class="row">
+      <div class="col-sm-12">Ajouter Les Informations D'un Décédé</div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-tabset>
+      <nb-tab tabTitle="Les informations sur le décédé">
+        <form autocomplete="off" [formGroup]="reactiveForm">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Nom du décédé</label>
+                <input
+                  formControlName="nom"
+                  class="form-control"
+                  type="text"
+                  required
+                >
+                <ngx-validation-message label="Nom décédé"
+                                        [showRequired]="!getControl('nom').valid && getControl('nom').touched"
+                                        [fr]="getControl('nom')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Prénom du décédé</label>
+                <input formControlName="prenom"
+                       required
+                       class="form-control"
+                >
+                <ngx-validation-message label="Prenom décédé"
+                                        [showRequired]="!getControl('prenom').valid && getControl('prenom').touched"
+                                        [fr]="getControl('prenom')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Sexe</label>
+                <nb-select class="type-select form-control "
+                           formControlName="sexe"
+                           fullWidth
+                           required>
+                  <nb-option *ngFor="let t of sexeList" [value]="t.value">{{t.title}}</nb-option>
+                </nb-select>
+                <ngx-validation-message label="Sexe"
+                                        [showRequired]="!getControl('sexe').valid && getControl('sexe').touched">
+                </ngx-validation-message>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Date de décès</label>
+                <input class="form-control"
+                       formControlName="dateDeces"
+                       type="Date"
+                       name="dateDeces"
+                       required
+                       id="dateD"
+                >
+                <ngx-validation-message label="Date décès"
+                                        [showRequired]="!getControl('dateDeces').valid && getControl('dateDeces').touched">
+                </ngx-validation-message>
 
-        <nb-tabset>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Date de naissance</label>
+                <input class="form-control"
+                       formControlName="dateNaissance"
+                       type="Date"
+                       name="dateNaissance"
+                       required
+                       id="DateNai"
+                >
+                <ngx-validation-message label="Date de naissance"
+                                        [showRequired]="!getControl('dateNaissance').valid && getControl('dateNaissance').touched">
+                </ngx-validation-message>
+                <p  class="error-message caption status-danger" *ngIf=" compareDates && getControl('dateNaissance').touched">
+                  La date du décès doit être supérieure ou égale à la date de naissance !
+                </p>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <nb-checkbox id="defaultCheck" formControlName="mortNe"> S'agit-il d'un mort né</nb-checkbox>
+              <p  class="error-message caption status-danger" *ngIf=" compareDates && getControl('dateDeces').touched && getControl('mortNe').value === true ">
+                La date du décès doit être égale à la date de naissance !
+              </p>
+            </div>
 
-            <nb-tab tabTitle="Les informations sur un décédé">
-                <nb-card>
-                    <nb-card-body>
-                      <form autocomplete="off"  [formGroup]="reactiveForm">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Nom décédé</label>
-                                    <input
-                                          formControlName="nom"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           fullWidth
-                                           name="name"
-                                           id="Nom"
-                                           required="true"
-                                           placeholder="Nom décédé">
-                                  <ngx-validation-message label="Nom décédé"
-                                                          [showRequired]="!getControl('nom').valid && getControl('nom').touched"
-                                                          [fr]="getControl('nom')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Prénom décédé</label>
-                                    <input formControlName="prenom"
-                                           name= "prenom"
-                                           required="true"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           fullWidth
-                                           id="prénom"
-                                           placeholder="Prénom décédé"
-                                           >
-                                  <ngx-validation-message label="Prenom décédé"
-                                                          [showRequired]="!getControl('prenom').valid && getControl('prenom').touched"
-                                                          [fr]="getControl('prenom')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Sexe</label>
-                                    <nb-select class="type-select "
-                                               formControlName="sexe"
-                                               nbSelect
-                                               fullWidth
-                                               placeholder="Sexe"
-                                               required="true">
-                                        <nb-option *ngFor="let t of sexeList"  [value]="t.value">{{t.title}}</nb-option>
-                                    </nb-select>
-                                  <ngx-validation-message label="Sexe"
-                                                          [showRequired]="!getControl('sexe').valid && getControl('sexe').touched">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Date décès</label>
-                                    <input class="form-control"
-                                           formControlName="dateDeces"
-                                           type="Date"
-                                           name= "dateDeces"
-                                           required="true"
-                                           nbInput
-                                           fullWidth
-                                           id="dateD"
-                                           placeholder="Date décès">
-                                  <ngx-validation-message label="Date décès"
-                                                          [showRequired]="!getControl('dateDeces').valid && getControl('dateDeces').touched">
-                                  </ngx-validation-message>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Date de naissance</label>
-                                    <input  class="form-control"
-                                            formControlName="dateNaissance"
-                                           type="Date"
-                                           nbInput
-                                           fullWidth
-                                           name= "dateNaissance"
-                                           required="true"
-                                           id="DateNai"
-                                           placeholder="Date de naissance">
-                                  <ngx-validation-message label="Date de naissance"
-                                                          [showRequired]="!getControl('dateNaissance').valid && getControl('dateNaissance').touched">
-                                  </ngx-validation-message>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <nb-checkbox id="defaultCheck"  formControlName="mortNe"> S'agit-il d'un mort né</nb-checkbox>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div *ngIf="createDecedeFromForm().sexe ==='Femme' &&(this.getAgeParAnnee(createDecedeFromForm().dateNaissance, createDecedeFromForm().dateDeces) < 54)
+          </div>
+          <div class="row">
+            <div *ngIf="createDecedeFromForm().sexe ==='Femme' && !compareDates &&(this.getAgeParAnnee(createDecedeFromForm().dateNaissance, createDecedeFromForm().dateDeces) < 54)
                              &&(this.getAgeParAnnee(createDecedeFromForm().dateNaissance, createDecedeFromForm().dateDeces) > 12);then contenu"></div>
-                            <ng-template #contenu>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label class="label">Le décès est-il survenu pendant une grossesse ou moins d'un an après sa terminaison ?</label>
-                                        <nb-select formControlName="decesGrossesse"class="type-select " nbSelect fullWidth>
-                                            <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
-                                        </nb-select>
-                                    </div>
-                                </div>
-                            </ng-template>
-                        </div>
-                        <div class="row">
-                            <div *ngIf="createDecedeFromForm().decesGrossesse==='Oui';then conten"></div>
-                            <ng-template #conten>
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label class="label">le décès de la femme est-il survenu..?</label>
-                                            <nb-select formControlName="decesFemme" class="type-select " nbSelect fullWidth>
-                                                <nb-option *ngFor="let t of decesFemmeList" [value]="t.value">{{t.title}}</nb-option>
-                                            </nb-select>
+            <ng-template #contenu>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <label class="label">Le décès est-il survenu pendant une grossesse ou moins d'un an après sa
+                    terminaison ?</label>
+                  <nb-select formControlName="decesGrossesse" class="type-select " fullWidth>
+                    <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
+                  </nb-select>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="row">
+            <div *ngIf="createDecedeFromForm().decesGrossesse==='Oui';then conten"></div>
+            <ng-template #conten>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">le décès de la femme est-il survenu..?</label>
+                    <nb-select formControlName="decesFemme" class="type-select form-control" fullWidth>
+                      <nb-option *ngFor="let t of decesFemmeList" [value]="t.value">{{t.title}}</nb-option>
+                    </nb-select>
 
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label class="label">La grossesse a-t-elle contribué au decès ?</label>
-                                            <nb-select formControlName="contribueGros" class="type-select " nbSelect fullWidth>
-                                                <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
-                                            </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">La grossesse a-t-elle contribué au decès ?</label>
+                    <nb-select formControlName="contribueGros" class="type-select form-control" fullWidth>
+                      <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
+                    </nb-select>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-template>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div *ngIf="createDecedeFromForm().mortNe===true ||(this.getAgeParJour(createDecedeFromForm().dateNaissance, createDecedeFromForm().dateDeces)<7);then res"></div>
-                                <ng-template #res>
-                                    <div class="row">
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div
+                *ngIf="createDecedeFromForm().mortNe===true || (!compareDates && (this.getAgeParJour(createDecedeFromForm().dateNaissance, createDecedeFromForm().dateDeces)<7));then res"></div>
+              <ng-template #res>
+                <div class="row">
 
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Grossesse multiple?</label>
-                                                <nb-select formControlName="grossesseMultiple" class="type-select " nbSelect fullWidth placeholder="Grossesse multiple">
-                                                    <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
-                                                </nb-select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Age de la mère</label>
-                                                <input formControlName="ageMere" class="form-control" type="string" nbInput fullWidth id="ageMere" placeholder="Age du mère">
-                                              <ngx-validation-message label="Age de la mère"
-                                                                      [fr]="getControl('ageMere')?.hasError('pattern')">
-                                              </ngx-validation-message>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Poids à la naissance</label>
-                                                <input formControlName="poidsNaissance" class="form-control" type="string" nbInput fullWidth id="poids" placeholder="Poids en grammes">
-                                              <ngx-validation-message label="Poids à la naissance"
-                                                                      [fr]="getControl('poidsNaissance')?.hasError('pattern')">
-                                              </ngx-validation-message>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label class="label">Age gestationnel</label>
-                                                <input formControlName="ageGestationnel" class="form-control" type="string" nbInput fullWidth id="ageGestationnel" placeholder="Age du mère">
-                                              <ngx-validation-message label="Age gestationnel"
-                                                                      [fr]="getControl('ageGestationnel')?.hasError('pattern')">
-                                              </ngx-validation-message>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label class="label">Maladie ou affection maternelle ayant affecté le foetus ou le nouveau-né</label>
-                                                <input formControlName="maladie" class="form-control" type="string" nbInput fullWidth id="maladie" placeholder="....">
-                                              <ngx-validation-message label="Maladie ou affectation"
-                                                                      [fr]="getControl('maladie')?.hasError('pattern')">
-                                              </ngx-validation-message>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                            </div>
-                        </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Grossesse multiple?</label>
+                      <nb-select formControlName="grossesseMultiple" class="type-select form-control " fullWidth>
+                        <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Age de la mère</label>
+                      <input formControlName="ageMere" class="form-control" type="text" id="ageMere">
+                      <ngx-validation-message label="Age de la mère"
+                                              [fr]="getControl('ageMere')?.hasError('pattern')">
+                      </ngx-validation-message>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Poids à la naissance</label>
+                      <input formControlName="poidsNaissance" class="form-control" type="text" id="poids">
+                      <ngx-validation-message label="Poids à la naissance"
+                                              [fr]="getControl('poidsNaissance')?.hasError('pattern')">
+                      </ngx-validation-message>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="label">Age gestationnel</label>
+                      <input formControlName="ageGestationnel" class="form-control" type="text" id="ageGestationnel">
+                      <ngx-validation-message label="Age gestationnel"
+                                              [fr]="getControl('ageGestationnel')?.hasError('pattern')">
+                      </ngx-validation-message>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="label">Maladie ou affection maternelle ayant affecté le foetus ou le
+                        nouveau-né</label>
+                      <input formControlName="maladie" class="form-control" type="text" id="maladie">
+                      <ngx-validation-message label="Maladie ou affectation"
+                                              [fr]="getControl('maladie')?.hasError('pattern')">
+                      </ngx-validation-message>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
 
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Lieu de naissance</label>
-                                    <input formControlName="lieuNaiss"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           fullWidth
-                                           name= "naissance"
-                                           required="true"
-                                           id="LieuNai"
-                                           placeholder="Lieu de naissance">
-                                  <ngx-validation-message label="Lieu de naissance"
-                                                          [showRequired]="!getControl('lieuNaiss').valid && getControl('lieuNaiss').touched"
-                                                          [fr]="getControl('lieuNaiss')?.hasError('pattern')">
-                                  </ngx-validation-message>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Lieu de naissance</label>
+                <input formControlName="lieuNaiss"
+                       class="form-control"
+                       type="text"
 
 
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Nationalité</label>
-                                    <input formControlName="nationalite"
-                                           class="form-control"
-                                           type="string"
-                                           name= "nationalite"
-                                           required="true"
-                                           nbInput
-                                           fullWidth
-                                           id="nationalite"
-                                           placeholder="Nationalité">
-                                  <ngx-validation-message label="Nationalité"
-                                                          [showRequired]="!getControl('nationalite').valid && getControl('nationalite').touched"
-                                                          [fr]="getControl('nationalite')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">CIN</label>
-                                    <input formControlName="cin"
-                                           class="form-control"
-                                           type="string"
-                                           name= "CIN"
-                                           required="true"
-                                           nbInput
-                                           fullWidth
-                                           id="cin"
-                                           placeholder="CIN">
-                                  <ngx-validation-message label="CIN"
-                                                          [showRequired]="!getControl('cin').valid && getControl('cin').touched"
-                                                          [fr]="getControl('cin')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Adresse</label>
-                                    <input formControlName="adresse"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           fullWidth
-                                           name= "adresse"
-                                           required="true"
-                                           id="adresse"
-                                           placeholder="Adresse">
-                                  <ngx-validation-message label="Adresse"
-                                                          [showRequired]="!getControl('adresse').valid && getControl('adresse').touched"
-                                                          [fr]="getControl('adresse')?.hasError('pattern')">
-                                  </ngx-validation-message>
+                       name="naissance"
+                       required
+                       id="LieuNai"
+                >
+                <ngx-validation-message label="Lieu de naissance"
+                                        [showRequired]="!getControl('lieuNaiss').valid && getControl('lieuNaiss').touched"
+                                        [fr]="getControl('lieuNaiss')?.hasError('pattern')">
+                </ngx-validation-message>
 
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Etat Matrimonial</label>
-                                    <nb-select formControlName="etat"
-                                               class="type-select "
-                                               nbSelect
-                                               required="true"
-                                               fullWidth
-                                               placeholder="Etat Matrimonial">
-                                        <nb-option *ngFor="let t of etatList" [value]="t.value"> {{t.title}}</nb-option>
-                                    </nb-select>
-                                  <ngx-validation-message label="Etat Matrimonial"
-                                                          [showRequired]="!getControl('etat').valid && getControl('etat').touched"
-                                                          [fr]="getControl('etat')?.hasError('pattern')">
-                                  </ngx-validation-message>
 
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Nom du père ou mère</label>
-                                    <input  formControlName="fils"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           name= "fils"
-                                           required="true"
-                                           fullWidth
-                                           id="fils"
-                                           placeholder="Nom du père ou mère">
-                                  <ngx-validation-message label="Nom du père ou mère"
-                                                          [showRequired]="!getControl('fils').valid && getControl('fils').touched"
-                                                          [fr]="getControl('fils')?.hasError('pattern')">
-                                  </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Nationalité</label>
+                <input formControlName="nationalite"
+                       class="form-control"
+                       type="text"
+                       name="nationalite"
+                       required
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Heure de décès</label>
-                                    <input formControlName="heure"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           fullWidth
-                                           name= "heure"
-                                           required="true"
-                                           id="heure"
-                                           placeholder="exemple 05:10 PM ">
-                                  <ngx-validation-message label="Heure de décès"
-                                                          [showRequired]="!getControl('heure').valid && getControl('heure').touched"
-                                                          [heurePattern]="getControl('heure')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Lieu Décès</label>
-                                    <nb-select formControlName="lieuxDeces"
-                                               class="type-select "
-                                               nbSelect
-                                               name= "lieuxDeces"
-                                               required="true"
-                                               fullWidth
-                                               placeholder="lieu Deces">
-                                        <nb-option *ngFor="let t of lieuDecesList" [value]="t.value">{{t.title}}</nb-option>
-                                    </nb-select>
-                                  <ngx-validation-message label="Lieu Décès"
-                                                          [showRequired]="!getControl('lieuxDeces').valid && getControl('lieuxDeces').touched"
-                                                          [fr]="getControl('lieuxDeces')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Préfecture /Province</label>
-                                    <nb-select formControlName="provinceD"
-                                               class="type-select " nbSelect fullWidth placeholder="Préfecture /Province">
-                                        <nb-option *ngFor="let t of provinceList" [value]="t.value"> {{t.title}}</nb-option>
-                                    </nb-select>
-                                  <ngx-validation-message label="Préfecture /Province"
-                                                          [fr]="getControl('provinceD')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Préfecture d'arrondissements</label>
-                                    <input formControlName="prefectureD" class="form-control" type="string"
-                                           nbInput fullWidth id="prefect" placeholder="Préfecture d'arrondissement">
-                                  <ngx-validation-message label="Heure de décès"
-                                                          [fr]="getControl('provinceD')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Commune /Arrondissements</label>
-                                    <input formControlName="prefectureD" class="form-control" type="string" nbInput fullWidth id="communeD" placeholder="Commune /Arrondissements">
-                                  <ngx-validation-message label="Commune /Arrondissements"
-                                                          [fr]="getControl('prefectureD')?.hasError('pattern')">
-                                  </ngx-validation-message>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Nature de la mort</label>
-                                    <nb-select formControlName="natureMort"
-                                               class="type-select "
-                                               nbSelect
-                                               name= "natureMort"
-                                               required="true"
-                                               fullWidth
-                                               placeholder="nature de la mort">
-                                        <nb-option *ngFor="let t of natureMortList" [value]="t.value">{{t.title}}</nb-option>
-                                    </nb-select>
-                                  <ngx-validation-message label="Nature de la mort"
-                                                          [showRequired]="!getControl('natureMort').valid && getControl('natureMort').touched">
-                                  </ngx-validation-message>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div *ngIf="createDecedeFromForm().natureMort === 'Mort non naturelle' then causeDeMortNonNaturelle else causeDeMortNaturelle"></div>
-                            <ng-template #causeDeMortNaturelle>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">Cause de mort</label>
-                                        <nb-select formControlName="causeMort" class="type-select " nbSelect fullWidth placeholder="Cause de mort">
-                                            <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
-                                        </nb-select>
-                                    </div>
-                                </div>
-                            </ng-template>
-                            <ng-template #causeDeMortNonNaturelle>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label"> Cause initiale </label>
-                                        <nb-select formControlName="causeInitial" class="type-select " nbSelect fullWidth placeholder="Cause initiale">
-                                            <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
-                                        </nb-select>
+                       id="nationalite"
+                >
+                <ngx-validation-message label="Nationalité"
+                                        [showRequired]="!getControl('nationalite').valid && getControl('nationalite').touched"
+                                        [fr]="getControl('nationalite')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">CIN</label>
+                <input formControlName="cin"
+                       class="form-control"
+                       type="text"
+                       name="CIN"
+                       required
 
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">Cause immédiate</label>
-                                        <nb-select formControlName="causeImmdiate" class="type-select " nbSelect fullWidth placeholder="Cause immédiate">
-                                            <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
-                                        </nb-select>
-                                    </div>
-                                </div>
-                            </ng-template>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label"> Profession </label>
-                                    <input formControlName="profession"
-                                           class="form-control"
-                                           type="string"
-                                           nbInput
-                                           name= "profession"
-                                           required="true"
-                                           fullWidth
-                                           id="profession"
-                                           placeholder="Profession">
-                                  <ngx-validation-message label="Nature de la mort"
-                                                          [showRequired]="!getControl('profession').valid && getControl('profession').touched"
-                                                          [fr]="getControl('profession')?.hasError('pattern')">
-                                  </ngx-validation-message>
 
-                                </div>
-                            </div>
-                        </div>
+                       id="cin"
+                >
+                <ngx-validation-message label="CIN"
+                                        [showRequired]="!getControl('cin').valid && getControl('cin').touched"
+                                        [fr]="getControl('cin')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Adresse</label>
+                <input formControlName="adresse"
+                       class="form-control"
+                       type="text"
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div *ngIf="(createDecedeFromForm().natureMort === 'Mort non naturelle') then survenu">
-                                </div>
-                                <ng-template #survenu>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Date de survenue</label>
-                                                <input class="form-control"
-                                                       formControlName="dateServ"
-                                                       type="Date"
-                                                       nbInput
-                                                       fullWidth
-                                                       id="DateServ"
-                                                       placeholder="Date de survenue">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Lieu de survenue</label>
-                                                <nb-select formControlName="lieuServ"
-                                                           class="type-select "
-                                                           nbSelect
-                                                           fullWidth
-                                                           placeholder="Lieu de servenue">
-                                                    <nb-option *ngFor="let t of lieuList" [value]="t.value">{{t.title}}</nb-option>
-                                                </nb-select>
-                                              <ngx-validation-message label="Lieu de survenue"
-                                                                      [fr]="getControl('lieuServ')?.hasError('pattern')">
-                                              </ngx-validation-message>
 
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Circonstances de survenue</label>
-                                                <input class="form-control"
-                                                       formControlName="circonServ"
-                                                       type="string"
-                                                       nbInput
-                                                       fullWidth
-                                                       id="circonstances"
-                                                       placeholder="Circonstances de survenue">
-                                              <ngx-validation-message label="Circonstances de survenue"
-                                                                      [fr]="getControl('circonServ')?.hasError('pattern')">
-                                              </ngx-validation-message>
-                                            </div>
-                                        </div>
-                                    </div>
+                       name="adresse"
+                       required
+                       id="adresse"
+                >
+                <ngx-validation-message label="Adresse"
+                                        [showRequired]="!getControl('adresse').valid && getControl('adresse').touched"
+                                        [fr]="getControl('adresse')?.hasError('pattern')">
+                </ngx-validation-message>
 
-                                </ng-template>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <nb-checkbox id="defaultCheck1" formControlName="obstacle">Obstacle medicolégal</nb-checkbox>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Autopsie</label>
-                                    <nb-select formControlName="autopsie" class="type-select " nbSelect fullWidth placeholder="Autopsie">
-                                        <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
-                                    </nb-select>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="label">Une operation a-t-elle été effectuées lors des 4 dernières semaines ?</label>
-                                    <nb-select formControlName="operation" class="type-select " nbSelect fullWidth placeholder="Operation">
-                                        <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
-                                    </nb-select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div *ngIf="createDecedeFromForm().autopsie === 'Oui'then resultAutopsie"></div>
-                                <ng-template #resultAutopsie>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">les résultats ont-ils été utilisés dans certification</label>
-                                                <nb-select formControlName="resultatsAutopsie" class="type-select " nbSelect fullWidth placeholder="les resultats ...">
-                                                    <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
-                                                </nb-select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div *ngIf="createDecedeFromForm().operation==='Oui'then resOperation"></div>
-                                <ng-template #resOperation>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">La date d'operation</label>
-                                                <input formControlName="dateOperation" class="form-control" type="Date" nbInput fullWidth id="dateOp" placeholder="La date d'operation">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="label">Motif d'operation</label>
-                                                <input formControlName="motifOperation" class="form-control" type="string" nbInput fullWidth id="motif" placeholder="motif d'operation">
-                                              <ngx-validation-message label="Motif d'operation"
-                                                                      [fr]="getControl('motifOperation')?.hasError('pattern')">
-                                              </ngx-validation-message>
-                                            </div>
-                                        </div>
-                                    </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Etat Matrimonial</label>
+                <nb-select formControlName="etat"
+                           class="type-select form-control"
 
-                                </ng-template>
-                            </div>
-                        </div>
-                      </form>
-                    </nb-card-body>
-                </nb-card>
+                           required
+                           fullWidth
+                >
+                  <nb-option *ngFor="let t of etatList" [value]="t.value"> {{t.title}}</nb-option>
+                </nb-select>
+                <ngx-validation-message label="Etat Matrimonial"
+                                        [showRequired]="!getControl('etat').valid && getControl('etat').touched"
+                                        [fr]="getControl('etat')?.hasError('pattern')">
+                </ngx-validation-message>
 
-            </nb-tab>
-            <nb-tab tabTitle="معلومات عن المتوفى">
-                <nb-card>
-                    <nb-card-body>
-                      <form [formGroup]="reactiveForm">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">الإسم العائلي</label>
-                                        <input formControlName="nomAR" class="form-control" type="string" nbInput fullWidth id="NomAR" required="true" placeholder="الإسم العائلي">
-                                      <ngx-validation-message label="الإسم العائلي"
-                                                              [showRequired]="!getControl('nomAR').valid && getControl('nomAR').touched"
-                                                              [ar]="getControl('nomAR')?.hasError('pattern')">
-                                      </ngx-validation-message>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">الإسم الشخصي</label>
-                                        <input formControlName="prenomAR" class="form-control" type="string" nbInput fullWidth id="prenomAR" required="true" placeholder="لإسم الشخصي">
-                                      <ngx-validation-message label="الإسم الشخصي"
-                                                              [showRequired]="!getControl('prenomAR').valid && getControl('prenomAR').touched"
-                                                              [ar]="getControl('prenomAR')?.hasError('pattern')">
-                                      </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Nom du père ou mère</label>
+                <input formControlName="fils"
+                       class="form-control"
+                       type="text"
 
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">الجنسية</label>
-                                        <input formControlName="nationaliteAR" class="form-control" type="string" nbInput fullWidth id="nationaliteAR" required="true" placeholder="الجنسية">
-                                      <ngx-validation-message label="الجنسية"
-                                                              [showRequired]="!getControl('nationaliteAR').valid && getControl('nationaliteAR').touched"
-                                                              [ar]="getControl('nationaliteAR')?.hasError('pattern')">
-                                      </ngx-validation-message>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">مكان الوفاة</label>
-                                        <input formControlName="lieuDecesAR" class="form-control" required="true" type="string" nbInput fullWidth id="LieuDecesAr" placeholder="مكان الوفاة">
-                                      <ngx-validation-message label="مكان الوفاة"
-                                                              [showRequired]="!getControl('lieuDecesAR').valid && getControl('lieuDecesAR').touched"
-                                                              [ar]="getControl('lieuDecesAR')?.hasError('pattern')">
-                                      </ngx-validation-message>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">العنوان</label>
-                                        <input formControlName="adresseAR" class="form-control" required="true"  type="string" nbInput fullWidth id="adresseAR" placeholder="العنوان">
-                                      <ngx-validation-message label="العنوان"
-                                                              [showRequired]="!getControl('adresseAR').valid && getControl('adresseAR').touched"
-                                                              [ar]="getControl('adresseAR')?.hasError('pattern')">
-                                      </ngx-validation-message>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label class="label">إسم الأب أو الأم</label>
-                                        <input formControlName="filsAR"
-                                               class="form-control" required="true"
-                                               type="string" nbInput fullWidth id="FilsAR" placeholder="إسم الأب أو الأم">
-                                      <ngx-validation-message label="إسم الأب أو الأم"
-                                                              [showRequired]="!getControl('filsAR').valid && getControl('filsAR').touched"
-                                                              [ar]="getControl('filsAR')?.hasError('pattern')">
-                                      </ngx-validation-message>
-                                    </div>
-                                </div>
-                            </div>
-                      </form>
-                    </nb-card-body>
-                </nb-card>
-            </nb-tab>
+                       name="fils"
+                       required
 
-        </nb-tabset>
-      <form  [formGroup]="reactiveForm">
-        <div class="float-right">
-          <button  class="btn mr-1 "  (click)="onSubmit()" type="submit" nbButton  status="info">Enregistrer</button>
-          <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()"  nbButton  status="info" outline>Annuler</button>
-        </div>
-      </form>
-    </nb-card-body>
+                       id="fils"
+                >
+                <ngx-validation-message label="Nom du père ou mère"
+                                        [showRequired]="!getControl('fils').valid && getControl('fils').touched"
+                                        [fr]="getControl('fils')?.hasError('pattern')">
+                </ngx-validation-message>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Heure de décès</label>
+                <input formControlName="heure"
+                       class="form-control"
+                       type="text"
+                       name="heure"
+                       required
+                       id="heure"
+                       placeholder="exemple 05:10pm">
+                <ngx-validation-message label="Heure de décès"
+                                        [showRequired]="!getControl('heure').valid && getControl('heure').touched"
+                                        [heurePattern]="getControl('heure')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Lieu Décès</label>
+                <nb-select formControlName="lieuxDeces"
+                           class="type-select form-control"
+                           name="lieuxDeces"
+                           required
+                           fullWidth
+                >
+                  <nb-option *ngFor="let t of lieuDecesList" [value]="t.value">{{t.title}}</nb-option>
+                </nb-select>
+                <ngx-validation-message label="Lieu Décès"
+                                        [showRequired]="!getControl('lieuxDeces').valid && getControl('lieuxDeces').touched"
+                                        [fr]="getControl('lieuxDeces')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Nature de la mort</label>
+                <nb-select formControlName="natureMort"
+                           class="type-select form-control"
+                           name="natureMort"
+                           required
+                           fullWidth
+                >
+                  <nb-option *ngFor="let t of natureMortList" [value]="t.value">{{t.title}}</nb-option>
+                </nb-select>
+                <ngx-validation-message label="Nature de la mort"
+                                        [showRequired]="!getControl('natureMort').valid && getControl('natureMort').touched">
+                </ngx-validation-message>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Préfecture d'arrondissements</label>
+                <input formControlName="prefectureD" class="form-control" type="text"
+                       id="prefect">
+                <ngx-validation-message label="Heure de décès"
+                                        [fr]="getControl('provinceD')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Commune /Arrondissements</label>
+                <input formControlName="prefectureD" class="form-control" type="text" id="communeD">
+                <ngx-validation-message label="Commune /Arrondissements"
+                                        [fr]="getControl('prefectureD')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Préfecture /Province</label>
+                <nb-select formControlName="provinceD"
+                           class="type-select form-control" fullWidth>
+                  <nb-option *ngFor="let t of provinceList" [value]="t.value"> {{t.title}}</nb-option>
+                </nb-select>
+                <ngx-validation-message label="Préfecture /Province"
+                                        [fr]="getControl('provinceD')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Cause de mort</label>
+                <nb-select formControlName="causeMort" class="type-select form-control" fullWidth>
+                  <nb-option *ngFor="let cm of causeMort" [value]="cm">{{cm}}</nb-option>
+                  <nb-option *ngFor="let c of causes" [value]="c.description">{{c.description}}</nb-option>
+
+                </nb-select>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label"> Cause initiale </label>
+                <nb-select formControlName="causeInitial" class="type-select form-control" fullWidth>
+                  <nb-option *ngFor="let cm of causeMort" [value]="cm">{{cm}}</nb-option>
+                  <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
+                </nb-select>
+
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Cause immédiate</label>
+                <nb-select formControlName="causeImmdiate" class="type-select form-control" fullWidth>
+                  <nb-option *ngFor="let cm of causeMort" [value]="cm">{{cm}}</nb-option>
+                  <nb-option *ngFor="let t of causes" [value]="t.description">{{t.description}}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label"> Profession </label>
+                <input formControlName="profession"
+                       class="form-control"
+                       type="text"
+                       name="profession"
+                       id="profession">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div *ngIf="(createDecedeFromForm().natureMort === 'Mort non naturelle') then survenu">
+              </div>
+              <ng-template #survenu>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Date de survenue</label>
+                      <input class="form-control"
+                             formControlName="dateServ"
+                             type="Date"
+                             id="DateServ">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Lieu de survenue</label>
+                      <nb-select formControlName="lieuServ"
+                                 class="type-select form-control"
+                                 fullWidth
+                      >
+                        <nb-option *ngFor="let t of lieuList" [value]="t.value">{{t.title}}</nb-option>
+                      </nb-select>
+                      <ngx-validation-message label="Lieu de survenue"
+                                              [fr]="getControl('lieuServ')?.hasError('pattern')">
+                      </ngx-validation-message>
+
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Circonstances de survenue</label>
+                      <input class="form-control"
+                             formControlName="circonServ"
+                             type="text"
+
+
+                             id="circonstances"
+                      >
+                      <ngx-validation-message label="Circonstances de survenue"
+                                              [fr]="getControl('circonServ')?.hasError('pattern')">
+                      </ngx-validation-message>
+                    </div>
+                  </div>
+                </div>
+
+              </ng-template>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <nb-checkbox id="defaultCheck1" formControlName="obstacle">Obstacle medicolégal</nb-checkbox>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Autopsie</label>
+                <nb-select formControlName="autopsie" class="type-select form-control" fullWidth>
+                  <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="label">Une operation a-t-elle été effectuées lors des 4 dernières semaines ?</label>
+                <nb-select formControlName="operation" class="type-select form-control" fullWidth>
+                  <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div *ngIf="createDecedeFromForm().autopsie === 'Oui'then resultAutopsie"></div>
+              <ng-template #resultAutopsie>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">les résultats ont-ils été utilisés dans certification</label>
+                      <nb-select formControlName="resultatsAutopsie" class="type-select form-control" fullWidth>
+                        <nb-option *ngFor="let t of confirmationList" [value]="t.value">{{t.title}}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div *ngIf="createDecedeFromForm().operation==='Oui'then resOperation"></div>
+              <ng-template #resOperation>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">La date d'operation</label>
+                      <input formControlName="dateOperation" class="form-control" type="Date" id="dateOp">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Motif d'operation</label>
+                      <input formControlName="motifOperation" class="form-control" type="text" id="motif">
+                      <ngx-validation-message label="Motif d'operation"
+                                              [fr]="getControl('motifOperation')?.hasError('pattern')">
+                      </ngx-validation-message>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </form>
+      </nb-tab>
+      <nb-tab tabTitle="معلومات عن المتوفى">
+        <form [formGroup]="reactiveForm">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group arabe">
+                <label class="label float-right">الإسم العائلي</label>
+                <input formControlName="nomAR" class="form-control" type="text" id="NomAR" required>
+                <ngx-validation-message label="الإسم العائلي"
+                                        [showRequired]="!getControl('nomAR').valid && getControl('nomAR').touched"
+                                        [ar]="getControl('nomAR')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group arabe">
+                <label class="label float-right">الإسم الشخصي</label>
+                <input formControlName="prenomAR" class="form-control" type="text" id="prenomAR" required>
+                <ngx-validation-message label="الإسم الشخصي"
+                                        [showRequired]="!getControl('prenomAR').valid && getControl('prenomAR').touched"
+                                        [ar]="getControl('prenomAR')?.hasError('pattern')">
+                </ngx-validation-message>
+
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group arabe">
+                <label class="label float-right">الجنسية</label>
+                <input formControlName="nationaliteAR" class="form-control" type="text" id="nationaliteAR" required>
+                <ngx-validation-message label="الجنسية"
+                                        [showRequired]="!getControl('nationaliteAR').valid && getControl('nationaliteAR').touched"
+                                        [ar]="getControl('nationaliteAR')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group arabe">
+                <label class="label float-right">مكان الوفاة</label>
+                <input formControlName="lieuDecesAR" class="form-control" required type="text" id="LieuDecesAr">
+                <ngx-validation-message label="مكان الوفاة"
+                                        [showRequired]="!getControl('lieuDecesAR').valid && getControl('lieuDecesAR').touched"
+                                        [ar]="getControl('lieuDecesAR')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group arabe">
+                <label class="label float-right">العنوان</label>
+                <input formControlName="adresseAR" class="form-control" required type="text" id="adresseAR">
+                <ngx-validation-message label="العنوان"
+                                        [showRequired]="!getControl('adresseAR').valid && getControl('adresseAR').touched"
+                                        [ar]="getControl('adresseAR')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group arabe ">
+                <label class="label float-right">إسم الأب أو الأم</label>
+                <input formControlName="filsAR"
+                       class="form-control" required
+                       type="text" id="FilsAR">
+                <ngx-validation-message label="إسم الأب أو الأم"
+                                        [showRequired]="!getControl('filsAR').valid && getControl('filsAR').touched"
+                                        [ar]="getControl('filsAR')?.hasError('pattern')">
+                </ngx-validation-message>
+              </div>
+            </div>
+          </div>
+        </form>
+      </nb-tab>
+    </nb-tabset>
+    <form [formGroup]="reactiveForm">
+      <div class="float-right">
+        <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="info">Enregistrer</button>
+        <button class="btn btn-secondary mr-1" (click)="reactiveForm.reset()" nbButton status="info" outline>Annuler
+        </button>
+      </div>
+    </form>
+  </nb-card-body>
 </nb-card>
-<div class="card">
-  <div class="card-header">
-    Liste des décédés
-  </div>
+<nb-card>
+  <nb-card-header class="card-header bg-info">
+    <div class="row">
+      <div class="col-sm-12"> Liste des décédés</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
     <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>

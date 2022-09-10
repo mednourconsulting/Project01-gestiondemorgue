@@ -16,7 +16,7 @@ export class RegionComponent implements OnInit {
   public currentDate = (new Date).getFullYear().toString();
   message: string = '';
   messageAnnee: string = '';
-  private reactiveForm: FormGroup;
+  public reactiveForm: FormGroup;
   List = [];
 
   constructor(private theme: NbThemeService,

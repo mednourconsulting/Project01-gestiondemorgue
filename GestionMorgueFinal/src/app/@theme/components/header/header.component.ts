@@ -12,6 +12,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { UserStore } from '../../../@core/stores/user.store';
 import { SettingsData } from '../../../@core/interfaces/common/settings';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -53,7 +54,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private userStore: UserStore,
               private settingsService: SettingsData,
               private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              private router: Router) {
   }
 
   getMenuItems() {
@@ -110,5 +112,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateHome() {
     this.menuService.navigateHome();
     return false;
+  }
+  logout() {
+    this.router.navigate(['..', 'auth', 'logout']);
   }
 }

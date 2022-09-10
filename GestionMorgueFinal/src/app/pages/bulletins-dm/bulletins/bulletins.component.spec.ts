@@ -9,7 +9,7 @@ describe('BulletinsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BulletinsComponent ]
+      declarations: [ BulletinsComponent ],
     })
     .compileComponents();
   }));

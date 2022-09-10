@@ -8,7 +8,7 @@ describe('MedicolegalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MedicolegalComponent ]
+      declarations: [ MedicolegalComponent ],
     })
     .compileComponents();
   }));

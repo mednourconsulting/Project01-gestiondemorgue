@@ -35,6 +35,8 @@ export class NgxLoginComponent implements OnInit {
   rememberMe = this.getConfigValue('forms.login.rememberMe');
   isEmailRequired: boolean = this.getConfigValue('forms.validation.email.required');
   isPasswordRequired: boolean = this.getConfigValue('forms.validation.password.required');
+  showPassword: boolean = false;
+
 
   errors: string[] = [];
   messages: string[] = [];
@@ -42,7 +44,9 @@ export class NgxLoginComponent implements OnInit {
   submitted: boolean = false;
   loginForm: FormGroup;
   alive: boolean = true;
-
+  checked: boolean = true;
+  isType: boolean;
+  type: string = 'password';
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
 
@@ -72,6 +76,15 @@ export class NgxLoginComponent implements OnInit {
       rememberMe: this.fb.control(''),
     });
   }
+  fieldTextType: boolean;
+
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
+  public togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   login(): void {
     this.user = this.loginForm.value;
@@ -97,8 +110,20 @@ export class NgxLoginComponent implements OnInit {
       this.cd.detectChanges();
     });
   }
-
   getConfigValue(key: string): any {
     return getDeepFromObject(this.options, key, null);
   }
+  toggleButton(event) {
+    if (event.checked) {
+      this.type = 'password';
+    } else {
+      this.type = 'text';
+    }
+  }
+
+  motDePasseOublie() {
+    this.router.navigateByUrl('/auth/request-password');
+  }
 }
+
+

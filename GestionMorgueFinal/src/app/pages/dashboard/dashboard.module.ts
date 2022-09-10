@@ -4,7 +4,8 @@
  * See LICENSE_SINGLE_APP / LICENSE_MULTI_APP in the 'docs' folder for license information on type of purchased license.
  */
 
-import {NgModule, OnInit} from '@angular/core';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {ChartsModule} from 'angular-bootstrap-md';
 import {
   NbActionsModule,
@@ -24,16 +25,23 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './dashboard.component';
 import { FormsModule } from '@angular/forms';
 
-import { AuthModule } from '../../@auth/auth.module';
 import {StatistiquesModule} from '../statistiques/statistiques.module';
 import {BulletinsDMModule} from '../bulletins-dm/bulletins-dm.module';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
+
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+];
 
 @NgModule({
   declarations: [
     DashboardComponent,
   ],
   imports: [
+    RouterModule.forChild(routes),
     FormsModule,
     ThemeModule,
     NbCardModule,
@@ -48,7 +56,6 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
     NbButtonModule,
     NbSpinnerModule,
     NgxEchartsModule,
-    AuthModule,
     StatistiquesModule,
     BulletinsDMModule,
     Ng2SmartTableModule,

@@ -7,7 +7,9 @@ import {CauseService} from '../../../@core/backend/common/services/Cause.service
 import {Decedes} from '../../../@core/backend/common/model/Decedes';
 import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
-import {LogoBase64Service} from "../../../@core/backend/common/services/logo-base64.service";
+import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {DomSanitizer} from '@angular/platform-browser';
+import {User} from '../../../@core/interfaces/common/users';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -28,7 +30,7 @@ export class AttestationComponent implements OnInit {
       custom: [
         {
           name: 'ppddff',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf"   data-toggle="tooltip" data-placement="top" title="Attestation" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -51,7 +53,7 @@ export class AttestationComponent implements OnInit {
 
     },
     columns: {
-      id: {
+      numRegister: {
         title: 'numéro de registre',
         type: 'number',
         editable: false,
@@ -73,7 +75,7 @@ export class AttestationComponent implements OnInit {
             list: [
               {value: 'Femme', title: 'Femme'},
               {value: 'Homme', title: 'Homme'},
-              {value: 'Indetermini', title: 'Indetermini'},
+              {value: 'Indéterminé', title: 'Indéterminé'},
             ],
           },
         },
@@ -116,7 +118,8 @@ export class AttestationComponent implements OnInit {
               private serviceCause: CauseService,
               private logoBase64: LogoBase64Service,
               private datePipe: DatePipe,
-              private toastService: ToastrService) {
+              private toastService: ToastrService,
+              private sanitizer: DomSanitizer) {
     this.jstoday = formatDate(this.today, 'dd-MM-yyyy', 'en-US', '+0530');
   }
   init() {

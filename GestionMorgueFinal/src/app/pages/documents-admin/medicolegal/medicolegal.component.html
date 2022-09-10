@@ -1,28 +1,26 @@
 
 
 <nb-card>
-    <nb-card-header>
+    <nb-card-header class="card-header bg-info">
         <div class="row">
             <div class="col-sm-12">Ajouter un certificat médico-légal</div>
         </div>
     </nb-card-header>
     <nb-card-body>
-      <form autocomplete="off"  [formGroup]="reactiveForm">
+      <form autocomplete="off"  [formGroup]="dataMedicoLegalService.reactiveForm">
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Médecin</label>
-                    <nb-select formControlName="medecin"
-                               class="type-select "
-                               nbSelect
-                               fullWidth
-                               placeholder="Médecin"
-                               required="true">
-                      <nb-option class="url"  (click)="passToMedecin()">Ajouter un Médecin....</nb-option>
-                      <nb-option *ngFor="let t of NomMedecin" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
-                    </nb-select>
+                  <ngx-select class="form-control"
+                              formControlName="medecin"
+                              [items]="listMedcin"
+                              (select)="doSelectM($event)"
+                              (remove)="doRemoveM($event)"
+                              required>
+                  </ngx-select>
                   <ngx-validation-message label="Médecin"
-                                          [showRequired]="!getControl('medecin').valid && getControl('medecin').touched">
+                                          [showRequired]="!dataMedicoLegalService.getControl('medecin').valid && dataMedicoLegalService.getControl('medecin').touched">
                   </ngx-validation-message>
 
                 </div>
@@ -30,17 +28,15 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label class="label">Défunt</label>
-                    <nb-select formControlName="defunt"
-                               class="type-select "
-                               nbSelect
-                               fullWidth
-                               placeholder="Défunt"
-                               required="true">
-                      <nb-option class="url" (click)="passToDecede()">Ajouter un Décédé....</nb-option>
-                      <nb-option *ngFor="let t of NomDecede" [value]="t.id" > {{t.id}} : {{ t.nom }} {{ t.prenom }}</nb-option>
-                    </nb-select>
+
+                  <ngx-select class="form-control"
+                              formControlName="defunt"
+                              [allowClear]="true"
+                              [items]="listDecede"
+                              (select)="doSelectD($event)"
+                              (remove)="doRemoveD($event)" required></ngx-select>
                   <ngx-validation-message label="Défunt"
-                                          [showRequired]="!getControl('defunt').valid && getControl('defunt').touched">
+                                          [showRequired]="!dataMedicoLegalService.getControl('defunt').valid && dataMedicoLegalService.getControl('defunt').touched">
                   </ngx-validation-message>
                 </div>
             </div>
@@ -50,15 +46,13 @@
                     <label class="label">Déclarant</label><br>
                     <input formControlName="declarant"
                            class="form-control"
-                           type="string"
-                           nbInput
-                           fullWidth
+                           type="text"
                            id="dec"
-                           placeholder="Déclarant"
+
                            required="true">
                   <ngx-validation-message label="Déclarant"
-                                          [showRequired]="!getControl('declarant').valid && getControl('declarant').touched"
-                                          [fr]="getControl('declarant')?.hasError('pattern')">
+                                          [showRequired]="!dataMedicoLegalService.getControl('declarant').valid && dataMedicoLegalService.getControl('declarant').touched"
+                                          [fr]="dataMedicoLegalService.getControl('declarant')?.hasError('pattern')">
                   </ngx-validation-message>
                 </div>
             </div>
@@ -72,15 +66,12 @@
                     <input formControlName="cin"
                            [ngModel]="this.Medicolegal.cin"
                            class="form-control"
-                           ng-required="expression"
-                           type="string"
-                           nbInput
-                           fullWidth
+                           type="text"
                            id="cin"
-                           placeholder="CIN Déclarant"
-                           status="success">
+
+                    >
                   <ngx-validation-message label="CIN Déclarant"
-                                          [fr]="getControl('cin')?.hasError('pattern')">
+                                          [fr]="dataMedicoLegalService.getControl('cin')?.hasError('pattern')">
                   </ngx-validation-message>
                 </div>
             </div>
@@ -89,15 +80,13 @@
                     <label class="label">Adresse Déclarant</label><br>
                     <input formControlName="address"
                            class="form-control"
-                           type="string"
-                           nbInput
-                           fullWidth
+                           type="text"
                            id="adresse"
-                           placeholder="Adresse Déclarant"
+
                            required="true">
                   <ngx-validation-message label="Adresse Déclarant"
-                                          [showRequired]="!getControl('address').valid && getControl('address').touched"
-                                          [addressFr]="getControl('address')?.hasError('pattern')">
+                                          [showRequired]="!dataMedicoLegalService.getControl('address').valid && dataMedicoLegalService.getControl('address').touched"
+                                          [addressFr]="dataMedicoLegalService.getControl('address')?.hasError('pattern')">
                   </ngx-validation-message>
                 </div>
             </div>
@@ -107,35 +96,33 @@
                     <input formControlName="declaration"
                            class="form-control"
                            type="Date"
-                           nbInput
-                           fullWidth
                            id="datedec"
-                           placeholder="Date déclaration"
-                           status="success">
+
+                    >
 
                 </div>
             </div>
 
         </div>
         <div class="float-right">
-            <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="success">Enregistrer</button>
-            <button class="btn mr-1 " (click)="reset()" nbButton status="success" outline>Annuler</button>
+            <button class="btn mr-1 " (click)="onSubmit()" type="submit" nbButton status="info">Enregistrer</button>
+            <button class="btn mr-1 " (click)="reset()" nbButton status="info" outline>Annuler</button>
         </div>
       </form>
     </nb-card-body>
 
 </nb-card>
-
-
-<div class="card">
-  <div class="card-header">
-    Liste des certificats médico-légal
-  </div>
+<nb-card>
+  <nb-card-header class="card-header bg-info">
+    <div class="row">
+      <div class="col-sm-12">Liste des certificats médico-légal</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
-
-    <ng2-smart-table [settings]="settings"
-                     [source]="source"
-                     (custom)="onCustomConfirm($event)">
+    <ng2-smart-table
+      [settings]="this.dataMedicoLegalService.settings"
+      [source]="source"
+      (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>

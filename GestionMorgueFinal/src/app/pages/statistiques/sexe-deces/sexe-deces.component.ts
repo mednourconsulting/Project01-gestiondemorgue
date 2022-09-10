@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {DecedesService} from '../../../@core/backend/common/services/Decedes.service';
 import {DatePipe} from '@angular/common';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-sexe-deces',
@@ -22,8 +22,8 @@ export class SexeDecesComponent implements OnInit {
   currentDate = (new Date).getFullYear().toString();
   message: string = '';
   messageAnnee: string = '';
-  private reactiveForm: FormGroup;
-  private statistics = [];
+   reactiveForm: FormGroup;
+   statistics = [];
   constructor (private service: DecedesService,
                private datePipe: DatePipe,
                private fb: FormBuilder) {
@@ -38,8 +38,8 @@ export class SexeDecesComponent implements OnInit {
 
   public chartColors: Array<any> = [
     {
-      backgroundColor: ['#82CDE0', '#E08282', '#82E0AA'],
-      hoverBackgroundColor: ['#82CDE0', '#E08282', '#82E0AA'],
+      backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'],
+      hoverBackgroundColor: ['#FF5A5E', '#5AD3D1', '#FFC870'],
       borderWidth: 2,
     },
   ];
@@ -63,7 +63,7 @@ export class SexeDecesComponent implements OnInit {
     this.list.forEach(obj => {
       if (obj.dateDeces.substring(0, 4) === annee) {
         this.statistics.push(obj);
-        this.message = 'Les statistiques selon le sexe de décès pour l\'année';
+        this.message = 'Les statistiques selon le sexe du décédé pour l\'année';
         this.messageAnnee = annee;
         if (obj.sexe === 'Homme') {
           this.h = this.h + 1;

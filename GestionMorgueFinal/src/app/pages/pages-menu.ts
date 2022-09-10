@@ -11,28 +11,14 @@ import {Injectable} from '@angular/core';
 export class PagesMenu {
 
   getMenu(): Observable<NbMenuItem[]> {
-    const dashboardMenu = [
-      {
-        title: '',
-        link: '/pages/iot-dashboard',
-        children: undefined,
-      },
-    ];
-
     const menu = [
       {
-        title: 'Table de Bord',
+        title: 'Tableau de Bord',
         icon: 'home-outline',
         link: '/pages/dashboard',
-        children: undefined,
       },
       {
-        title: '',
-        group: true,
-      },
-      {
-        title: 'Bulletins',
-        /*de décès et de mortinalité*/
+        title: 'Généralités',
          icon: 'layout-outline',
         children: [
           {
@@ -62,7 +48,7 @@ export class PagesMenu {
             link: '/pages/documents-admin/medicolegal',
           },
           {
-            title: 'Certificat de constation',
+            title: 'Certificat de constatation',
             link: '/pages/documents-admin/constation',
           },
           {
@@ -119,12 +105,11 @@ export class PagesMenu {
           },
         ],
       },
-      // {
-      //   title: 'Rapport',
-      //   icon: '',
-      // },
-    ];
-    const Parameters = [
+      {
+        title: 'Utilisateurs',
+        icon: 'people-outline',
+        link: '/pages/users',
+      },
       {
         title: 'Paramètres',
         icon: 'settings-outline',
@@ -139,39 +124,21 @@ export class PagesMenu {
             title: 'Réinitialiser le mot de passe',
             link: '/auth/reset-password',
           },
-          {
-            title: 'Déconnection',
-            link: '/auth/logout',
-          },
         ],
       },
     ];
-
-    return of([...dashboardMenu, ...menu, ...Parameters]);
+    return of([...menu]);
   }
 
   getMenuUser(): Observable<NbMenuItem[]> {
-    const dashboardMenu = [
-      {
-        title: '',
-        link: '/pages/iot-dashboard',
-        children: undefined,
-      },
-    ];
-
     const menu = [
       {
-        title: 'Table de Bord',
+        title: 'Tableau de Bord',
         icon: 'home-outline',
         link: '/pages/dashboard',
-        children: undefined,
       },
       {
-        title: '',
-        group: true,
-      },
-      {
-        title: 'Bulletins',
+        title: 'Généralités',
         /*de décès et de mortinalité*/
         icon: 'layout-outline',
         children: [
@@ -259,30 +226,18 @@ export class PagesMenu {
           },
         ],
       },
-      // {
-      //   title: 'Rapport',
-      //   icon: '',
-      // },
-    ];
-    const Parameters = [
       {
         title: 'Paramètres',
         icon: 'settings-outline',
-        /* title: 'Authentification',
-         icon: 'lock-outline',*/
         children: [
           {
-            title: 'réinitialiser le mot de passe',
+            title: 'Réinitialiser le mot de passe',
             link: '/auth/reset-password',
-          },
-          {
-            title: 'Déconnection',
-            link: '/auth/logout',
           },
         ],
       },
     ];
 
-    return of([...dashboardMenu, ...menu, ...Parameters]);
+    return of([...menu]);
   }
 }

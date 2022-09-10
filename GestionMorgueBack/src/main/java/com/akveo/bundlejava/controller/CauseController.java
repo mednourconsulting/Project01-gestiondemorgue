@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin({"*"})
-@RequestMapping({"/cause"})
+@RequestMapping({"api/cause"})
 public class CauseController {
     @Autowired
     private CauseRepository causeRepository;

@@ -9,10 +9,13 @@ package com.akveo.bundlejava.authentication.resetpassword;
 import com.akveo.bundlejava.authentication.resetpassword.exception.TokenNotFoundOrExpiredHttpException;
 import com.akveo.bundlejava.user.ChangePasswordRequest;
 import com.akveo.bundlejava.user.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Objects;
 
 @Service
@@ -28,10 +31,15 @@ public class RestorePasswordService {
         this.userService = userService;
     }
 
-    public void restorePassword(RestorePasswordDTO restorePasswordDTO) {
+    public void restorePassword(RestorePasswordDTO restorePasswordDTO) throws IOException {
+        byte[] decodedBytes = Base64.getDecoder().decode(restorePasswordDTO.getToken());
+        String decodedToken = new String(decodedBytes);
+        System.out.println("decoded Token" + decodedToken + "\n");
+        ObjectMapper objectMapper = new ObjectMapper();
+        RestorePasswordTokenDto restorePasswordTokenDto = objectMapper.readValue(decodedToken , RestorePasswordTokenDto.class);
         RestorePassword restorePassword =
-                restorePasswordTokenRepository.findByToken(restorePasswordDTO.getToken());
-
+                restorePasswordTokenRepository.findByToken(restorePasswordTokenDto.getToken());
+        System.out.println("restore Password" + restorePassword);
         if (Objects.isNull(restorePassword) || restorePassword.isExpired()) {
             throw new TokenNotFoundOrExpiredHttpException();
         }
@@ -49,7 +57,6 @@ public class RestorePasswordService {
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
         changePasswordRequest.setUser(restorePassword.getUser());
         changePasswordRequest.setPassword(restorePasswordDTO.getNewPassword());
-
         userService.changePassword(changePasswordRequest);
     }
 

@@ -1,43 +1,44 @@
-nb-card-header {
-  color: white;
-  font-size: large;
- // font-family: 'Courier New', Monospace;
-  background-color: #2d8ac7;
-}
-.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948; /* green */
+@import '../../../@theme/styles/myStyle';
+.ng-valid[required], .ng-valid.required {
+  @include my-ng-validation($color: $color_lightGreen);
 }
 
-.ng-invalid:not(form)  {
-  border-left: 5px solid #ff0600; /* red */
+.ng-invalid:not(form) {
+  @include my-ng-validation($color: $color_red);
 }
 
-.alert div {
-  background-color: #fed3d3;
-  color: #820000;
-  padding: 1rem;
-  margin-bottom: 1rem;
+//to change the table scrollbar
+/* width */
+:host ::ng-deep .table::-webkit-scrollbar {
+  height: 0.8em!important;
+  width: 0.8em!important;
+}
+/* Handle on hover */
+:host ::ng-deep .table::-webkit-scrollbar-thumb:hover {
+  @include my-background($color: $color_blue);
+}
+/* Thumb */
+:host ::ng-deep .table::-webkit-scrollbar-thumb {
+  @include my-background($color: $color_lightGray);
+}
+/* Track */
+:host ::ng-deep .table::-webkit-scrollbar-track {
+  @include my-background($color: $color_white);
+}
+//---------------------------------------
+
+.card-header {
+  @extend %my-card-header;
+}
+.label {
+  @extend %my-label;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: .5rem;
-}
-
-select {
-  width: 100%;
-  padding: .5rem;
-}
-.message{
+.message {
   margin-top:15px;
-  margin-buttom:15px;
+  margin-bottom:15px;
   font-size: 18px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $my_font;
   text-decoration: #0c2c43;
   text-decoration-line: underline;
 }
-

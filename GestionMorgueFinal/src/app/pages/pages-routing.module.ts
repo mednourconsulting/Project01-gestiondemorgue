@@ -2,20 +2,20 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
-import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
+import {AdminGuard} from '../@auth/admin.guard';
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
     {
-      path: 'dashboard',
-      component: DashboardComponent,
+      path: '',
+      redirectTo: '/pages/dashboard',
+      pathMatch: 'full',
     },
     {
-      path: 'iot-dashboard',
-      component: DashboardComponent,
+      path: '',
+      loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     },
     {
       path: 'bulletins-dm',
@@ -53,13 +53,14 @@ const routes: Routes = [{
         .then(m => m.MiscellaneousModule),
     },
     {
-      path: '',
-      redirectTo: 'dashboard',
-      pathMatch: 'full',
+      canActivate: [AdminGuard],
+      path: 'users',
+      loadChildren: () => import('./users-list/users-list.module').then(m => m.UsersListModule),
     },
     {
       path: '**',
-      component: NotFoundComponent,
+      redirectTo: '/pages/miscellaneous/404',
+      pathMatch: 'full',
     },
   ],
 }];

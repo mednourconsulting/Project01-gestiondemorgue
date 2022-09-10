@@ -10,6 +10,8 @@ import {DatePipe, formatDate} from '@angular/common';
 import {ToastrService} from '../../../@core/backend/common/services/toastr.service';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LogoBase64Service} from '../../../@core/backend/common/services/logo-base64.service';
+import {DomSanitizer} from '@angular/platform-browser';
+import {User} from '../../../@core/interfaces/common/users';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -48,15 +50,15 @@ export class EnterrementComponent implements OnInit {
       custom: [
         {
           name: 'pdfFrancais',
-          title: '<i class="fas fa-file-pdf"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-file-pdf"  data-toggle="tooltip" data-placement="top" title="Certificat" aria-hidden="true"></i>'),
         },
         {
           name: 'delete',
-          title: '<i class="fas fa-trash"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Supprimer" aria-hidden="true"></i>'),
         },
         {
           name: 'edit',
-          title: '<i class="fas fa-edit"></i>',
+          title: this.sanitizer.bypassSecurityTrustHtml('<i class="fas fa-edit"data-toggle="tooltip" data-placement="top" title="Modifier" aria-hidden="true"></i>'),
         },
       ],
     },
@@ -72,8 +74,10 @@ export class EnterrementComponent implements OnInit {
       declaration: {
         title: 'Date de déclaration',
         valuePrepareFunction: (data) => {
-          const raw: Date = new Date(data);
-          return this.datePipe.transform(raw, 'dd-MM-yyyy');
+          if (data != null) {
+            const r: Date = new Date(data);
+            return this.datePipe.transform(r, 'dd-MM-yyyy');
+          } else return ' ';
         },
       },
     },
@@ -92,7 +96,9 @@ export class EnterrementComponent implements OnInit {
               private logoBase64: LogoBase64Service,
               private datePipe: DatePipe,
               private toastService: ToastrService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer,
+  ) {
     this.serviceDecede.getAll().subscribe( dataa => {
       dataa.forEach  (  obj => { this.NomDecede.push({nom: obj.nom, prenom: obj.prenom, id: obj.id}); });
     });
@@ -106,7 +112,6 @@ export class EnterrementComponent implements OnInit {
   }
   ngOnInit() {
     this.userservice.getCurrentUser().subscribe(data => {
-      this.date = new Date();
       this.isAdmin = data.role.includes('ADMIN');
     });
     this.init();
@@ -147,9 +152,6 @@ export class EnterrementComponent implements OnInit {
   }
 
   private getDocumentDefinition() {
-
-    // sessionStorage.setItem('resume', JSON.stringify());
-
     return {
       content: [
         {
@@ -220,9 +222,6 @@ export class EnterrementComponent implements OnInit {
     };
   }
   private getDocumentDefinition1(list) {
-
-    // sessionStorage.setItem('resume', JSON.stringify());
-
     return {
       content: [
         {
@@ -330,8 +329,11 @@ export class EnterrementComponent implements OnInit {
     }
   }
   ConvertDate(date) {
-    if (date !== undefined)
+    if (date !== undefined && date !== null ) {
       return formatDate(date, 'yyyy-MM-dd', 'en-US', '+1');
+    } else {
+      return null;
+    }
   }
   createCertificatFromForm(): CertificatEnterrement {
     const formValues = this.reactiveForm.value;

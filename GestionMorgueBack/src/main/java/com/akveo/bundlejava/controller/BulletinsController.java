@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin({"*"})
-@RequestMapping({"/Bulletins"})
+@RequestMapping({"api/Bulletins"})
 public class BulletinsController {
     @Autowired
     private BulletinsRepository bulletinsRepository;

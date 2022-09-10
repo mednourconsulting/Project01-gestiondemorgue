@@ -1,0 +1,59 @@
+@import 'src/app/@theme/styles/themes';
+@import 'src/app/@theme/styles/myStyle';
+
+@include nb-install-component() {
+  .container {
+    padding: 0!important;
+  }
+  nb-card {
+    margin: auto;
+    width: 100%;
+    min-width: 80%;
+    height:100% ;
+  }
+  nb-card-body {
+    padding: 1rem;
+    width: 100%;
+    height: fit-content;
+    overflow-x: hidden ;
+  }
+}
+label {
+  text-transform: capitalize;
+}
+.card-header {
+  @extend %my-card-header;
+}
+:host {
+  .title {
+    margin-bottom: 2rem;
+  }
+}
+.register-container {
+ padding: 1rem;
+}
+.left-column {
+  background-color: $color_blue;
+}
+input {
+  height: 3em;
+}
+//to change the page's scrollbar
+/* width */
+//---------------------------------------
+:host ::ng-deep {
+ nb-card nb-card-body::-webkit-scrollbar {
+    width: 0.7rem !important;
+    height: 0.8em!important;
+  }
+
+  /* thumb */
+  nb-card nb-card-body::-webkit-scrollbar-thumb {
+    background: #d7caca !important;
+  }
+
+  /* Track */
+  nb-card nb-card-body::-webkit-scrollbar-track {
+    background: #f7f9fc!important;
+  }
+}

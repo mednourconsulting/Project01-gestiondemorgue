@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/apercuCorps"})
+@RequestMapping({"api/apercuCorps"})
 public class ApercuCorpsController {
 
     @Autowired

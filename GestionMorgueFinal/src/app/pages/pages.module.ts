@@ -5,42 +5,59 @@
  */
 
 import { NgModule } from '@angular/core';
-
+import {NgxSelectModule} from 'ngx-select-ex';
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
-import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
-import { PagesMenu } from './pages-menu';
-import { NbMenuModule } from '@nebular/theme';
+import {
+  NbAutocompleteModule,
+  NbButtonModule,
+  NbCardModule,
+  NbDialogModule, NbInputModule,
+  NbMenuModule,
+  NbSelectModule,
+} from '@nebular/theme';
 import { AuthModule } from '../@auth/auth.module';
-import {BulletinsDMModule} from './bulletins-dm/bulletins-dm.module';
-import {DocumentsAdminModule} from './documents-admin/documents-admin.module';
-import {CertificatModule} from './certificat/certificat.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ShowDialogComponent } from './show-dialog/show-dialog.component';
+import {ComponentsModule} from '../@components/components.module';
+import {DialogEmitterService} from './users-list/services/dialog-emitter.service';
+
 
 const PAGES_COMPONENTS = [
   PagesComponent,
+  ShowDialogComponent,
 ];
+const ENTRY_COMPONENTS = [
+  ShowDialogComponent,
 
+];
 @NgModule({
   imports: [
+    NgxSelectModule,
     PagesRoutingModule,
     ThemeModule,
-    DashboardModule,
-    BulletinsDMModule,
-    DocumentsAdminModule,
-    CertificatModule,
     NbMenuModule,
-    MiscellaneousModule,
     AuthModule.forRoot(),
     ReactiveFormsModule,
+    NbDialogModule.forChild(),
+    NbCardModule,
+    NbButtonModule,
+    NbAutocompleteModule,
+    NbSelectModule,
+    NbInputModule,
+    ComponentsModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,
   ],
+  entryComponents: [
+    ...ENTRY_COMPONENTS ,
+  ],
+  exports: [ ShowDialogComponent ],
   providers: [
-    PagesMenu,
+    ShowDialogComponent,
+    DialogEmitterService,
   ],
 })
 export class PagesModule {

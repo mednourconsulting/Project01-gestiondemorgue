@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { StatistiquesRoutingModule } from './statistiques-routing.module';
-import { StatistiquesComponent } from '../statistiques/statistiques.component';
+import { StatistiquesComponent } from './statistiques.component';
 import { NouveauxNesComponent } from './nouveaux-nes/nouveaux-nes.component';
 import { DecesEnfantsComponent } from './deces-enfants/deces-enfants.component';
 import { NatureDecesComponent } from './nature-deces/nature-deces.component';
@@ -20,7 +20,7 @@ import { EnchatschartComponent } from './deces-enfants/enchatschart.component';
 import { RegionchartComponent } from './region/regionchart.component';
 import {BadgeModule, ChartsModule, IconsModule} from 'angular-bootstrap-md';
 import {ChartModule} from 'angular2-chartjs';
-import {ComponentsModule} from "../../@components/components.module";
+import {ComponentsModule} from '../../@components/components.module';
 
 
 

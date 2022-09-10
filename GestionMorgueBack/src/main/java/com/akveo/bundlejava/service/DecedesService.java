@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DecedesService {
@@ -59,5 +60,18 @@ public class DecedesService {
         }
         return ResponseEntity.ok(decedes);
 
+    }
+
+    public Decedes defineRegisterNumber(Decedes decede) {
+        Optional<Decedes> decedes = decedesRepository.findById(decede.getId());
+       if (decedes.isPresent()) {
+           Decedes founded =  decedes.get();
+           String  num ="DC00" + decede.getId();
+                  founded.setNumRegister(num);
+           this.decedesRepository.save(founded);
+           return founded;
+       }else {
+           return null;
+       }
     }
 }

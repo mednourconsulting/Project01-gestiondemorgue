@@ -14,6 +14,6 @@ public class PasswordsDontMatchException extends HttpException {
     private static final long serialVersionUID = -7852550573176915476L;
 
     public PasswordsDontMatchException() {
-        super("Passwords don't match", HttpStatus.BAD_REQUEST);
+        super("Les mots de passe que vous avez entrés ne sont pas identiques.", HttpStatus.BAD_REQUEST);
     }
 }

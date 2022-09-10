@@ -7,6 +7,7 @@
 package com.akveo.bundlejava.user;
 
 import com.akveo.bundlejava.address.AddressDTO;
+import com.akveo.bundlejava.role.Role;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,14 +15,12 @@ import java.util.Set;
 
 public class UserDTO {
 
-    @NotEmpty
-    @NotNull
     private String userName;
 
     @NotEmpty
     @NotNull
     private String email;
-
+    private Long id;
     private String firstName;
     private String lastName;
     private Integer age;
@@ -84,6 +83,14 @@ public class UserDTO {
         this.address = address;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Set<String> getRole() {
         return role;
     }
@@ -92,13 +99,18 @@ public class UserDTO {
         this.role = roles;
     }
 
+    public void transformRoles(Set<Role> roles) {
+        roles.forEach(role1 -> {
+            this.role.add(role1.getName());
+        });
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserDTO)) return false;
 
         UserDTO userDTO = (UserDTO) o;
-
         if (userName != null ? !userName.equals(userDTO.userName) : userDTO.userName != null) return false;
         if (email != null ? !email.equals(userDTO.email) : userDTO.email != null) return false;
         if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;

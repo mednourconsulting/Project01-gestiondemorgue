@@ -10,9 +10,9 @@ import { Component } from '@angular/core';
   selector: 'ngx-footer',
   styleUrls: ['./footer.component.scss'],
   template: `
-    <span class="created-by">Développer avec ♥ par <b>
+    <!-- <span class="created-by">Développer avec ♥ par <b>
       <a href="https://mednour-consulting.com/index.html" target="_blank">Med Nour Consulting </a></b> {{ currentYear }}</span>
-    <!-- <div class="socials">
+    <div class="socials">
       <a href="#" target="_blank" class="ion ion-social-github"></a>-->
 <!--      <a href="#" target="_blank" class="ion ion-social-facebook"></a>-->
 <!--      <a href="#" target="_blank" class="ion ion-social-twitter"></a>-->

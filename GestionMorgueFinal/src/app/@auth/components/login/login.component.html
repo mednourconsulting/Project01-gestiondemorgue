@@ -1,60 +1,82 @@
-<div class="login-page">
-<div class="text-center login-img">
-  <img src="assets/images/LogovilleTANGER.png">
-</div>
-
-<div class="padding login-title-container">
-  <div class="text-center login-title-firstChild">
-    Commune Urbaine Tanger
-  </div>
-  <div class="text-center login-title-lastChild">
-    Centre Medico-Légal
-  </div>
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="login-page">
+        <div class="text-center login-img">
+          <img src="assets/images/LogovilleTANGER.png">
+        </div>
 
 
-  <form role="form" [formGroup]="loginForm" aria-labelledby="title" class="login-form">
-    <div class="form-group ">
-      <div class="input-group input-group-alternative">
-        <label for="input-email">Email</label>
-        <input  nbInput
-                fullWidth
-                id="input-email"
-                formControlName="email"
-                [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
-                [attr.aria-invalid]="email.invalid && email.touched ? true : null"
-                placeholder="Email address">
-        <ngx-validation-message label="Email" [showPattern]="email?.hasError('pattern') && email.touched"
-                                [showRequired]="email?.errors?.required && email.touched"></ngx-validation-message>
+        <div class="padding login-title-container">
+          <div class="text-center login-title-firstChild">
+            Commune Urbaine Tanger
+          </div>
+          <div class="text-center login-title-lastChild">
+            Centre Medico-Légal
+          </div>
+        </div>
+
+
+        <form role="form" [formGroup]="loginForm" aria-labelledby="title" class="login-form">
+          <div class="form-group ">
+            <div class="input-group input-group-alternative">
+              <label for="input-email">Email</label>
+              <input  nbInput
+                      fullWidth
+                      id="input-email"
+                      formControlName="email"
+                      [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : 'basic'"
+                      [attr.aria-invalid]="email.invalid && email.touched ? true : null"
+                      placeholder="Email address">
+              <ngx-validation-message label="Email" [showPattern]="email?.hasError('pattern') && email.touched"
+                                      [showRequired]="email?.errors?.required && email.touched"></ngx-validation-message>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group input-group-alternative">
+              <label  for="input-password">Mot de passe</label>
+              <div class="input-group mb-3">
+              <input  nbInput
+                      fieldSize
+                      class="form-control input-text"
+                      id="input-password"
+                      formControlName="password"
+                      type="{{showPassword ? 'text' : 'password' }}"
+                      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
+                      placeholder="Password">
+                <div class="input-group-append">
+                  <button class="btn btn-info btn-lg" (click)="togglePassword()">
+                    <i class="{{showPassword ? 'fas fa-eye-slash' : 'fas fa-eye' }}"></i>
+                  </button>
+                </div>
+
+              </div>
+              <ngx-validation-message label="Mot de passe" [showMinLength]="password?.hasError('minlength') && password.touched"
+                                      [showMaxLength]="password?.hasError('maxlength') && password.touched"
+                                      [showRequired]="password?.errors?.required && password.touched"
+                                      [minLength]="minLength"
+                                      [maxLength]="maxLength"></ngx-validation-message>
+            </div>
+            <p style="text-align: right; cursor: pointer; color: gray" (click)="motDePasseOublie()">Mot de passe oublié ?</p>
+          </div>
+          <div class="text-center login-actions">
+            <button nbButton fullWidth size="medium" status="primary"  type="submit" class="btn btn-info login-button"
+                    (click)="login()"
+                    [class.btn-pulse]="submitted">
+              Connexion
+            </button>
+            <div *ngIf="showMessages.error && errors?.length && !submitted" class="alert alert-warning my-auto" role="alert">
+              Email ou mot de passe incorrect
+            </div>
+            <div *ngIf="showMessages.success && messages?.length && !submitted" class="alert alert-info">
+              Authentifier avec succès
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="form-group">
-      <div class="input-group input-group-alternative">
-        <label  for="input-password">Mot de passe</label>
-        <input  nbInput
-                fullWidth
-                id="input-password"
-                formControlName="password"
-                type="password"
-                [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
-                placeholder="Password">
-        <ngx-validation-message label="Mot de passe" [showMinLength]="password?.hasError('minlength') && password.touched"
-                                [showMaxLength]="password?.hasError('maxlength') && password.touched"
-                                [showRequired]="password?.errors?.required && password.touched"
-                                [minLength]="minLength"
-                                [maxLength]="maxLength"></ngx-validation-message>
-      </div>
-    </div>
-    <div class="text-center login-actions">
-      <p style="font-weight: bold; font-size: 14px; color: red"   *ngIf="showMessages.error && errors?.length && !submitted">Email ou mot de passe incorrect</p>
-      <p style="font-weight: bold; font-size: 14px; color: green"   *ngIf="showMessages.success && messages?.length && !submitted">Authentifier avec succès</p>
-      <button nbButton fullWidth size="medium" status="primary"  type="submit" class="btn btn-primary login-button"
-              (click)="login()"
-              [class.btn-pulse]="submitted">
-        Connexion
-      </button>
-    </div>
-  </form>
+  </div>
+
 </div>
 
 

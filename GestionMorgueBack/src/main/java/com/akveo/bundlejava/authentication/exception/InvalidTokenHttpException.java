@@ -13,6 +13,6 @@ public class InvalidTokenHttpException extends HttpException {
     private static final long serialVersionUID = 773684525186809237L;
 
     public InvalidTokenHttpException() {
-        super(HttpStatus.FORBIDDEN);
+        super("Le Token est expiré", HttpStatus.FORBIDDEN);
     }
 }

@@ -8,9 +8,10 @@ import { MedcinsComponent } from './medcins/medcins.component';
 import {BulletinsDMComponent} from './bulletins-dm.component';
 import { CauseDecesComponent } from './cause-deces/cause-deces.component';
 import {
-  NbButtonModule,
+  NbAutocompleteModule,
+  NbButtonModule, NbCalendarModule,
   NbCardModule,
-  NbCheckboxModule,
+  NbCheckboxModule, NbDatepickerModule, NbDialogModule,
   NbInputModule,
   NbSelectModule,
   NbTabsetModule,
@@ -18,25 +19,31 @@ import {
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {ComponentsModule} from '../../@components/components.module';
+import {NgxSelectModule} from 'ngx-select-ex';
 
 
 @NgModule({
   declarations: [BulletinsDMComponent,
-    BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent],
-    imports: [
-        CommonModule,
-        BulletinsDMRoutingModule,
-        NbCardModule,
-        NbSelectModule,
-        FormsModule,
-        NbTabsetModule,
-        Ng2SmartTableModule,
-        NbCheckboxModule,
-        NbInputModule,
-        NbButtonModule,
-        ReactiveFormsModule,
-        ComponentsModule,
-    ],
+    BulletinsComponent, DecedesComponent, MedcinsComponent, CauseDecesComponent,
+  ],
+  imports: [
+    CommonModule,
+    BulletinsDMRoutingModule,
+    NbCardModule,
+    NbSelectModule,
+    FormsModule,
+    NbTabsetModule,
+    Ng2SmartTableModule,
+    NbCheckboxModule,
+    NbInputModule,
+    NbButtonModule,
+    ReactiveFormsModule,
+    ComponentsModule,
+    NbAutocompleteModule,
+    NgxSelectModule,
+    NbCalendarModule,
+    NbDatepickerModule,
+  ],
   exports: [
     DecedesComponent,
   ],

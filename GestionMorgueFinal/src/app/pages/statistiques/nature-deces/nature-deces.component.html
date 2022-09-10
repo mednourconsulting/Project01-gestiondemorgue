@@ -1,15 +1,16 @@
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header bg-info">
     Les statistiques  selon la nature du décès
   </nb-card-header>
   <nb-card-body>
     <div class="row">
       <div class="col-md-3">
         <form  autocomplete="off" [formGroup]="reactiveForm" (ngSubmit)="OnSubmit()">
+          <label class="label">Année</label>
           <input type="number" min="1900" max="2099" step="1"
                  class="form-control"
                  formControlName="annee">
-          <ngx-validation-message label="filtre"
+          <ngx-validation-message label="Année"
                                   [showMin]="getControl('annee')?.hasError('min')"
                                   [showMax]="getControl('annee')?.hasError('max')"
                                   [min]="1900"

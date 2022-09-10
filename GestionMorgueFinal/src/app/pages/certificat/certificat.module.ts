@@ -9,23 +9,25 @@ import { EnterrementComponent } from './enterrement/enterrement.component';
 import {NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule, NbSelectModule} from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
-import {ComponentsModule} from "../../@components/components.module";
+import {ComponentsModule} from '../../@components/components.module';
+import {NgxSelectModule} from 'ngx-select-ex';
 
 @NgModule({
   declarations: [CertificatComponent,
     TransfertCorpsComponent, ApercuDuCorpComponent, EnterrementComponent],
-  imports: [
-    CommonModule,
-    CertificatRoutingModule,
-    NbCardModule,
-    FormsModule,
-    Ng2SmartTableModule,
-    NbSelectModule,
-    NbInputModule,
-    NbCheckboxModule,
-    NbButtonModule,
-    ReactiveFormsModule,
-    ComponentsModule,
-  ],
+    imports: [
+        CommonModule,
+        CertificatRoutingModule,
+        NbCardModule,
+        FormsModule,
+        Ng2SmartTableModule,
+        NbSelectModule,
+        NbInputModule,
+        NbCheckboxModule,
+        NbButtonModule,
+        ReactiveFormsModule,
+        ComponentsModule,
+        NgxSelectModule,
+    ],
 })
 export class CertificatModule { }

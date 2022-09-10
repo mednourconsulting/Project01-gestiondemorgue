@@ -1,0 +1,109 @@
+<nb-card *ngIf = "showInfo">
+  <nb-card-header class="card-header">{{title}}</nb-card-header>
+  <nb-card-body>
+    <div *ngFor="let l of list" class="form-group">
+      <div *ngIf="l.value != null && l.value != '' && l.language !== 'arabe' " class="form-group row">
+        <label class="form-control-label col-md-6">{{l.key}} : </label>
+        <p *ngIf="l.textarea" class="col-md-6">
+          <textarea class="form-control" rows="2">
+            {{l.value}}
+          </textarea>
+        </p>
+        <p *ngIf="!l.textarea" class="col-md-6">
+          <output class="form-control form-control-alternative">
+            {{l.value}}
+          </output>
+        </p>
+      </div>
+      <div  *ngIf="l.value != null && l.value != '' && l.language === 'arabe'" style="text-align: right" class="form-group row flex-row-reverse">
+        <label class="form-control-label col-md-6 ">: {{l.key}} </label>
+        <p *ngIf="l.textarea" class="col-md-6">
+          <textarea class="form-control" rows="3">
+            {{l.value}}
+          </textarea>
+        </p>
+        <p *ngIf="!l.textarea" class="col-md-6 ">
+          <output class="form-control form-control-alternative">
+            {{l.value}}
+          </output>
+        </p>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+
+<nb-card *ngIf="editForm">
+    <nb-card-header class="card-header bg-info">{{title}}</nb-card-header>
+    <nb-card-body class="container">
+      <div style="font-size: 1.5rem; line-height: 1.5" class="alert-danger p-2 d-flex justify-content-center align-items-center" *ngIf="isCurrentUser"> <i class="fa fa-exclamation-triangle mr-2" aria-hidden="true"></i> Après avoir modifié vos informations personnelles et cliqué sur le bouton "modifier", vous serez déconnecté, pour que le système actualise vos données. </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="register-container">
+            <div [formGroup]="editUserForm"  aria-labelledby="title">
+              <div class="row mb-2">
+                <div class="form-control-group col-md-6 mb-2">
+                  <label for="input-name">Nom</label>
+                  <input  nbInput
+                          autofocus
+                          class="form-control"
+                          fieldSize
+                          id="input-name"
+                          formControlName="lastName"
+                          placeholder="Nom">
+                  <ngx-validation-message label="Nom" [showRequired]="getControl('lastName')?.errors?.required && getControl('lastName').touched">
+                  </ngx-validation-message>
+                </div>
+                <div class="form-control-group col-md-6 mb-2">
+                  <label for="input-name">Prénom</label>
+                  <input  nbInput
+                          autofocus
+                          class="form-control"
+                          fieldSize
+                          formControlName="firstName"
+                          placeholder="Prénom">
+                  <ngx-validation-message label="Prénom" [showRequired]="getControl('firstName')?.errors?.required && getControl('firstName').touched">
+                  </ngx-validation-message>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="form-control-group col-md-6 mb-2">
+                <label>Email</label>
+                <input  nbInput
+                        fieldSize
+                        class="form-control"
+                        formControlName="email"
+                        placeholder="Email">
+                  <ngx-validation-message label="Email" [showPattern]="getControl('email')?.hasError('pattern') &&getControl('email').touched"
+                                          [showRequired]="getControl('email')?.errors?.required && getControl('email').touched">
+                  </ngx-validation-message>
+              </div>
+                <div class="form-control-group col-md-6 mb-2">
+                  <label class="form-control-label">Role</label>
+                  <nb-select fullWidth
+                             multiple
+                             placeholder="Role"
+                             formControlName="role">
+                    <nb-option [value]="ADMIN">Admin</nb-option>
+                    <nb-option [value]="USER">User</nb-option>
+                  </nb-select>
+                  <ngx-validation-message label="Role"
+                                          [showRequired]="getControl('role')?.hasError('required') && getControl('role').touched">
+                  </ngx-validation-message>
+                </div>
+              </div>
+              <div class="row flex-row-reverse mb-2">
+                <div class="form-control-group  col-md-6 mb-2">
+                  <button class="bg-info " style="color:#fff" (click)="onEdit()" nbButton fullWidth status="primary" size="large" [disabled]="!editUserForm.valid">
+                    Modifier
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+

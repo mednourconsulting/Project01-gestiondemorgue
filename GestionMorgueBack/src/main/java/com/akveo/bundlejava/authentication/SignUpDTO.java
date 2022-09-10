@@ -14,7 +14,10 @@ public class SignUpDTO {
 
     @NotNull
     @NotEmpty
-    private String fullName;
+    private String firstName;
+    @NotNull
+    @NotEmpty
+    private String lastName;
 
     @NotNull
     @NotEmpty
@@ -29,26 +32,22 @@ public class SignUpDTO {
     @NotEmpty
     private String confirmPassword;
 
+    @NotNull
+    @NotEmpty
     private String role;
 
     public SignUpDTO() {
     }
 
-    public SignUpDTO(String fullName, String email,
+    public SignUpDTO( String email,String lastName,String firstName,
                      String password, String confirmPassword) {
-        this.fullName = fullName;
         this.email = email;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.password = password;
         this.confirmPassword = confirmPassword;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getEmail() {
         return email;
@@ -79,5 +78,21 @@ public class SignUpDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

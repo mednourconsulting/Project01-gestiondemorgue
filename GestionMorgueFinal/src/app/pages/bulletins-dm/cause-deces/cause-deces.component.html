@@ -1,6 +1,6 @@
 
 <nb-card>
-  <nb-card-header>
+  <nb-card-header class="card-header bg-info">
     <div class="row">
       <div class="col-sm-12">Ajouter une cause de décès</div>
     </div>
@@ -12,8 +12,8 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Code</label>
-          <input formControlName="code" class="form-control"type="string" nbInput fullWidth
-                 id="code" required="true" placeholder="code">
+          <input formControlName="code" class="form-control"type="text"
+                 id="code" required="true" >
           <ngx-validation-message label="code"
                                   [showRequired]="!getControl('code').valid && getControl('code').touched"
                                   [fr]="getControl('code')?.hasError('pattern')"></ngx-validation-message>
@@ -22,8 +22,8 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label  class="label">Description</label>
-          <textarea  formControlName="description" required="true" class="form-control"  type="string"  fullWidth
-                  placeholder="Description" >
+          <textarea  formControlName="description" required="true" class="form-control"  type="text"
+                   >
           </textarea>
           <ngx-validation-message label="description"
                                   [showRequired]="!getControl('description').valid && getControl('description').touched"
@@ -33,10 +33,10 @@
 
 
       <div class="col-sm-4">
-        <div class="form-group">
-          <label  class="label">الوصف</label>
-          <textarea  formControlName="descriptionAR" required="true" class="form-control"  type="string"  fullWidth
-                     placeholder="الوصف" >
+        <div class="form-group arabe">
+          <label  class="label float-right">الوصف</label>
+          <textarea  formControlName="descriptionAR" required="true" class="form-control"  type="text"
+                      >
           </textarea>
           <ngx-validation-message label="الوصف"
                                   [showRequired]="getControl('descriptionAR').touched && !getControl('descriptionAR').valid"
@@ -53,15 +53,13 @@
     </form>
 </nb-card-body>
 </nb-card>
-
-
-
-<div class="card">
-  <div class="card-header">
-    Liste des Bulletins
-  </div>
+<nb-card>
+  <nb-card-header class="card-header bg-info">
+    <div class="row">
+      <div class="col-sm-12"> Liste des Causes</div>
+    </div>
+  </nb-card-header>
   <div class="table table-responsive">
-
     <ng2-smart-table
       [settings]="settings"
       [source]="source"
@@ -69,6 +67,6 @@
       (custom)="onCustomConfirm($event)">
     </ng2-smart-table>
   </div>
-</div>
+</nb-card>
 
 

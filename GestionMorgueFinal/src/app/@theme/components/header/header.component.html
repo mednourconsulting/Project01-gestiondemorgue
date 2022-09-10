@@ -5,19 +5,22 @@
   -->
 
 <div class="header-container">
-  <div class="logo-container">
-    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
-      <nb-icon icon="menu-2-outline"></nb-icon>
-    </a>
-    <a class="logo" href="#" (click)="navigateHome()">Gestion <span>Morgue</span></a>
-  </div>
-  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+  <!--<div class="logo-container">
+   a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+     <nb-icon icon="menu-2-outline"></nb-icon>
+   </a>
+   <a class="logo" href="#" (click)="navigateHome()">Gestion de la <span>Morgue</span></a>
+ </div>-->
+<!--  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
     <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
-  </nb-select>
+  </nb-select>-->
 </div>
 
 <div class="header-container">
-  <nb-actions size="small">
+  <div class="control-item">{{user?.lastName}} {{user?.firstName}}</div>
+  <div (click)="logout()" class="control-item ml-2" style="cursor: pointer" >Déconnexion</div>
+
+ <!-- <nb-actions size="small">
 
     <nb-action class="control-item">
       <nb-search type="rotate-layout"></nb-search>
@@ -31,5 +34,5 @@
                [picture]="user?.picture | ngxAuthToken | async">
       </nb-user>
     </nb-action>
-  </nb-actions>
+  </nb-actions>-->
 </div>

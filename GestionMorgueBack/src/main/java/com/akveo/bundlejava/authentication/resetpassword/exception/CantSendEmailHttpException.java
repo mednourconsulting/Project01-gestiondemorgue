@@ -11,6 +11,6 @@ import org.springframework.http.HttpStatus;
 
 public class CantSendEmailHttpException extends HttpException {
     public CantSendEmailHttpException() {
-        super("Can't reset password, please, try again later", HttpStatus.INTERNAL_SERVER_ERROR);
+        super("Impossible d'envoyer l'email pour le moment, réessayer plus tard !", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

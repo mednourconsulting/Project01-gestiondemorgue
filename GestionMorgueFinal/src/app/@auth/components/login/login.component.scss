@@ -1,16 +1,21 @@
-.login-page {
-  padding: 5px 20px;
-}
+@import '../../../@theme/styles/myStyle';
 .login-img img {
   width: 199.5px;
   height: 141.3px;
   margin-bottom:10px;
+}
+.login-page {
+  padding: 1rem;
+  margin: auto;
+  width: 100%;
+  height: 100%;
 }
 .login-title-container {
   font-weight: bold;
   color: #e35e06;
   line-height: 1.5;
   margin: 2rem 0;
+  text-transform: uppercase;
 }
 .login-title-firstChild {
   font-size: 26px;
@@ -19,16 +24,15 @@
   font-size: 24px;
 }
 .login-form {
-  margin-top: 5rem;
+  margin-top: 2rem;
 }
-
 .login-button {
-  width: 250px!important;
-  border-radius:30px !important;
-  padding:1rem!important;
-  font-size: 18px !important;
-  margin-bottom: 2rem;
-}
-.login-actions {
-  margin-top: 4rem;
+  border-radius:5px !important;
+   padding:1rem!important;
+   font-size: 18px !important;
+  margin-bottom: 10px;
+ }
+
+input {
+  height: 3em;
 }

@@ -7,7 +7,8 @@
 :host {
   display: block;
   width: 100%;
-  max-width: 35rem;
+  height: 100%;
+ // max-width: 60rem!important;
 
   ::ng-deep {
     form {

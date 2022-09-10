@@ -9,10 +9,12 @@ package com.akveo.bundlejava.user;
 import com.akveo.bundlejava.authentication.SignUpDTO;
 import com.akveo.bundlejava.authentication.exception.PasswordsDontMatchException;
 import com.akveo.bundlejava.authentication.exception.UserNotFoundHttpException;
+import com.akveo.bundlejava.role.Role;
 import com.akveo.bundlejava.role.RoleRepository;
 import com.akveo.bundlejava.role.RoleService;
 import com.akveo.bundlejava.user.exception.UserAlreadyExistsException;
 import com.akveo.bundlejava.user.exception.UserNotFoundException;
+import com.sun.mail.imap.Rights;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,8 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.HashSet;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -54,6 +56,7 @@ public class UserService {
 
     @Transactional
     public User register(SignUpDTO signUpDTO) throws UserAlreadyExistsException {
+
         if (!signUpDTO.getPassword().equals(signUpDTO.getConfirmPassword())) {
             throw new PasswordsDontMatchException();
         }
@@ -81,7 +84,7 @@ public class UserService {
 
     public UserDTO getUserById(Long id) {
         User existingUser = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundHttpException("User with id: " + id + " not found", HttpStatus.NOT_FOUND)
+                () -> new UserNotFoundHttpException("Utilisateur non trouvé", HttpStatus.NOT_FOUND)
         );
 
         return modelMapper.map(existingUser, UserDTO.class);
@@ -98,7 +101,7 @@ public class UserService {
             userRepository.deleteById(id);
             return true;
         } catch (EmptyResultDataAccessException e) {
-            throw new UserNotFoundHttpException("User with id: " + id + " not found", HttpStatus.NOT_FOUND);
+            throw new UserNotFoundHttpException("Utilisateur non trouvé", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -129,14 +132,21 @@ public class UserService {
     private UserDTO updateUser(Long id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id).
                 orElseThrow(() -> new UserNotFoundHttpException(
-                        "User with id: " + id + " not found", HttpStatus.NOT_FOUND)
+                        "Utilisateur non trouvé", HttpStatus.NOT_FOUND)
                 );
+
 
         User updatedUser = modelMapper.map(userDTO, User.class);
         updatedUser.setId(id);
         updatedUser.setPasswordHash(existingUser.getPasswordHash());
-        // Current version doesn't update roles
-        updatedUser.setRole(existingUser.getRole());
+
+        Set<String> roleNames = userDTO.getRole();
+        Set<Role> list = new HashSet<>();
+        for (String role : roleNames) {
+            Role r = this.roleRepository.findByName(role);
+            list.add(r);
+        };
+        updatedUser.setRole(list);
 
         userRepository.save(updatedUser);
 
@@ -146,7 +156,8 @@ public class UserService {
     private User signUpUser(SignUpDTO signUpDTO) {
         User user = new User();
         user.setEmail(signUpDTO.getEmail());
-        user.setUserName(signUpDTO.getFullName());
+        user.setLastName(signUpDTO.getLastName());
+        user.setFirstName(signUpDTO.getFirstName());
         String role = signUpDTO.getRole();
         String encodedPassword = encodePassword(signUpDTO.getPassword());
         user.setPasswordHash(encodedPassword);
@@ -157,5 +168,17 @@ public class UserService {
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
+
+    public  List<UserDTO> findAll() {
+        List<User> users = this.userRepository.findAll();
+        List<UserDTO> usersDto = new ArrayList<UserDTO>();
+        users.forEach(user -> {
+            user.transformRoles(user.getRole());
+            usersDto.add(modelMapper.map(user, UserDTO.class));
+        });
+        return usersDto;
+    }
+
+
 
 }

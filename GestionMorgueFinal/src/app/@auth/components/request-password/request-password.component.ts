@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { NB_AUTH_OPTIONS, NbAuthService, NbAuthResult } from '@nebular/auth';
 import { getDeepFromObject } from '../../helpers';
 import { EMAIL_PATTERN } from '../constants';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'ngx-request-password-page',
@@ -32,7 +33,8 @@ export class NgxRequestPasswordComponent implements OnInit {
               @Inject(NB_AUTH_OPTIONS) protected options = {},
               protected cd: ChangeDetectorRef,
               protected fb: FormBuilder,
-              protected router: Router) { }
+              protected router: Router,
+              protected location: Location) { }
 
   get email() { return this.requestPasswordForm.get('email'); }
 
@@ -55,21 +57,25 @@ export class NgxRequestPasswordComponent implements OnInit {
     this.service.requestPassword(this.strategy, this.user).subscribe((result: NbAuthResult) => {
       this.submitted = false;
       if (result.isSuccess()) {
-        this.messages = result.getMessages();
+        this.messages = result.getResponse().body.messages;
       } else {
         this.errors = result.getErrors();
+        this.errors.push(result.getResponse().error.errors) ;
       }
 
       const redirect = result.getRedirect();
       if (redirect) {
         setTimeout(() => {
           return this.router.navigateByUrl(redirect);
-        }, this.redirectDelay);
+        }, 3000);
       }
       this.cd.detectChanges();
     });
   }
-
+  back() {
+    this.location.back();
+    return false;
+  }
   getConfigValue(key: string): any {
     return getDeepFromObject(this.options, key, null);
   }

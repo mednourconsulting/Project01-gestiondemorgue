@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin({"*"})
-@RequestMapping({"/certificatMedicoLegal"})
+@RequestMapping({"api/certificatMedicoLegal"})
 public class CertificatMedicoLegalController {
     @Autowired
     private CertificatMedicoLegalRepository certificatMedicoLegalRepository;

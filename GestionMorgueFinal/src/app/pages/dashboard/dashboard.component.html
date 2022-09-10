@@ -18,18 +18,17 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12 col-sm-12">
-    <div class="card">
-      <div class="card-header">
-        La liste des décédés
-      </div>
-      <div class="table table-responsive">
-        <ng2-smart-table
-          [settings]="settings"
-          [source]="source">
-        </ng2-smart-table>
-      </div>
+
+<nb-card>
+  <nb-card-header class="card-header bg-info">
+    <div class="row">
+      <div class="col-sm-12">  La liste des décédés</div>
     </div>
+  </nb-card-header>
+  <div class="table table-responsive">
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source">
+    </ng2-smart-table>
   </div>
-</div>
+</nb-card>
